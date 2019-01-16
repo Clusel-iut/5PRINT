@@ -26,7 +26,5 @@ public class Cadre extends Impression{
 	public void setModele(String modele) {
 		this.modele = modele;
 	}
-
-	
-	
+		
 }

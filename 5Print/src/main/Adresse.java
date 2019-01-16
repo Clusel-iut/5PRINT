@@ -2,13 +2,15 @@ package main;
 
 public class Adresse {
 	private int id_adresse;
+	private String pays;
 	private String ville;
 	private String code_postal;
 	private String rue;
 	private int numero;	
 	
-	public Adresse(int id_adresse, String ville, String code_postal, String rue, int numero) {
+	public Adresse(int id_adresse, String pays,  String ville, String code_postal, String rue, int numero) {
 		this.id_adresse = id_adresse;
+		this.pays = pays;
 		this.ville = ville;
 		this.code_postal = code_postal;
 		this.rue = rue;
@@ -44,4 +46,12 @@ public class Adresse {
 	public void setNumero(int numero) {
 		this.numero = numero;
 	}
+	
+	public int getPays() {
+		return numero;
+	}
+	public void setPays(int numero) {
+		this.numero = numero;
+	}
+	
 }
