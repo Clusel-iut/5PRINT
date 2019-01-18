@@ -11,14 +11,7 @@ public class Client {
 	private String motDePasse;
 	private ArrayList<FichierPhoto> photos; //Les photos dont il est propri�taire
 	private ArrayList<FichierPhoto> photos_partagees; //Les photos qui ne sont pas � lui
-	
-	public Client(String email, String nom, String prenom, String adresse) {
-		this.email = email;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.adresse = adresse;
-	}
-	
+
 	public Client(String email, String nom, String prenom, String adresse, String motDePasse,
 			ArrayList<FichierPhoto> photosP, ArrayList<FichierPhoto> photos) {
 		this.email = email;

@@ -10,11 +10,11 @@ public class Commande{
 	private String mode_livraison;
 	private Date date_commande;
 	private String statut;
-	private int etat_paiement;
-	private int montant_total_cmd;
-		
+	private boolean etat_paiement;
+	private float montant_total_cmd;
+	
 	public Commande(int numero, BonAchat bon_achat, Adresse adresse, Client client, String mode_livraison,
-			Date date_commande, String statut, int etat_paiement, int montant_total_cmd) {
+			Date date_commande, String statut, boolean etat_paiement, float montant_total_cmd) {
 		super();
 		this.numero = numero;
 		this.bon_achat = bon_achat;
@@ -83,19 +83,19 @@ public class Commande{
 		this.statut = statut;
 	}
 
-	public int getEtat_paiement() {
+	public boolean getEtat_paiement() {
 		return etat_paiement;
 	}
 
-	public void setEtat_paiement(int etat_paiement) {
+	public void setEtat_paiement(boolean etat_paiement) {
 		this.etat_paiement = etat_paiement;
 	}
 
-	public int getMontant_total_cmd() {
+	public float getMontant_total_cmd() {
 		return montant_total_cmd;
 	}
 
-	public void setMontant_total_cmd(int montant_total_cmd) {
+	public void setMontant_total_cmd(float montant_total_cmd) {
 		this.montant_total_cmd = montant_total_cmd;
 	}
 
