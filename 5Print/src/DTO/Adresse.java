@@ -47,11 +47,11 @@ public class Adresse {
 		this.numero = numero;
 	}
 	
-	public int getPays() {
-		return numero;
+	public String getPays() {
+		return pays;
 	}
-	public void setPays(int numero) {
-		this.numero = numero;
+	public void setPays(String pays) {
+		this.pays = pays;
 	}
 	
 }

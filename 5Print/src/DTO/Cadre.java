@@ -1,11 +1,7 @@
-package DTO.impression;
+package DTO;
 
 import java.util.ArrayList;
 import java.util.Date;
-
-import DTO.Catalogue;
-import DTO.Client;
-import DTO.Photo;
 
 public class Cadre extends Impression{
 	private String mise_en_page;
