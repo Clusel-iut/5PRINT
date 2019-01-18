@@ -245,10 +245,40 @@ public class GestionDB {
 	}
 
 	// CREATE
-	public static boolean createCommande(int numero, Adresse adresse, Client client, String mode_livraison,
+	public static boolean createCommande(Adresse adresse, Client client, String mode_livraison,
 			Date date_commande, String statut, boolean etat_paiement, float montant_total_cmd) {
-		String sql = "INSERT INTO COMMANDE (NUMERO, ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) VALUES (?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO COMMANDE (ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) VALUES (?,?,?,?,?,?,?)";
 		boolean isAdded = false;
+
+		PreparedStatement statement;
+		try {
+			statement = conn.prepareStatement(sql);
+			statement.setInt(1, adresse.getId_adresse());
+			statement.setString(2, client.getEmail());
+			statement.setString(3, mode_livraison);
+			statement.setDate(4, java.sql.Date.valueOf(date_commande.toString()));
+			statement.setString(5, statut);
+			statement.setBoolean(6, etat_paiement);
+			statement.setFloat(7, montant_total_cmd);
+
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+				isAdded = true;
+			}
+
+		} catch (SQLException e) {
+			isAdded = false;
+		}
+
+		return isAdded;
+	}
+
+	// UPDATE
+	public static boolean updateCommande(int numero, Adresse adresse, Client client, String mode_livraison,
+			Date date_commande, String statut, boolean etat_paiement, float montant_total_cmd) {
+		String sql = "UPDATE CLIENT SET NUMERO = ?, ID_ADRESSE = ?, EMAIL = ?, MODE_LIVRAISON = ?, DATE_COMMANDE = ?, STATUT = ?, ETAT_PAIEMENT = ?, MONTANT_TOTAL_CMD";
+		boolean isAdded = false;
+		boolean isUpdated = false;
 
 		PreparedStatement statement;
 		try {
@@ -264,32 +294,6 @@ public class GestionDB {
 
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
-				isAdded = true;
-			}
-
-		} catch (SQLException e) {
-			isAdded = false;
-		}
-
-		return isAdded;
-	}
-
-	// UPDATE
-	public static boolean updateClient(String email, String nom, String prenom, String motdepasse, Adresse adr) {
-		String sql = "UPDATE CLIENT SET EMAIL = ?, NOM = ?, PRENOM = ?, MOT_DE_PASSE = ?";
-		boolean isAdded = false;
-		boolean isUpdated = false;
-
-		PreparedStatement statement;
-		try {
-			statement = conn.prepareStatement(sql);
-			statement.setString(1, email);
-			statement.setString(2, nom);
-			statement.setString(3, prenom);
-			statement.setString(4, motdepasse);
-
-			int rowsInserted = statement.executeUpdate();
-			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
 		} catch (SQLException e) {
@@ -300,13 +304,13 @@ public class GestionDB {
 	}
 
 	// DELETE
-	public static boolean deleteClientByEmail(String email) {
-		String sql = "DELETE FROM CLIENT WHERE EMAIL = ?";
+	public static boolean deleteCommandeByNum(int numero) {
+		String sql = "DELETE FROM COMMANDE WHERE NUMERO = ?";
 		boolean isDeleted = false;
 
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setString(1, email);
+			statement.setInt(1, numero);
 
 			int rowsDeleted = statement.executeUpdate();
 			if (rowsDeleted > 0) {
