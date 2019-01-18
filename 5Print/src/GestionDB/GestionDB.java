@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import DTO.Adresse;
@@ -14,6 +15,7 @@ import DTO.Commande;
 import DTO.FichierPhoto;
 import DTO.Impression;
 import DTO.Photo;
+import DTO.PointRelais;
 import DTO.Tirage;
 
 public class GestionDB {
@@ -503,6 +505,31 @@ public class GestionDB {
 		}
 		return isDeleted;
 	}
+	
+	
+	//
+	// PointRelais
+	//
+	// GET ALL
+		public static ArrayList<PointRelais> getAllPointRelais() {
+			String sql = "SELECT * FROM POINT_RELAIS";
+			ArrayList<PointRelais> list_point_relais = new ArrayList<PointRelais>();
+
+			try {
+				PreparedStatement statement = conn.prepareStatement(sql);
+				ResultSet result = statement.executeQuery(sql);
+
+				while (result.next()) {
+					list_point_relais.add(new PointRelais(result.getString("NOM"),
+							GestionDB.getAdresseById(result.getInt("ID_ADRESSE"))));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return list_point_relais;
+		}
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
