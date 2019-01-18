@@ -82,7 +82,8 @@ public class GestionDB {
 	//UPDATE
 		public static boolean updateAdresse(int id_adresse, String pays, String ville, String code_postal ,String rue, int numero)
 		{
-			String sql = "UPDATE ADRESSE SET PAYS = ?, VILLE = ?, CODE_POSTAL = ?, RUE = ?, numero = ?";			boolean isAdded = false;
+			String sql = "UPDATE ADRESSE SET PAYS = ?, VILLE = ?, CODE_POSTAL = ?, RUE = ?, NUMERO = ?";			
+			boolean isAdded = false;
 			boolean isUpdated = false;
 			
 			PreparedStatement statement;
@@ -109,7 +110,6 @@ public class GestionDB {
 		//DELETE
 		public static boolean deleteAdresseById(int id)
 		{
-			String sql = "DELETE FROM Adresse WHERE id_adresse = ?";
 			boolean isDeleted = false;
 			
 			try {
@@ -133,7 +133,7 @@ public class GestionDB {
 		//GET
 		public static Client getClientByEmail(String email)
 		{
-			String sql = "SELECT * FROM Client WHERE email = ?";
+			String sql = "SELECT * FROM CLIENT WHERE EMAIL = ?";
 			Client cli = null;
 			
 			try {
@@ -141,28 +141,27 @@ public class GestionDB {
 				statement.setString(1, email);
 				ResultSet result = statement.executeQuery(sql);	
 				
-				cli =  new Client(result.getString("email"),result.getString("nom"), result.getString("prenom"), result.getString("code_postal"), result.getString("rue"), result.getInt("numero"));
+				cli =  new Client(result.getString("EMAIL"),result.getString("NOM"), result.getString("PRENOM"), null);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return adr;
+			return cli;
 		}
 		
 		//CREATE
-		public static boolean createAdresse(String pays, String ville, String code_postal ,String rue, int numero)
+		public static boolean createClient(String email, String nom, String prenom, String motdepasse)
 		{
-			String sql = "INSERT INTO Adresse (pays, ville, code_postal, rue, numero) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO CLIENT (EMAIL, NOM, PRENOM, MOT_DE_PASSE) VALUES (?,?,?,?)";
 			boolean isAdded = false;
 			
 			PreparedStatement statement;
 			try {
 				statement = conn.prepareStatement(sql);
-				statement.setString(1, pays);
-				statement.setString(2, ville);
-				statement.setString(3, code_postal);
-				statement.setString(4, rue);
-				statement.setInt(5, numero);
+				statement.setString(1, email);
+				statement.setString(2, nom);
+				statement.setString(3, prenom);
+				statement.setString(4, motdepasse);
 				
 				int rowsInserted = statement.executeUpdate();
 				if (rowsInserted > 0) {

@@ -7,19 +7,19 @@ public class Client {
 	private String email;
 	private String nom;
 	private String prenom;
-	private String adresse;
+	private Adresse adresse;
 	private String motDePasse;
 	private ArrayList<FichierPhoto> photos; //Les photos dont il est propri�taire
 	private ArrayList<FichierPhoto> photos_partagees; //Les photos qui ne sont pas � lui
 	
-	public Client(String email, String nom, String prenom, String adresse) {
+	public Client(String email, String nom, String prenom, Adresse adresse) {
 		this.email = email;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.adresse = adresse;
 	}
 	
-	public Client(String email, String nom, String prenom, String adresse, String motDePasse,
+	public Client(String email, String nom, String prenom, Adresse adresse, String motDePasse,
 			ArrayList<FichierPhoto> photosP, ArrayList<FichierPhoto> photos) {
 		this.email = email;
 		this.nom = nom;
@@ -42,11 +42,11 @@ public class Client {
 		return prenom;
 	}
 
-	public String getAdresse() {
+	public Adresse getAdresse() {
 		return adresse;
 	}
 
-	public void setAdresse(String adresse) {
+	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
 	}
 
