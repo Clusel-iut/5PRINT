@@ -1,4 +1,4 @@
-package main;
+package DTO;
 
 import java.util.ArrayList;
 
@@ -7,19 +7,19 @@ public class Client {
 	private String email;
 	private String nom;
 	private String prenom;
-	private Adresse adresse;
+	private String adresse;
 	private String motDePasse;
 	private ArrayList<FichierPhoto> photos; //Les photos dont il est propri�taire
 	private ArrayList<FichierPhoto> photos_partagees; //Les photos qui ne sont pas � lui
 	
-	public Client(String email, String nom, String prenom, Adresse adresse) {
+	public Client(String email, String nom, String prenom, String adresse) {
 		this.email = email;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.adresse = adresse;
 	}
 	
-	public Client(String email, String nom, String prenom, Adresse adresse, String motDePasse,
+	public Client(String email, String nom, String prenom, String adresse, String motDePasse,
 			ArrayList<FichierPhoto> photosP, ArrayList<FichierPhoto> photos) {
 		this.email = email;
 		this.nom = nom;
@@ -42,11 +42,11 @@ public class Client {
 		return prenom;
 	}
 
-	public Adresse getAdresse() {
+	public String getAdresse() {
 		return adresse;
 	}
 
-	public void setAdresse(Adresse adresse) {
+	public void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}
 

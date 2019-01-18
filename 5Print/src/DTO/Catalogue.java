@@ -1,4 +1,4 @@
-package main;
+package DTO;
 
 public class Catalogue {
 	private String format;

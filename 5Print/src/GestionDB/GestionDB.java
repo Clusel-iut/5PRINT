@@ -9,8 +9,8 @@ import java.sql.Statement;
 
 import javax.naming.spi.DirStateFactory.Result;
 
-import main.Adresse;
-import main.Client;
+import DTO.Adresse;
+import DTO.Client;
 
 public class GestionDB {
 	

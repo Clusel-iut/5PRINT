@@ -1,5 +1,10 @@
-package main;
+package DTO.impression;
 import java.util.Date;
+
+import DTO.Catalogue;
+import DTO.Client;
+import DTO.Photo;
+
 import java.util.ArrayList;
 
 public class Impression{ 

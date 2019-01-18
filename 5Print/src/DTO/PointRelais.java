@@ -1,4 +1,4 @@
-package main;
+package DTO;
 
 public class PointRelais {
 	private String nom;
