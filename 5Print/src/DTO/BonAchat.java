@@ -1,4 +1,4 @@
-package main;
+package DTO;
 
 public class BonAchat {
 	private String code_bon;

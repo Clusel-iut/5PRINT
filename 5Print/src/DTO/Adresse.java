@@ -1,4 +1,4 @@
-package main;
+package DTO;
 
 public class Adresse {
 	private int id_adresse;

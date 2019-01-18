@@ -1,4 +1,6 @@
-package main;
+package DTO;
+
+import DTO.impression.Impression;
 
 public class Photo{
 	private int id_photo;

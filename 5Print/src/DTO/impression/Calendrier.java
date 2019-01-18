@@ -1,7 +1,11 @@
-package main;
+package DTO.impression;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import DTO.Catalogue;
+import DTO.Client;
+import DTO.Photo;
 
 public class Calendrier extends Impression{
 	private String modele;
