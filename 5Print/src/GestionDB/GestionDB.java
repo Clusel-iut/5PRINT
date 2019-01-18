@@ -5,18 +5,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import DTO.Adresse;
-import DTO.BonAchat;
+import DTO.Catalogue;
 import DTO.Client;
 import DTO.Commande;
 import DTO.FichierPhoto;
+import DTO.Impression;
 import DTO.Photo;
+import DTO.Tirage;
 
 public class GestionDB {
 
@@ -28,7 +26,6 @@ public class GestionDB {
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 			conn = DriverManager.getConnection(CONN_URL, user, passwd);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -50,7 +47,6 @@ public class GestionDB {
 			adr = new Adresse(result.getInt("ID_ADRESSE"), result.getString("PAYS"), result.getString("VILLE"),
 					result.getString("CODE_POSTAL"), result.getString("RUE"), result.getInt("NUMERO"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return adr;
@@ -123,7 +119,6 @@ public class GestionDB {
 				isDeleted = true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -147,7 +142,6 @@ public class GestionDB {
 			cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"), null, null,
 					null, null);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return cli;
@@ -216,7 +210,6 @@ public class GestionDB {
 				isDeleted = true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -241,7 +234,6 @@ public class GestionDB {
 					result.getDate("DATE_COMMANDE"), result.getString("STATUT"), result.getBoolean("ETAT_PAIEMENT"),
 					result.getFloat("MONTANT_TOTAL_CMD"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return cmd;
@@ -317,7 +309,6 @@ public class GestionDB {
 				isDeleted = true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -341,7 +332,6 @@ public class GestionDB {
 			fiPhoto = new FichierPhoto(result.getString("CHEMIN"), null, result.getString("RESOLUTION"),
 					result.getString("INFO_PRISE_VUE"), result.getBoolean("EST_PARTAGE"), null);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return fiPhoto;
@@ -412,7 +402,6 @@ public class GestionDB {
 				isDeleted = true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -435,29 +424,29 @@ public class GestionDB {
 			photo = new Photo(result.getInt("ID_PHOTO"), null, result.getString("DESCRIPTION"),
 					result.getString("RETOUCHE"), result.getInt("NUMERO_PAGE"), result.getInt("POSITION_X"),
 					result.getInt("POSITION_Y"), result.getInt("NB_EXEMPLAIRE"));
-			
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return photo;
 	}
 
 	// CREATE
-	public static boolean createPhoto(String chemin, Impression impression, String description, int position_x, int position_y,
-			int numero_page, int nb_exemplaire, String retouche) {
-		String sql = "INSERT INTO PHOTO (CHEMIN, ID_IMPRESSION, DESCRIPTION, RETOUCHE, POSITION_X, POSITION_Y, NUMERO_PAGE, NB_EXEMPLAIRE) VALUES (?,?,?,?,?,?,?)";
+	public static boolean createPhoto(String chemin, Impression impression, String description, int position_x,
+			int position_y, int numero_page, int nb_exemplaire, String retouche) {
+		String sql = "INSERT INTO PHOTO (CHEMIN, ID_IMPRESSION, DESCRIPTION, RETOUCHE, POSITION_X, POSITION_Y, NUMERO_PAGE, NB_EXEMPLAIRE) VALUES (?,?,?,?,?,?,?,?)";
 		boolean isAdded = false;
 
 		PreparedStatement statement;
 		try {
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
-			statement.setString(2, client.getEmail());
-			statement.setString(3, resolution);
-			statement.setDate(4, java.sql.Date.valueOf(date_ajout.toString()));
-			statement.setString(5, info_vue);
-			statement.setBoolean(6, est_partage);
+			statement.setString(2, description);
+			statement.setString(3, retouche);
+			statement.setInt(4, position_x);
+			statement.setInt(5, position_y);
+			statement.setInt(5, numero_page);
+			statement.setInt(6, nb_exemplaire);
 
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
@@ -472,17 +461,19 @@ public class GestionDB {
 	}
 
 	// UPDATE
-	public static boolean updateFichierPhoto(FichierPhoto fiPhoto) {
-		String sql = "UPDATE FICHIERPHOTO SET RESOLUTION = ?, INFO_PRISE_VUE = ?, EST_PARTAGE = ? WHERE CHEMIN = ?";
+	public static boolean updatePhoto(Photo photo) {
+		String sql = "UPDATE PHOTO SET DESCRIPTION = ?, RETOUCHE = ?, POSITION_X = ?, POSITION_Y = ?, NB_EXEMPLAIRE = ? WHERE ID_PHOTO = ?";
 		boolean isUpdated = false;
 
 		PreparedStatement statement;
 		try {
 			statement = conn.prepareStatement(sql);
-			statement.setString(1, fiPhoto.getResolution());
-			statement.setString(2, fiPhoto.getInfo_prise_de_vue());
-			statement.setBoolean(3, fiPhoto.getEst_partage());
-			statement.setString(4, fiPhoto.getChemin());
+			statement.setString(1, photo.getDescription());
+			statement.setString(2, photo.getRetouche());
+			statement.setInt(3, photo.getPosition_X());
+			statement.setInt(4, photo.getPosition_Y());
+			statement.setInt(5, photo.getNb_exemplaire());
+			statement.setInt(5, photo.getId_photo());
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
 				isUpdated = true;
@@ -495,20 +486,149 @@ public class GestionDB {
 	}
 
 	// DELETE
-	public static boolean deleteFichierPhoto(String chemin) {
-		String sql = "DELETE FICHIERPHOTO WHERE CHEMIN = ?";
+	public static boolean deletePhoto(int id_photo) {
+		String sql = "DELETE PHOTO WHERE ID_PHOTO = ?";
 		boolean isDeleted = false;
 
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setString(1, chemin);
+			statement.setInt(1, id_photo);
 
 			int rowsDeleted = statement.executeUpdate();
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			isDeleted = false;
+		}
+		return isDeleted;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//
+	// TIRAGE
+	//
+	// GET
+	
+	
+	public static Tirage getTirageById(int id) {
+		
+		String sqlImp = "SELECT * FROM IMPRESSION WHERE ID_IMPRESSION = ?";
+		String sqlTirage = "SELECT * FROM TIRAGE WHERE ID_IMPRESSION = ?";
+		Tirage tirage = null;
+
+		try {
+			//REQUETE TIRAGE POUR VERIFIER SI EXISTE
+			PreparedStatement statementTirage = conn.prepareStatement(sqlTirage);
+			statementTirage.setInt(1, id);
+			ResultSet resultTirage = statementTirage.executeQuery(sqlTirage);
+			
+			int idTirage = resultTirage.getInt("ID_IMPRESSION");
+			
+			//REQUETE IMPRESSION POUR RECUP DONNEES
+			PreparedStatement statementImp = conn.prepareStatement(sqlImp);
+			statementImp.setInt(1,idTirage);
+			ResultSet resultImp = statementImp.executeQuery(sqlImp);
+			
+			int nb_impression = resultImp.getInt("NB_IMPRESSION");
+			int montant_total = resultImp.getInt("MONTANT_TOTAL");
+			boolean etat_impression = resultImp.getBoolean("ETAT_IMPRESSION");
+			Date date_impression = resultImp.getDate("DATE_IMPRESSION");
+			int numero = resultImp.getInt("NUMERO");
+			
+			tirage = new Tirage(resultTirage.getInt("ID_IMPRESSION"), date_impression, nb_impression,
+					null, null, numero, montant_total, etat_impression, null);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tirage;
+	}
+
+	// CREATE
+	public static boolean createTirage(int id_impression, Client client, Catalogue catalogue,
+			int numero, Date date_impression, float montant_total, boolean etat_impression, int nb_impression) {
+		String sqlImp = "INSERT INTO IMPRESSION(ID_IMPRESSION, EMAIL, FORMAT, QUALITE, NUMERO, DATE_IMPRESSION, MONTANT_TOTAL, ETAT_IMPRESSION, NB_IMPRESSION) VALUES (?,?,?,?,?,?,?,?,?)";
+		String sqlTirage = "INSERT INTO TIRAGE(ID_IMPRESSION)";
+		boolean isAdded = false;
+
+		PreparedStatement statementImp;
+		PreparedStatement statementTirage;
+		try {
+			statementImp = conn.prepareStatement(sqlImp);
+			statementImp.setInt(1, id_impression);
+			statementImp.setString(2, client.getEmail());
+			statementImp.setString(3, catalogue.getFormat());
+			statementImp.setString(4, catalogue.getQualite());
+			statementImp.setInt(5, numero);
+			statementImp.setDate(6, java.sql.Date.valueOf(date_impression.toString()));
+			statementImp.setFloat(7, montant_total);
+			statementImp.setBoolean(8, etat_impression);
+			statementImp.setInt(9, nb_impression);
+
+			statementTirage = conn.prepareStatement(sqlTirage);
+			statementTirage.setInt(1, id_impression);
+			
+			int rowsInsertedImp = statementImp.executeUpdate();
+			int rowsInsertedTirage = statementTirage.executeUpdate();
+			if (rowsInsertedImp > 0 && rowsInsertedTirage > 0) {
+				isAdded = true;
+			}
+
+		} catch (SQLException e) {
+			isAdded = false;
+		}
+
+		return isAdded;
+	}
+
+	// UPDATE
+	public static boolean updateTirage(Tirage tirage) {
+		String sqlImp = "UPDATE IMPRESSION SET FORMAT = ?, QUALITE = ?, NUMERO = ?, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? WHERE ID_IMPRESSION = ?";
+		boolean isUpdated = false;
+
+		PreparedStatement statement;
+		try {
+			statement = conn.prepareStatement(sqlImp);
+			statement.setString(1, tirage.getCatalogue().getFormat());
+			statement.setString(2, tirage.getCatalogue().getQualite());
+			statement.setInt(3, tirage.getNumero());
+			statement.setFloat(4, tirage.getMontant_total());
+			statement.setBoolean(5, tirage.getEtat_impression());
+			statement.setInt(6, tirage.getNb_impression());
+			statement.setInt(7, tirage.getId_impression());
+			
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+				isUpdated = true;
+			}
+		} catch (SQLException e) {
+			isUpdated = false;
+		}
+
+		return isUpdated;
+	}
+
+	// DELETE
+	public static boolean deleteTirage(int id_photo) {
+		String sqlTirage = "DELETE TIRAGE WHERE ID_IMPRESSION = ?";
+		String sqlImp = "DELETE IMPRESSION WHERE ID_IMPRESSION = ?";
+		boolean isDeleted = false;
+
+		try {
+			PreparedStatement statementTirage = conn.prepareStatement(sqlTirage);
+			statementTirage.setInt(1, id_photo);
+			
+			PreparedStatement statementImp = conn.prepareStatement(sqlImp);
+			statementImp.setInt(1, id_photo);
+
+			int rowsDeletedT = statementTirage.executeUpdate();
+			int rowsDeletedI = statementImp.executeUpdate();
+			if (rowsDeletedT > 0 && rowsDeletedI > 0) {
+				isDeleted = true;
+			}
+		} catch (SQLException e) {
 			isDeleted = false;
 		}
 		return isDeleted;

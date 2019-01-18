@@ -2,18 +2,18 @@ package DTO;
 import java.util.Date;
 import java.util.ArrayList;
 
-public class Impression{ 
+public abstract class Impression{ 
 	protected int id_impression;
 	protected Date date_impression;
 	protected int nb_impression;
 	protected Client client;
 	protected Catalogue catalogue;
-	protected int montant_total;
-	protected int etat_impression;
+	protected float montant_total;
+	protected boolean etat_impression;
 	protected ArrayList<Photo> photos;
-	
+
 	public Impression(int id_impression, Date date_impression, int nb_impression, Client client, Catalogue catalogue,
-			int montant_total, int etat_impression, ArrayList<Photo> photos) {
+			int numero, float montant_total, boolean etat_impression, ArrayList<Photo> photos) {
 		this.id_impression = id_impression;
 		this.date_impression = date_impression;
 		this.nb_impression = nb_impression;
@@ -22,6 +22,7 @@ public class Impression{
 		this.montant_total = montant_total;
 		this.etat_impression = etat_impression;
 		this.photos = photos;
+		this.numero = numero;
 	}
 	
 	public int getId_impression() {
@@ -54,16 +55,16 @@ public class Impression{
 	public void setCatalogue(Catalogue catalogue) {
 		this.catalogue = catalogue;
 	}
-	public int getMontant_total() {
+	public float getMontant_total() {
 		return montant_total;
 	}
-	public void setMontant_total(int montant_total) {
+	public void setMontant_total(float montant_total) {
 		this.montant_total = montant_total;
 	}
-	public int getEtat_impression() {
+	public boolean getEtat_impression() {
 		return etat_impression;
 	}
-	public void setEtat_impression(int etat_impression) {
+	public void setEtat_impression(boolean etat_impression) {
 		this.etat_impression = etat_impression;
 	}
 
@@ -74,6 +75,16 @@ public class Impression{
 	public void setPhotos(ArrayList<Photo> photos) {
 		this.photos = photos;
 	}
+
+	public int getNumero() {
+		return numero;
+	}
+
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+
+	protected int numero;
 
 	
 }

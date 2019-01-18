@@ -7,10 +7,10 @@ public class FichierPhoto{
 	private Client client;
 	private String resolution;
 	private String info_prise_de_vue;
-	private int est_partage;
+	private boolean est_partage;
 	private ArrayList<Client> clients_partages;
 	
-	public FichierPhoto(String chemin, Client client, String resolution, String info_prise_de_vue, int est_partage,
+	public FichierPhoto(String chemin, Client client, String resolution, String info_prise_de_vue, boolean est_partage,
 			ArrayList<Client> clients_partages) {
 		this.chemin = chemin;
 		this.client = client;
@@ -43,10 +43,10 @@ public class FichierPhoto{
 	public void setInfo_prise_de_vue(String info_prise_de_vue) {
 		this.info_prise_de_vue = info_prise_de_vue;
 	}
-	public int getEst_partage() {
+	public boolean getEst_partage() {
 		return est_partage;
 	}
-	public void setEst_partage(int est_partage) {
+	public void setEst_partage(boolean est_partage) {
 		this.est_partage = est_partage;
 	}
 	public ArrayList<Client> getClients_partages() {
