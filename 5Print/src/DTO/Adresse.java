@@ -6,10 +6,18 @@ public class Adresse {
 	private String ville;
 	private String code_postal;
 	private String rue;
-	private int numero;	
+	private String numero;	
 	
-	public Adresse(int id_adresse, String pays,  String ville, String code_postal, String rue, int numero) {
+	public Adresse(int id_adresse, String pays,  String ville, String code_postal, String rue, String numero) {
 		this.id_adresse = id_adresse;
+		this.pays = pays;
+		this.ville = ville;
+		this.code_postal = code_postal;
+		this.rue = rue;
+		this.numero = numero;
+	}
+	
+	public Adresse(String pays,  String ville, String code_postal, String rue, String numero) {
 		this.pays = pays;
 		this.ville = ville;
 		this.code_postal = code_postal;
@@ -40,10 +48,10 @@ public class Adresse {
 	public void setRue(String rue) {
 		this.rue = rue;
 	}
-	public int getNumero() {
+	public String getNumero() {
 		return numero;
 	}
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 	

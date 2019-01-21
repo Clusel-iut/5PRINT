@@ -1,4 +1,4 @@
-package GestionDB;
+package DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -47,7 +47,7 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery(sql);
 
 			adr = new Adresse(result.getInt("ID_ADRESSE"), result.getString("PAYS"), result.getString("VILLE"),
-					result.getString("CODE_POSTAL"), result.getString("RUE"), result.getInt("NUMERO"));
+					result.getString("CODE_POSTAL"), result.getString("RUE"), result.getString("NUMERO"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -92,7 +92,7 @@ public class GestionDB {
 			statement.setString(2, adresse.getVille());
 			statement.setString(3, adresse.getCode_postal());
 			statement.setString(4, adresse.getRue());
-			statement.setInt(5, adresse.getNumero());
+			statement.setString(5, adresse.getNumero());
 			statement.setInt(6, adresse.getId_adresse());
 
 			int rowsInserted = statement.executeUpdate();
@@ -215,6 +215,31 @@ public class GestionDB {
 			isDeleted = false;
 		}
 		return isDeleted;
+	}
+	
+	//
+	public static boolean connectionClient(String email, String motDePasse) {
+		String sql = "SELECT * FROM CLIENT WHERE email = ? AND motDePasse = ?";
+		boolean isConnected = false;
+
+		PreparedStatement statement;
+		try {
+			statement = conn.prepareStatement(sql);
+			statement.setString(1, email);
+			statement.setString(2, motDePasse);
+
+
+			ResultSet result = statement.executeQuery();
+			if (result != null) {
+				isConnected = true;
+				
+			}
+		} catch (SQLException e) {
+			isConnected = false;
+			
+		}
+
+		return isConnected;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
