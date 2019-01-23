@@ -1,6 +1,2 @@
-/Ressources/
-/Interfaces/
-/Gestion/
-/DB/
-/InterfacesClient/
-/DTO/
+/interfaces/
+/application/

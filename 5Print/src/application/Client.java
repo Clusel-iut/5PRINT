@@ -23,8 +23,6 @@ public class Client extends Application {
 		    "/interfaces/views/Connexion.fxml"));
 	    Scene scene = new Scene(root);
 	    primaryStage.setScene(scene);
-	    primaryStage.initStyle(StageStyle.TRANSPARENT);
-	    primaryStage.initStyle(StageStyle.UNDECORATED);
 	    primaryStage.show();
 	} catch (Exception e) {
 	    e.printStackTrace();

@@ -38,13 +38,13 @@ public class ConnexionController extends JFrame {
      * Permet à l'utilisateur de fermer la vue.
      * 
      * @param event
-     */
+     
     @FXML
     void close(MouseEvent event) {
 	Node node = (Node) event.getSource();
 	Stage stage = (Stage) node.getScene().getWindow();
 	stage.close();
-    }
+    }*/
 
 	/**
 	 * Create the frame.

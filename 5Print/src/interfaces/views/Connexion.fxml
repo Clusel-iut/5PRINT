@@ -8,22 +8,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.ConnexionController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.ConnexionController">
    <children>
-      <TextField layoutX="426.0" layoutY="275.0" />
-      <PasswordField layoutX="426.0" layoutY="354.0" />
-      <Label layoutX="255.0" layoutY="279.0" text="Email" />
-      <Label layoutX="255.0" layoutY="358.0" text="Mot de passe" />
-      <Button layoutX="473.0" layoutY="436.0" mnemonicParsing="false" text="Connexion" />
-      <Button layoutX="473.0" layoutY="490.0" mnemonicParsing="false" text="Inscription" />
-      <ImageView fitHeight="171.0" fitWidth="363.0" layoutX="318.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+      <TextField layoutX="354.0" layoutY="296.0" prefHeight="25.0" prefWidth="293.0" />
+      <PasswordField layoutX="354.0" layoutY="350.0" prefHeight="25.0" prefWidth="293.0" />
+      <Label layoutX="354.0" layoutY="279.0" text="Email" />
+      <Label layoutX="354.0" layoutY="333.0" text="Mot de passe" />
+      <Button layoutX="464.0" layoutY="415.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Connexion" />
+      <Button layoutX="464.0" layoutY="456.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Inscription" />
+      <ImageView fitHeight="171.0" fitWidth="363.0" layoutX="319.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../Ressources/logo.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="33.0" fitWidth="34.0" layoutX="953.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#close">
-         <image>
-            <Image url="@../../Ressources/cross.png" />
          </image>
       </ImageView>
    </children>
