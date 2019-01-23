@@ -1,8 +1,9 @@
-package InterfacesClient;
+package interfaces.controllers;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,42 +17,38 @@ import javax.swing.border.EmptyBorder;
 
 import DB.GestionDB;
 import DTO.Adresse;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 
-public class AppClientInscription extends JFrame {
+public class InscriptionController extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField email;
-	private JTextField nom;
-	private JTextField prenom;
-	private JTextField numero;
-	private JTextField rue;
-	private JTextField codepostal;
-	private JTextField ville;
-	private JTextField pays;
-	private JPasswordField passwordField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AppClientInscription frame = new AppClientInscription();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
+    @FXML
+    private ImageView btn_close;
+	
+    
+    /**
+     * Permet à l'utilisateur de fermer la vue.
+     * 
+     * @param event
+     */
+    @FXML
+    void close(MouseEvent event) {
+	Node node = (Node) event.getSource();
+	Stage stage = (Stage) node.getScene().getWindow();
+	stage.close();
+    }
 
 	/**
 	 * Create the frame.
-	 */
+	 
 	public AppClientInscription() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 698, 483);
@@ -162,5 +159,5 @@ public class AppClientInscription extends JFrame {
 		lblIncription.setFont(new Font("Dialog", Font.BOLD, 22));
 		lblIncription.setBounds(255, 12, 148, 25);
 		this.getContentPane().add(lblIncription);
-	}
+	} */
 }
