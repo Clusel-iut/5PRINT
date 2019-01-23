@@ -7,14 +7,16 @@ public class Adresse {
 	private String code_postal;
 	private String rue;
 	private String numero;	
+	private Client client;
 	
-	public Adresse(int id_adresse, String pays,  String ville, String code_postal, String rue, String numero) {
+	public Adresse(int id_adresse, String pays,  String ville, String code_postal, String rue, String numero, Client client) {
 		this.id_adresse = id_adresse;
 		this.pays = pays;
 		this.ville = ville;
 		this.code_postal = code_postal;
 		this.rue = rue;
 		this.numero = numero;
+		this.client = client;
 	}
 	
 	public Adresse(String pays,  String ville, String code_postal, String rue, String numero) {
@@ -60,6 +62,14 @@ public class Adresse {
 	}
 	public void setPays(String pays) {
 		this.pays = pays;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 	
 }

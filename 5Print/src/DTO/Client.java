@@ -7,17 +7,17 @@ public class Client {
 	private String email;
 	private String nom;
 	private String prenom;
-	private String adresse;
 	private String motDePasse;
+	private ArrayList<Adresse> adresses;
 	private ArrayList<FichierPhoto> photos; //Les photos dont il est propri�taire
 	private ArrayList<FichierPhoto> photos_partagees; //Les photos qui ne sont pas � lui
 
-	public Client(String email, String nom, String prenom, String adresse, String motDePasse,
+	public Client(String email, String nom, String prenom, ArrayList<Adresse> adresses, String motDePasse,
 			ArrayList<FichierPhoto> photosP, ArrayList<FichierPhoto> photos) {
 		this.email = email;
 		this.nom = nom;
 		this.prenom = prenom;
-		this.adresse = adresse;
+		this.adresses = adresses;
 		this.motDePasse = motDePasse;
 		this.setPhotos_partagees(photosP);
 		this.setPhotos(photos);
@@ -35,12 +35,20 @@ public class Client {
 		return prenom;
 	}
 
-	public String getAdresse() {
-		return adresse;
+	public ArrayList<Adresse> getAdresse() {
+		return adresses;
 	}
 
-	public void setAdresse(String adresse) {
-		this.adresse = adresse;
+	public void setAdresse(ArrayList<Adresse> adresse) {
+		this.adresses = adresse;
+	}
+	
+	public void addAdresse(Adresse adresse){
+		this.adresses.add(adresse);
+	}
+	
+	public void removeAdresse(Adresse adresse){
+		this.adresses.remove(adresse);
 	}
 
 	public String getMotDePasse() {

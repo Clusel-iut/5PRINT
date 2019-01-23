@@ -5,6 +5,7 @@ import java.util.Date;
 public class Commande{
 	private int numero;
 	private BonAchat bon_achat;
+	private BonAchat bon_achat_genere;
 	private Adresse adresse;
 	private Client client;
 	private String mode_livraison;
@@ -13,11 +14,12 @@ public class Commande{
 	private boolean etat_paiement;
 	private float montant_total_cmd;
 	
-	public Commande(int numero, BonAchat bon_achat, Adresse adresse, Client client, String mode_livraison,
+	public Commande(int numero, BonAchat bon_achat, BonAchat bon_achat_g, Adresse adresse, Client client, String mode_livraison,
 			Date date_commande, String statut, boolean etat_paiement, float montant_total_cmd) {
 		super();
 		this.numero = numero;
 		this.bon_achat = bon_achat;
+		this.bon_achat_genere = bon_achat_g;
 		this.adresse = adresse;
 		this.client = client;
 		this.mode_livraison = mode_livraison;
@@ -49,6 +51,14 @@ public class Commande{
 
 	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
+	}
+	
+	public BonAchat getBon_achat_genere() {
+		return bon_achat_genere;
+	}
+
+	public void setBon_achat_genere(BonAchat bon_achat_genere) {
+		this.bon_achat_genere = bon_achat_genere;
 	}
 
 	public Client getClient() {

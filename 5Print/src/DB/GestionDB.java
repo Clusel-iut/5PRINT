@@ -21,6 +21,8 @@ import DTO.FichierPhoto;
 import DTO.Impression;
 import DTO.Photo;
 import DTO.PointRelais;
+import DTO.Stock;
+import DTO.Stock.Type;
 import DTO.Tirage;
 
 public class GestionDB {
@@ -51,8 +53,12 @@ public class GestionDB {
 			statement.setString(1, Integer.toString(id));
 			ResultSet result = statement.executeQuery(sql);
 
+			Client client = null;
+			if (result.getString("EMAIL") != null) {
+				client = getClientByEmail(result.getString("EMAIL"));
+			}
 			adr = new Adresse(result.getInt("ID_ADRESSE"), result.getString("PAYS"), result.getString("VILLE"),
-					result.getString("CODE_POSTAL"), result.getString("RUE"), result.getString("NUMERO"));
+					result.getString("CODE_POSTAL"), result.getString("RUE"), result.getString("NUMERO"), client);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -60,18 +66,20 @@ public class GestionDB {
 	}
 
 	// CREATE
-	public static boolean createAdresse(String pays, String ville, String code_postal, String rue, int numero) {
-		String sql = "INSERT INTO ADRESSE (PAYS, VILLE, CODE_POSTAL, RUE, NUMERO) VALUES (?,?,?,?,?)";
+	public static boolean createAdresse(String pays, String email, String ville, String code_postal, String rue,
+			String numero) {
+		String sql = "INSERT INTO ADRESSE (PAYS, EMAIL, VILLE, CODE_POSTAL, RUE, NUMERO) VALUES (?,?,?,?,?,?)";
 		boolean isAdded = false;
 
 		PreparedStatement statement;
 		try {
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, pays);
-			statement.setString(2, ville);
-			statement.setString(3, code_postal);
-			statement.setString(4, rue);
-			statement.setInt(5, numero);
+			statement.setString(2, email);
+			statement.setString(3, ville);
+			statement.setString(4, code_postal);
+			statement.setString(5, rue);
+			statement.setString(6, numero);
 
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
@@ -146,16 +154,71 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery(sql);
 
-			cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"), null, null,
-					null, null);
+			cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"),
+					getAllAdresseByClientId(email), result.getString("MOT_DE_PASSE"), getAllPhotosByClientId(email),
+					getAllPhotosPartageesByClientId(email));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return cli;
 	}
 
+	private static ArrayList<FichierPhoto> getAllPhotosPartageesByClientId(String email) {
+		ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>();
+		String sql = "SELECT CHEMIN FROM PARTAGE WHERE EMAIL = " + email;
+		PreparedStatement statement;
+
+		try {
+			statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery(sql);
+			while (result.next()) {
+				photos.add(getFichierPhotoById(result.getString("CHEMIN")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return photos;
+	}
+
+	private static ArrayList<FichierPhoto> getAllPhotosByClientId(String email) {
+		ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>();
+		String sql = "SELECT CHEMIN FROM FICHIERPHOTO WHERE EMAIL = " + email;
+		PreparedStatement statement;
+
+		try {
+			statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery(sql);
+			while (result.next()) {
+				photos.add(getFichierPhotoById(result.getString("CHEMIN")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return photos;
+	}
+
+	private static ArrayList<Adresse> getAllAdresseByClientId(String email) {
+		ArrayList<Adresse> adresses = new ArrayList<Adresse>();
+		String sql = "SELECT ID_ADRESSE FROM ADRESSE WHERE EMAIL = " + email;
+		PreparedStatement statement;
+
+		try {
+			statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery(sql);
+			while (result.next()) {
+				adresses.add(getAdresseById(result.getInt("ID_ADRESSE")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return adresses;
+	}
+
 	// CREATE
-	public static boolean createClient(String email, String nom, String prenom, String motdepasse, Adresse adr) {
+	public static boolean createClient(String email, String nom, String prenom, String motdepasse) {
 		String sql = "INSERT INTO CLIENT (EMAIL, NOM, PRENOM, MOT_DE_PASSE) VALUES (?,?,?,?)";
 		boolean isAdded = false;
 
@@ -222,7 +285,7 @@ public class GestionDB {
 		return isDeleted;
 	}
 
-	//
+	// TODO CONNECTION????????
 	public static boolean connectionClient(String email, String motDePasse) {
 		String sql = "SELECT * FROM CLIENT WHERE email = ? AND motDePasse = ?";
 		boolean isConnected = false;
@@ -261,9 +324,21 @@ public class GestionDB {
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery(sql);
 
-			cmd = new Commande(result.getInt("NUMERO"), null, null, null, result.getString("MODE_LIVRAISON"),
-					result.getDate("DATE_COMMANDE"), result.getString("STATUT"), result.getBoolean("ETAT_PAIEMENT"),
-					result.getFloat("MONTANT_TOTAL_CMD"));
+			BonAchat bon_achat = null;
+			BonAchat bon_achat_genere = null;
+			Client client = getClientByEmail(result.getString("EMAIL"));
+			Adresse adresse = getAdresseById(result.getInt("ID_ADRESSE"));
+
+			if (result.getString("CODE_BON") != null) {
+				bon_achat = getBonAchatById(result.getString("CODE_BON"));
+			}
+			if (result.getString("CODE_BON_GENERE") != null) {
+				bon_achat = getBonAchatById(result.getString("CODE_BON_GENERE"));
+			}
+
+			cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client,
+					result.getString("MODE_LIVRAISON"), result.getDate("DATE_COMMANDE"), result.getString("STATUT"),
+					result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -271,7 +346,7 @@ public class GestionDB {
 	}
 
 	// CREATE
-	public static boolean createCommande(Adresse adresse, Client client, String mode_livraison, Date date_commande,
+	public static boolean createCommande(int adresse, String email, String mode_livraison, Date date_commande,
 			String statut, boolean etat_paiement, float montant_total_cmd) {
 		String sql = "INSERT INTO COMMANDE (ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) VALUES (?,?,?,?,?,?,?)";
 		boolean isAdded = false;
@@ -279,8 +354,8 @@ public class GestionDB {
 		PreparedStatement statement;
 		try {
 			statement = conn.prepareStatement(sql);
-			statement.setInt(1, adresse.getId_adresse());
-			statement.setString(2, client.getEmail());
+			statement.setInt(1, adresse);
+			statement.setString(2, email);
 			statement.setString(3, mode_livraison);
 			statement.setDate(4, java.sql.Date.valueOf(date_commande.toString()));
 			statement.setString(5, statut);
@@ -301,19 +376,19 @@ public class GestionDB {
 
 	// UPDATE
 	public static boolean updateCommande(Commande commande) {
-		String sql = "UPDATE COMMANDE SET ID_ADRESSE = ?,  = ?, MODE_LIVRAISON = ?, DATE_COMMANDE = ?, STATUT = ?, ETAT_PAIEMENT = ?, MONTANT_TOTAL_CMD";
+		String sql = "UPDATE COMMANDE SET ID_ADRESSE = ?, CODE_BON = ?, MODE_LIVRAISON = ?, STATUT = ?, ETAT_PAIEMENT = ?, MONTANT_TOTAL_CMD =? WHERE NUMERO = ?";
 		boolean isUpdated = false;
 
 		PreparedStatement statement;
 		try {
 			statement = conn.prepareStatement(sql);
-			statement.setInt(1, commande.getNumero());
-			statement.setInt(2, commande.getAdresse().getId_adresse());
-			statement.setString(4, commande.getMode_livraison());
-			statement.setDate(5, java.sql.Date.valueOf(commande.getDate_commande().toString()));
-			statement.setString(6, commande.getStatut());
-			statement.setBoolean(7, commande.getEtat_paiement());
-			statement.setFloat(8, commande.getMontant_total_cmd());
+			statement.setInt(1, commande.getAdresse().getId_adresse());
+			statement.setString(2, commande.getBon_achat().getCode_bon());
+			statement.setString(3, commande.getMode_livraison());
+			statement.setString(4, commande.getStatut());
+			statement.setBoolean(5, commande.getEtat_paiement());
+			statement.setFloat(6, commande.getMontant_total_cmd());
+			statement.setInt(6, commande.getNumero());
 
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
@@ -351,25 +426,43 @@ public class GestionDB {
 	// FichierPhoto
 	//
 	// GET
-	public static FichierPhoto getFichierPhotoById(int id) {
+	public static FichierPhoto getFichierPhotoById(String chemin) {
 		String sql = "SELECT * FROM FICHIERPHOTO WHERE CHEMIN = ?";
 		FichierPhoto fiPhoto = null;
 
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setInt(1, id);
+			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery(sql);
-
-			fiPhoto = new FichierPhoto(result.getString("CHEMIN"), null, result.getString("RESOLUTION"),
-					result.getString("INFO_PRISE_VUE"), result.getBoolean("EST_PARTAGE"), null);
+			fiPhoto = new FichierPhoto(result.getString("CHEMIN"), getClientByEmail(result.getString("EMAIL")),
+					result.getString("RESOLUTION"), result.getString("INFO_PRISE_VUE"),
+					result.getBoolean("EST_PARTAGE"), getClientsByFichierId(chemin));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return fiPhoto;
 	}
 
+	private static ArrayList<Client> getClientsByFichierId(String chemin) {
+		ArrayList<Client> clients = new ArrayList<Client>();
+		String sql = "SELECT EMAIL FROM PARTAGE "
+				+ "WHERE CHEMIN = " + chemin;
+		PreparedStatement statement;
+
+		try {
+			statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery(sql);
+			while (result.next()) {
+				clients.add(getClientByEmail(result.getString("EMAIL")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return clients;
+	}
+
 	// CREATE
-	public static boolean createFichierPhoto(String chemin, Client client, String resolution, Date date_ajout,
+	public static boolean createFichierPhoto(String chemin, String email, String resolution, Date date_ajout,
 			String info_vue, boolean est_partage) {
 		String sql = "INSERT INTO FICHIERPHOTO (CHEMIN, EMAIL, RESOLUTION, DATE_AJOUT, INFO_PRISE_VUE, EST_PARTAGE) VALUES (?,?,?,?,?,?)";
 		boolean isAdded = false;
@@ -378,7 +471,7 @@ public class GestionDB {
 		try {
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
-			statement.setString(2, client.getEmail());
+			statement.setString(2, email);
 			statement.setString(3, resolution);
 			statement.setDate(4, java.sql.Date.valueOf(date_ajout.toString()));
 			statement.setString(5, info_vue);
@@ -552,18 +645,17 @@ public class GestionDB {
 						GestionDB.getAdresseById(result.getInt("ID_ADRESSE"))));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return list_point_relais;
 	}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-//
-// IMPRESSIONS
-//
-// GET
+	//
+	// IMPRESSIONS
+	//
+	// GET
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Impression> T getImpressionByIdAndType(String type, int id) {
@@ -573,7 +665,7 @@ public class GestionDB {
 		T t = null;
 
 		try {
-// REQUETE TIRAGE POUR VERIFIER SI EXISTE
+			// REQUETE TIRAGE POUR VERIFIER SI EXISTE
 			PreparedStatement statementTirage = conn.prepareStatement(sqlT);
 			statementTirage.setInt(1, id);
 			ResultSet resultT = statementTirage.executeQuery(sqlT);
@@ -581,7 +673,7 @@ public class GestionDB {
 			int idT = resultT.getInt("ID_IMPRESSION");
 
 			if (resultT.wasNull()) {
-// REQUETE IMPRESSION POUR RECUP DONNEES
+				// REQUETE IMPRESSION POUR RECUP DONNEES
 				PreparedStatement statementImp = conn.prepareStatement(sqlImp);
 				statementImp.setInt(1, idT);
 				ResultSet resultImp = statementImp.executeQuery(sqlImp);
@@ -622,7 +714,7 @@ public class GestionDB {
 
 	}
 
-// CREATE
+	// CREATE
 	public static boolean createImression(String type, int id_impression, Client client, Catalogue catalogue,
 			int numero, Date date_impression, float montant_total, boolean etat_impression, int nb_impression,
 			String modele, String titre, String mise_en_page) {
@@ -707,7 +799,7 @@ public class GestionDB {
 		return isAdded;
 	}
 
-// UPDATE
+	// UPDATE
 	public static <T extends Impression> boolean updateImpression(String type, T impression) {
 		type = type.toUpperCase();
 		String sqlImp = "UPDATE IMPRESSION SET FORMAT = ?, QUALITE = ?, NUMERO = ?, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? "
@@ -770,7 +862,7 @@ public class GestionDB {
 				rowsInsertedImpEx = statementImp.executeUpdate();
 			}
 			if (type == "TIRAGE") {
-// RIEN A UPDATE
+				// RIEN A UPDATE
 			}
 
 			rowsInsertedImp = statement.executeUpdate();
@@ -784,7 +876,7 @@ public class GestionDB {
 		return isUpdated;
 	}
 
-// DELETE
+	// DELETE
 	public static boolean deleteImpression(int id, String type) {
 		String sqlImp = "DELETE IMPRESSION WHERE ID_IMPRESSION = ?";
 		String sqlImpExt = "DELETE " + type.toUpperCase() + " WHERE ID_IMPRESSION = ?";
@@ -808,21 +900,22 @@ public class GestionDB {
 		return isDeleted;
 	}
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-//
-// BON_ACHAT
-//
-// GET
-	public static BonAchat getBonAchatById(int id) {
+	//
+	// BON_ACHAT
+	//
+	// GET
+	public static BonAchat getBonAchatById(String id) {
 		String sql = "SELECT * FROM BON_ACHAT WHERE CODE_BON = ?";
 		BonAchat bon_achat = null;
 
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setInt(1, id);
+			statement.setString(1, id);
 			ResultSet result = statement.executeQuery(sql);
-//bon_achat = new BonAchat(result.getInt("CODE_BON"), null, null, null, result.getInt("POURCENTAGEREDUC"),result.getString("TYPE_BONACHAT"));
+			bon_achat = new BonAchat(result.getString("CODE_BON"), null, null, null, result.getInt("POURCENTAGEREDUC"),
+					result.getString("TYPE_BONACHAT"));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -830,22 +923,20 @@ public class GestionDB {
 		return bon_achat;
 	}
 
-//CREATE
-	public static boolean createBonAchat(String chemin, Impression impression, String description, int position_x,
-			int position_y, int numero_page, int nb_exemplaire, String retouche) {
-		String sql = "INSERT INTO PHOTO (CHEMIN, ID_IMPRESSION, DESCRIPTION, RETOUCHE, POSITION_X, POSITION_Y, NUMERO_PAGE, NB_EXEMPLAIRE) VALUES (?,?,?,?,?,?,?,?)";
+	// CREATE
+	public static boolean createBonAchat(int numeroC, int numeroCGenere, String email, int pourcentage,
+			String type_bon_achat) {
+		String sql = "INSERT INTO BON_ACHAT (NUMERO, NUMERO_GENERE, EMAIL, POURCENTAGEREDUC, TYPE_BONACHAT) VALUES (?,?,?,?,?)";
 		boolean isAdded = false;
 
 		PreparedStatement statement;
 		try {
 			statement = conn.prepareStatement(sql);
-			statement.setString(1, chemin);
-			statement.setString(2, description);
-			statement.setString(3, retouche);
-			statement.setInt(4, position_x);
-			statement.setInt(5, position_y);
-			statement.setInt(5, numero_page);
-			statement.setInt(6, nb_exemplaire);
+			statement.setInt(1, numeroC);
+			statement.setInt(2, numeroCGenere);
+			statement.setString(3, email);
+			statement.setInt(4, pourcentage);
+			statement.setString(5, type_bon_achat);
 
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
@@ -859,20 +950,20 @@ public class GestionDB {
 		return isAdded;
 	}
 
-//UPDATE
-	public static boolean upadateBonAchat(Photo photo) {
-		String sql = "UPDATE PHOTO SET DESCRIPTION = ?, RETOUCHE = ?, POSITION_X = ?, POSITION_Y = ?, NB_EXEMPLAIRE = ? WHERE ID_PHOTO = ?";
+	// UPDATE
+	public static boolean upadateBonAchat(BonAchat bon) {
+		String sql = "UPDATE BON_ACHAT SET NUMERO = ?, NUMERO_GENERE = ?, EMAIL = ?, POURCENTAGEREDUC = ?, TYPE_BONACHAT = ? WHERE CODE_BON = ?";
 		boolean isUpdated = false;
 
 		PreparedStatement statement;
 		try {
 			statement = conn.prepareStatement(sql);
-			statement.setString(1, photo.getDescription());
-			statement.setString(2, photo.getRetouche());
-			statement.setInt(3, photo.getPosition_X());
-			statement.setInt(4, photo.getPosition_Y());
-			statement.setInt(5, photo.getNb_exemplaire());
-			statement.setInt(5, photo.getId_photo());
+			statement.setInt(1, bon.getCommande().getNumero());
+			statement.setInt(2, bon.getCommandeGeneree().getNumero());
+			statement.setString(3, bon.getClient().getEmail());
+			statement.setInt(4, bon.getPourcentage_reduc());
+			statement.setString(5, bon.getType_bon_achat());
+			statement.setString(5, bon.getCode_bon());
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
 				isUpdated = true;
@@ -884,14 +975,110 @@ public class GestionDB {
 		return isUpdated;
 	}
 
-//DELETE
-	public static boolean deleteBonAchat(int id_photo) {
-		String sql = "DELETE PHOTO WHERE ID_PHOTO = ?";
+	// DELETE
+	public static boolean deleteBonAchat(String code_bon) {
+		String sql = "DELETE BON_ACHAT WHERE CODE_BON = ?";
 		boolean isDeleted = false;
 
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setInt(1, id_photo);
+			statement.setString(1, code_bon);
+
+			int rowsDeleted = statement.executeUpdate();
+			if (rowsDeleted > 0) {
+				isDeleted = true;
+			}
+		} catch (SQLException e) {
+			isDeleted = false;
+		}
+		return isDeleted;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//
+	// STOCK
+	//
+	// GET
+	public static Stock getStockId(Type type, String qualite, String format) {
+		String sql = "SELECT * FROM STOCK WHERE TYPE_SUPPORT = ? AND QUALITE = ? AND FORMAT = ?";
+		Stock stock = null;
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, type.name());
+			statement.setString(2, qualite);
+			statement.setString(3, format);
+			ResultSet result = statement.executeQuery(sql);
+			stock = new Stock(Type.valueOf(result.getString("TYPE_SUPPORT")), result.getString("QUALITE"),
+					result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX"));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return stock;
+	}
+
+	// CREATE
+	public static boolean createStock(Type type, String qualite, String format, int quantite, int prix) {
+		String sql = "INSERT INTO STOCK (TYPE_SUPPORT, QUALITE, FORMAT, QUANTITE, PRIX) VALUES (?,?,?,?,?)";
+		boolean isAdded = false;
+
+		PreparedStatement statement;
+		try {
+			statement = conn.prepareStatement(sql);
+			statement.setString(1, type.name());
+			statement.setString(2, qualite);
+			statement.setString(3, format);
+			statement.setInt(4, quantite);
+			statement.setInt(5, prix);
+
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+				isAdded = true;
+			}
+
+		} catch (SQLException e) {
+			isAdded = false;
+		}
+
+		return isAdded;
+	}
+
+	// UPDATE
+	public static boolean updateStock(Stock stock) {
+		String sql = "UPDATE STOCK SET QUANTITE = ?, PRIX = ? WHERE TYPE_SUPPORT = ?, QUALITE = ?, FORMAT = ?";
+		boolean isUpdated = false;
+
+		PreparedStatement statement;
+		try {
+			statement = conn.prepareStatement(sql);
+			statement.setInt(1, stock.getQuantite());
+			statement.setInt(2, stock.getPrix());
+			statement.setString(3, stock.getType_support().name());
+			statement.setString(4, stock.getQualite());
+			statement.setString(5, stock.getFormat());
+
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+				isUpdated = true;
+			}
+		} catch (SQLException e) {
+			isUpdated = false;
+		}
+
+		return isUpdated;
+	}
+
+	// DELETE
+	public static boolean deleteStock(Type type, String qualite, String format) {
+		String sql = "DELETE STOCK WHERE TYPE_SUPPORT = ? AND QUALITE = ? AND FORMAT = ?";
+		boolean isDeleted = false;
+
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, type.name());
+			statement.setString(2, qualite);
+			statement.setString(3, format);
 
 			int rowsDeleted = statement.executeUpdate();
 			if (rowsDeleted > 0) {
