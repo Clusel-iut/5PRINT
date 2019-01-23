@@ -3,14 +3,15 @@ package DTO;
 public class BonAchat {
 	private String code_bon;
 	private Commande commande;
+	private Commande commandeGeneree;
 	private Client client;
 	private int pourcentage_reduc;
 	private String type_bon_achat;
 	
-	public BonAchat(String code_bon, Commande commande, Client client, int pourcentage_reduc, String type_bon_achat) {
-		super();
+	public BonAchat(String code_bon, Commande commande, Commande commandeG, Client client, int pourcentage_reduc, String type_bon_achat) {
 		this.code_bon = code_bon;
 		this.commande = commande;
+		this.commandeGeneree = commandeG;
 		this.client = client;
 		this.pourcentage_reduc = pourcentage_reduc;
 		this.type_bon_achat = type_bon_achat;
@@ -31,7 +32,15 @@ public class BonAchat {
 	public void setCommande(Commande commande) {
 		this.commande = commande;
 	}
+	
+	public Commande getCommandeGeneree() {
+		return commandeGeneree;
+	}
 
+	public void setCommandeGeneree(Commande commandeGeneree) {
+		this.commandeGeneree = commandeGeneree;
+	}
+	
 	public Client getClient() {
 		return client;
 	}
