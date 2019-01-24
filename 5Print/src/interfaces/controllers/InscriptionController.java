@@ -1,50 +1,115 @@
 package interfaces.controllers;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.border.EmptyBorder;
+import java.io.IOException;
 
 import DB.GestionDB;
 import DTO.Adresse;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import javax.swing.JTextField;
-import javax.swing.JSpinner;
 
-public class InscriptionController extends JFrame {
+public class InscriptionController {
 
+	@FXML
+    private TextField nom;
+    @FXML
+    private TextField prenom;
+    @FXML
+    private TextField email;
+    @FXML
+    private TextField rue;
+    @FXML
+    private TextField numero;
+    @FXML
+    private TextField codepostal;
+    @FXML
+    private TextField ville;
+    @FXML
+    private TextField pays;
+    @FXML
+    private PasswordField motdepasse;
 	
     @FXML
     private ImageView btn_close;
 	
     
     /**
-     * Permet à l'utilisateur de fermer la vue.
+     * Permet à l'utilisateur de revenir en arrière.
      * 
      * @param event
      */
     @FXML
-    void close(MouseEvent event) {
-	Node node = (Node) event.getSource();
-	Stage stage = (Stage) node.getScene().getWindow();
-	stage.close();
+    void back(MouseEvent event) {
+    	this.changeView((Stage) ((Node) event.getSource()).getScene()
+				.getWindow(), "/interfaces/views/Connexion.fxml");
     }
+
+    
+    /**
+     * Permet de changer de vue.
+     * 
+     * @param app_stage
+     * @param path
+     * @throws IOException
+     */
+    private void changeView(Stage app_stage, String path) {
+	Parent home_page_parent;
+	try {
+		home_page_parent = FXMLLoader.load(this.getClass().getResource(
+			path));
+		Scene home_page_scene = new Scene(home_page_parent);
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+    }
+    
+    /**
+     * Permet de créer un client.
+     * 
+     * @param event
+     */
+    @FXML
+    void create(MouseEvent event) throws IOException {
+
+	System.out.println(nom.getText());
+	System.out.println(prenom.getText());
+	System.out.println(email.getText());
+	System.out.println(numero.getText());
+	System.out.println(rue.getText());
+	System.out.println(ville.getText());
+	System.out.println(codepostal.getText());
+	System.out.println(pays.getText());
+	System.out.println(motdepasse.getText());
+
+	this.changeView((Stage) ((Node) event.getSource()).getScene()
+		.getWindow(), "/interfaces/views/Connexion.fxml");
+    }
+    
+    /**
+    * Permet de nettoyer les champs.
+    * 
+    * @param event
+    * @throws IOException
+    * @throws SQLException
+    */
+   @FXML
+   void clear(MouseEvent event) throws IOException {
+
+	System.out.println("A nettoyer");
+   }
 
 	/**
 	 * Create the frame.
