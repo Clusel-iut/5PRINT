@@ -18,8 +18,7 @@ public class Client extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-
-			Parent root = FXMLLoader.load(this.getClass().getResource("/interfaces/views/Connexion.fxml"));
+			Parent root = new FXMLLoader(getClass().getResource("/interfaces/views/Connexion.fxml")).load();
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -29,11 +28,15 @@ public class Client extends Application {
 	}
 
 	public static void main(String[] args) {
+		
+		GestionDB.configure("ouzzineo", "Oussama123");
 		launch(args);
-
+		
 		// Initialisation
 		Client client = new Client();
 
+		
+		
 		/**
 		 * TODO Possible style : 
 		 * 		DECORATED, UNDECORATED, TRANSPARENT, UTILITY, UNIFIED
