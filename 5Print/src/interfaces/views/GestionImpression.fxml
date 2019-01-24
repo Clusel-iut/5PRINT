@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -22,17 +25,17 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="775.0" layoutY="48.0" text="ID:">
+      <Label layoutX="775.0" layoutY="37.0" text="ID:">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label id="impressionId" layoutX="807.0" layoutY="48.0" prefHeight="27.0" prefWidth="179.0" text="\@impressionId">
+      <Label id="impressionId" layoutX="807.0" layoutY="37.0" prefHeight="27.0" prefWidth="179.0" text="\@impressionId">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TabPane layoutX="491.0" layoutY="103.0" prefHeight="492.0" prefWidth="504.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="69.0" layoutY="103.0" prefHeight="492.0" prefWidth="562.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab style="-fx-background-color: orange;" text="Cadre">
             <content>
@@ -43,7 +46,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView layoutX="11.0" layoutY="35.0" prefHeight="391.0" prefWidth="484.0">
+                        <TableView layoutX="11.0" layoutY="35.0" prefHeight="369.0" prefWidth="484.0">
                           <columns>
                             <TableColumn prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
                             <TableColumn minWidth="0.0" prefWidth="114.0" style="-fx-background-color: orange;" text="Chemin" />
@@ -58,13 +61,134 @@
                               <Font name="System Bold" size="17.0" />
                            </font>
                         </Label>
+                        <Button layoutX="406.0" layoutY="408.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
+            <Tab style="-fx-background-color: orange;" text="Agenda">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView layoutX="11.0" layoutY="35.0" prefHeight="369.0" prefWidth="484.0">
+                           <columns>
+                              <TableColumn prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
+                              <TableColumn minWidth="0.0" prefWidth="114.0" style="-fx-background-color: orange;" text="Chemin" />
+                              <TableColumn prefWidth="105.0" style="-fx-background-color: orange;" text="Resolution" />
+                              <TableColumn prefWidth="28.0" style="-fx-background-color: orange;" text="x" />
+                              <TableColumn prefWidth="31.0" style="-fx-background-color: orange;" text="y" />
+                              <TableColumn prefWidth="157.0" style="-fx-background-color: orange;" text="Retouche" />
+                           </columns>
+                        </TableView>
+                        <Label layoutX="11.0" layoutY="9.0" text="Gestion des photos">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="406.0" layoutY="408.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab style="-fx-background-color: orange;" text="Tirage">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView layoutX="11.0" layoutY="35.0" prefHeight="369.0" prefWidth="484.0">
+                           <columns>
+                              <TableColumn prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
+                              <TableColumn minWidth="0.0" prefWidth="114.0" style="-fx-background-color: orange;" text="Chemin" />
+                              <TableColumn prefWidth="105.0" style="-fx-background-color: orange;" text="Resolution" />
+                              <TableColumn prefWidth="28.0" style="-fx-background-color: orange;" text="x" />
+                              <TableColumn prefWidth="31.0" style="-fx-background-color: orange;" text="y" />
+                              <TableColumn prefWidth="157.0" style="-fx-background-color: orange;" text="Retouche" />
+                           </columns>
+                        </TableView>
+                        <Label layoutX="11.0" layoutY="9.0" text="Gestion des photos">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="406.0" layoutY="408.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab style="-fx-background-color: orange;" text="Calendrier">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView layoutX="11.0" layoutY="35.0" prefHeight="369.0" prefWidth="484.0">
+                           <columns>
+                              <TableColumn prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
+                              <TableColumn minWidth="0.0" prefWidth="114.0" style="-fx-background-color: orange;" text="Chemin" />
+                              <TableColumn prefWidth="105.0" style="-fx-background-color: orange;" text="Resolution" />
+                              <TableColumn prefWidth="28.0" style="-fx-background-color: orange;" text="x" />
+                              <TableColumn prefWidth="31.0" style="-fx-background-color: orange;" text="y" />
+                              <TableColumn prefWidth="157.0" style="-fx-background-color: orange;" text="Retouche" />
+                           </columns>
+                        </TableView>
+                        <Label layoutX="11.0" layoutY="9.0" text="Gestion des photos">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="406.0" layoutY="408.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
         </tabs>
       </TabPane>
-      <Label layoutX="435.0" layoutY="110.0" text="Type:">
+      <Label layoutX="14.0" layoutY="111.0" text="Type:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="749.0" layoutY="60.0" text="DATE:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label id="impressionDate" layoutX="807.0" layoutY="60.0" prefHeight="27.0" prefWidth="179.0" text="\@impressionDate">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="669.0" layoutY="157.0" text="Qualité">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="669.0" layoutY="226.0" text="Format">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="669.0" layoutY="296.0" text="Nombre impression">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ComboBox id="cbQualite" layoutX="669.0" layoutY="184.0" prefWidth="150.0" />
+      <ComboBox id="cbFormat" layoutX="669.0" layoutY="253.0" prefWidth="150.0" />
+      <Spinner layoutX="669.0" layoutY="323.0" prefHeight="31.0" prefWidth="150.0" />
+      <Label layoutX="669.0" layoutY="515.0" text="Montant total:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label id="montantTotal" layoutX="800.0" layoutY="515.0" text="\@montantTotal">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="669.0" layoutY="488.0" text="Etat:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label id="etatImpression" layoutX="800.0" layoutY="488.0" text="\@etatImpression">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
