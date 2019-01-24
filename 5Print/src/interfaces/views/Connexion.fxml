@@ -10,11 +10,11 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.ConnexionController">
    <children>
-      <TextField layoutX="354.0" layoutY="296.0" prefHeight="25.0" prefWidth="293.0" />
-      <PasswordField layoutX="354.0" layoutY="350.0" prefHeight="25.0" prefWidth="293.0" />
+      <TextField fx:id="email" layoutX="354.0" layoutY="296.0" prefHeight="25.0" prefWidth="293.0" />
+      <PasswordField fx:id="motdepasse" layoutX="354.0" layoutY="350.0" prefHeight="25.0" prefWidth="293.0" />
       <Label layoutX="354.0" layoutY="279.0" text="Email" />
       <Label layoutX="354.0" layoutY="333.0" text="Mot de passe" />
-      <Button layoutX="464.0" layoutY="415.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Connexion" />
+      <Button layoutX="464.0" layoutY="415.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Connexion" onMouseClicked="#connect"/>
       <Button layoutX="464.0" layoutY="456.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Inscription" onMouseClicked="#subscribe"/>
       <ImageView fitHeight="171.0" fitWidth="363.0" layoutX="319.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
          <image>

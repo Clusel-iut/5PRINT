@@ -42,15 +42,15 @@
       <Label layoutX="497.0" layoutY="328.0" text="Code postal" />
       <Label layoutX="696.0" layoutY="328.0" text="Ville" />
       <Label layoutX="496.0" layoutY="397.0" text="Pays" />
-      <TextField id="nom" layoutX="172.0" layoutY="190.0" />
-      <TextField id="prenom" layoutX="172.0" layoutY="267.0" />
-      <TextField id="email" layoutX="172.0" layoutY="347.0" />
-      <TextField id="numero" layoutX="496.0" layoutY="213.0" />
-      <TextField id="rue" layoutX="496.0" layoutY="283.0" />
-      <TextField id="codepostal" layoutX="497.0" layoutY="355.0" />
-      <TextField id="ville" layoutX="696.0" layoutY="355.0" />
-      <TextField id="pays" layoutX="496.0" layoutY="422.0" />
-      <PasswordField id="motdepasse" layoutX="172.0" layoutY="422.0" />
+      <TextField fx:id="nom" layoutX="172.0" layoutY="190.0" />
+      <TextField fx:id="prenom" layoutX="172.0" layoutY="267.0" />
+      <TextField fx:id="email" layoutX="172.0" layoutY="347.0" />
+      <TextField fx:id="numero" layoutX="496.0" layoutY="213.0" />
+      <TextField fx:id="rue" layoutX="496.0" layoutY="283.0" />
+      <TextField fx:id="codepostal" layoutX="497.0" layoutY="355.0" />
+      <TextField fx:id="ville" layoutX="696.0" layoutY="355.0" />
+      <TextField fx:id="pays" layoutX="496.0" layoutY="422.0" />
+      <PasswordField fx:id="motdepasse" layoutX="172.0" layoutY="422.0" />
       <Button layoutX="410.0" layoutY="493.0" onMouseClicked="#create" style="-fx-background-color: orange; -fx-text-fill: white;" text="Valider" />
       <Button layoutX="511.0" layoutY="493.0" onMouseClicked="#clear" style="-fx-background-color: orange; -fx-text-fill: white;" text="Effacer" />
       <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="12.0" layoutY="14.0" onMouseClicked="#back" pickOnBounds="true" preserveRatio="true">
