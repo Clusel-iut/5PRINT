@@ -1,38 +1,38 @@
 package interfaces.controllers;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.TextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.border.EmptyBorder;
+import java.io.IOException;
 
 import DB.GestionDB;
 import DTO.Adresse;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import javax.swing.JTextField;
-import javax.swing.JSpinner;
 
-public class ConnexionController extends JFrame {
+public class ConnexionController {
 
 	
+    /**
+     * Permet à l'utilisateur de s'inscire.
+     * 
+     * @param event
+     * @throws IOException 
+     */
     @FXML
-    private ImageView btn_close;
-	
+    void subscribe(MouseEvent event) throws IOException {
+    	Parent home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/Inscription.fxml")).load();
+		Scene home_page_scene = new Scene(home_page_parent);
+		Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+			.getWindow();
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
+    }
     
     /**
      * Permet à l'utilisateur de fermer la vue.

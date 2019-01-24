@@ -15,21 +15,33 @@ import javafx.stage.StageStyle;
  *
  */
 public class Client extends Application {
-    @Override
-    public void start(Stage primaryStage) {
-	try {
-		
-	    Parent root = FXMLLoader.load(this.getClass().getResource(
-		    "/interfaces/views/Connexion.fxml"));
-	    Scene scene = new Scene(root);
-	    primaryStage.setScene(scene);
-	    primaryStage.show();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-    }
+	@Override
+	public void start(Stage primaryStage) {
+		try {
 
-    public static void main(String[] args) {
-    	launch(args);
-    }
+			Parent root = FXMLLoader.load(this.getClass().getResource("/interfaces/views/Connexion.fxml"));
+			Scene scene = new Scene(root);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+
+		// Initialisation
+		Client client = new Client();
+
+		/**
+		 * TODO Possible style : 
+		 * 		DECORATED, UNDECORATED, TRANSPARENT, UTILITY, UNIFIED
+		 * Default DECORATED
+		 */
+		Stage start = new Stage();
+
+		// Application
+		client.start(start);
+	}
 }
