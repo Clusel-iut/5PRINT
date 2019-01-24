@@ -38,8 +38,7 @@ public class InscriptionController {
     private TextField pays;
     @FXML
     private PasswordField motdepasse;
-	
-    @FXML
+	@FXML
     private ImageView btn_close;
 	
     
@@ -84,15 +83,15 @@ public class InscriptionController {
     @FXML
     void create(MouseEvent event) throws IOException {
 
-	System.out.println(nom.getText());
-	System.out.println(prenom.getText());
-	System.out.println(email.getText());
-	System.out.println(numero.getText());
-	System.out.println(rue.getText());
-	System.out.println(ville.getText());
-	System.out.println(codepostal.getText());
-	System.out.println(pays.getText());
-	System.out.println(motdepasse.getText());
+	System.out.println(this.nom);
+	System.out.println(this.prenom);
+	System.out.println(this.email);
+	System.out.println(this.numero);
+	System.out.println(this.rue);
+	System.out.println(this.ville);
+	System.out.println(this.codepostal);
+	System.out.println(this.pays);
+	System.out.println(this.motdepasse);
 
 	this.changeView((Stage) ((Node) event.getSource()).getScene()
 		.getWindow(), "/interfaces/views/Connexion.fxml");

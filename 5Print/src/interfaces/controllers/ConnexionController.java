@@ -26,8 +26,7 @@ public class ConnexionController {
      */
     @FXML
     void subscribe(MouseEvent event) throws IOException {
-    	Parent home_page_parent = FXMLLoader.load(this.getClass().getResource(
-    			"/interfaces/views/Inscription.fxml"));
+    	Parent home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/Inscription.fxml")).load();
 		Scene home_page_scene = new Scene(home_page_parent);
 		Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
 			.getWindow();
