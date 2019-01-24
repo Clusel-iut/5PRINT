@@ -7,18 +7,18 @@ public abstract class Impression{
 	protected Date date_impression;
 	protected int nb_impression;
 	protected Client client;
-	protected Catalogue catalogue;
+	protected Stock stock;
 	protected float montant_total;
 	protected boolean etat_impression;
 	protected ArrayList<Photo> photos;
 
-	public Impression(int id_impression, Date date_impression, int nb_impression, Client client, Catalogue catalogue,
+	public Impression(int id_impression, Date date_impression, int nb_impression, Client client, Stock stock,
 			int numero, float montant_total, boolean etat_impression, ArrayList<Photo> photos) {
 		this.id_impression = id_impression;
 		this.date_impression = date_impression;
 		this.nb_impression = nb_impression;
 		this.client = client;
-		this.catalogue = catalogue;
+		this.stock = stock;
 		this.montant_total = montant_total;
 		this.etat_impression = etat_impression;
 		this.photos = photos;
@@ -49,11 +49,11 @@ public abstract class Impression{
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	public Catalogue getCatalogue() {
-		return catalogue;
+	public Stock getCatalogue() {
+		return stock;
 	}
-	public void setCatalogue(Catalogue catalogue) {
-		this.catalogue = catalogue;
+	public void setCatalogue(Stock stock) {
+		this.stock = stock;
 	}
 	public float getMontant_total() {
 		return montant_total;

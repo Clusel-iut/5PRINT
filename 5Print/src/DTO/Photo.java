@@ -1,7 +1,8 @@
 package DTO;
 
-public class Photo{
+public class Photo {
 	private int id_photo;
+	private FichierPhoto fichier;
 	private Impression impression;
 	private String description;
 	private String retouche;
@@ -10,10 +11,11 @@ public class Photo{
 	private int position_Y;
 	private int nb_exemplaire; // Pour un tirage
 	
-	public Photo(int id_photo, Impression impression, String description, String retouche, int numero_page,
+	public Photo(int id_photo, FichierPhoto fichier, Impression impression, String description, String retouche, int numero_page,
 			int position_X, int position_Y, int nb_exemplaire) {
 		super();
 		this.id_photo = id_photo;
+		this.setFichier(fichier);
 		this.impression = impression;
 		this.description = description;
 		this.retouche = retouche;
@@ -85,6 +87,14 @@ public class Photo{
 
 	public void setNb_exemplaire(int nb_exemplaire) {
 		this.nb_exemplaire = nb_exemplaire;
+	}
+
+	public FichierPhoto getFichier() {
+		return fichier;
+	}
+
+	public void setFichier(FichierPhoto fichier) {
+		this.fichier = fichier;
 	}
 	
 	

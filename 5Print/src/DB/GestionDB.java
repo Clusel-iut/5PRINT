@@ -242,6 +242,14 @@ public class GestionDB {
 		return isAdded;
 	}
 
+	public static boolean createClient(Client client) {
+		boolean isAddedC = createClient(client.getEmail(), client.getNom(), client.getPrenom(), client.getMotDePasse());
+		for (Adresse a : client.getAdresse()) {
+			createAdresse(a.getPays(), client.getEmail(), a.getVille(), a.getCode_postal(), a.getRue(), a.getNumero());
+		}
+		return isAddedC;
+	}
+
 	// UPDATE
 	public static boolean updateClient(Client client) {
 		String sql = "UPDATE CLIENT SET NOM = ?, PRENOM = ?, MOT_DE_PASSE = ? WHERE EMAIL = ?";
@@ -445,8 +453,7 @@ public class GestionDB {
 
 	private static ArrayList<Client> getClientsByFichierId(String chemin) {
 		ArrayList<Client> clients = new ArrayList<Client>();
-		String sql = "SELECT EMAIL FROM PARTAGE "
-				+ "WHERE CHEMIN = " + chemin;
+		String sql = "SELECT EMAIL FROM PARTAGE " + "WHERE CHEMIN = " + chemin;
 		PreparedStatement statement;
 
 		try {
@@ -545,7 +552,7 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery(sql);
-			photo = new Photo(result.getInt("ID_PHOTO"), null, result.getString("DESCRIPTION"),
+			photo = new Photo(result.getInt("ID_PHOTO"), getFichierPhotoById(result.getString("CHEMIN")), getImpressionById(result.getInt("ID_IMPRESSION")), result.getString("DESCRIPTION"),
 					result.getString("RETOUCHE"), result.getInt("NUMERO_PAGE"), result.getInt("POSITION_X"),
 					result.getInt("POSITION_Y"), result.getInt("NB_EXEMPLAIRE"));
 
@@ -554,6 +561,34 @@ public class GestionDB {
 		}
 		return photo;
 	}
+
+	private static <T extends Impression> T getImpressionById(int id) {
+		T impression = null;
+		String[] types = { "AGENDA", "ALBUM", "CADRE", "CALENDRIER", "TIRAGE" };
+		String select = "SELECT ID_IMPRESSION FROM";
+		String where = "WHERE ID_IMPRESSION = " + id;
+		String sql = "";
+		PreparedStatement statement;
+
+		try {
+			ResultSet result = null;
+			int cpt = 0;
+			while (result == null && cpt < 5) {
+				sql = select + types[cpt] + where;
+				statement = conn.prepareStatement(sql);
+				result = statement.executeQuery(sql);
+				cpt++;
+
+			}
+			if (cpt < 5) {
+				impression = getImpressionByIdAndType(types[cpt], id);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return impression;
+	}
+
 
 	// CREATE
 	public static boolean createPhoto(String chemin, Impression impression, String description, int position_x,
@@ -683,10 +718,11 @@ public class GestionDB {
 				boolean etat_impression = resultImp.getBoolean("ETAT_IMPRESSION");
 				Date date_impression = resultImp.getDate("DATE_IMPRESSION");
 				int numero = resultImp.getInt("NUMERO");
-
+				Client client = getClientByEmail(resultImp.getString("EMAIL"));
+				Stock stock = getStockById(Type.valueOf(resultImp.getString("TYPE_SUPPORT")),resultImp.getString("QUALITE"),resultImp.getString("FORMAT"));
 				if (type == "AGENDA") {
-					t = (T) new Agenda(idT, date_impression, nb_impression, null, null, numero, montant_total,
-							etat_impression, null, resultT.getString("MODELE"));
+					t = (T) new Agenda(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+							etat_impression, getAllPhotoByIdImpression(idT), resultT.getString("MODELE"));
 				}
 				if (type == "ALBUM") {
 					t = (T) new Album(idT, date_impression, nb_impression, null, null, numero, montant_total,
@@ -711,11 +747,29 @@ public class GestionDB {
 		}
 
 		return t;
+	}
 
+	private static ArrayList<Photo> getAllPhotoByIdImpression(int idT) {
+		ArrayList<Photo> photos = new ArrayList<Photo>();
+		String sql = "SELECT  FROM POINT_RELAIS";
+		ArrayList<PointRelais> list_point_relais = new ArrayList<PointRelais>();
+
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery(sql);
+
+			while (result.next()) {
+				list_point_relais.add(new PointRelais(result.getString("NOM"),
+						GestionDB.getAdresseById(result.getInt("ID_ADRESSE"))));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return photos;
 	}
 
 	// CREATE
-	public static boolean createImression(String type, int id_impression, Client client, Catalogue catalogue,
+	public static boolean createImpression(String type, int id_impression, Client client, Catalogue catalogue,
 			int numero, Date date_impression, float montant_total, boolean etat_impression, int nb_impression,
 			String modele, String titre, String mise_en_page) {
 		type = type.toUpperCase();
@@ -1000,7 +1054,7 @@ public class GestionDB {
 	// STOCK
 	//
 	// GET
-	public static Stock getStockId(Type type, String qualite, String format) {
+	public static Stock getStockById(Type type, String qualite, String format) {
 		String sql = "SELECT * FROM STOCK WHERE TYPE_SUPPORT = ? AND QUALITE = ? AND FORMAT = ?";
 		Stock stock = null;
 		try {

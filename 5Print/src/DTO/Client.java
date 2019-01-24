@@ -19,8 +19,30 @@ public class Client {
 		this.prenom = prenom;
 		this.adresses = adresses;
 		this.motDePasse = motDePasse;
-		this.setPhotos_partagees(photosP);
-		this.setPhotos(photos);
+		this.adresses = adresses;
+		this.photos = photos;
+		this.photos_partagees = photosP;
+	}
+	
+	public Client(String email, String nom, String prenom, String motDePasse) {
+		this.email = email;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.motDePasse = motDePasse;
+		this.adresses = new ArrayList<Adresse>();
+		this.photos = new ArrayList<FichierPhoto>();
+		this.photos_partagees = new ArrayList<FichierPhoto>();
+	}
+	
+	public Client(String email, String nom, String prenom, String motDePasse, Adresse adresse) {
+		this.email = email;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.motDePasse = motDePasse;
+		this.adresses = new ArrayList<Adresse>();
+		this.adresses.add(adresse);
+		this.photos = new ArrayList<FichierPhoto>();
+		this.photos_partagees = new ArrayList<FichierPhoto>();
 	}
 
 	public String getEmail() {
