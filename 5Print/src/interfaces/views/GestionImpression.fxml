@@ -1,8 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
+         <image>
+            <Image url="@../../Ressources/logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="310.0" layoutY="39.0" text="Gestion d'une impression">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="775.0" layoutY="48.0" text="ID:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label id="impressionId" layoutX="807.0" layoutY="48.0" prefHeight="27.0" prefWidth="179.0" text="\@impressionId">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TabPane layoutX="491.0" layoutY="103.0" prefHeight="492.0" prefWidth="504.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab style="-fx-background-color: orange;" text="Cadre">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="477.0" />
+            </content>
+          </Tab>
+          <Tab style="-fx-background-color: orange;" text="Album">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView layoutX="11.0" layoutY="35.0" prefHeight="391.0" prefWidth="484.0">
+                          <columns>
+                            <TableColumn prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
+                            <TableColumn minWidth="0.0" prefWidth="114.0" style="-fx-background-color: orange;" text="Chemin" />
+                              <TableColumn prefWidth="105.0" style="-fx-background-color: orange;" text="Resolution" />
+                              <TableColumn prefWidth="28.0" style="-fx-background-color: orange;" text="x" />
+                              <TableColumn prefWidth="31.0" style="-fx-background-color: orange;" text="y" />
+                              <TableColumn prefWidth="157.0" style="-fx-background-color: orange;" text="Retouche" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="11.0" layoutY="9.0" text="Gestion des photos">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Label layoutX="435.0" layoutY="110.0" text="Type:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>
-
