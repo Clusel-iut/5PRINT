@@ -34,8 +34,11 @@ public class GestionDB {
 
 	public static void configure(String user, String passwd) {
 		try {
+			System.out.println("gege");
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+			System.out.println("gege");
 			conn = DriverManager.getConnection(CONN_URL, user, passwd);
+			System.out.println("gege");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -318,7 +321,7 @@ public class GestionDB {
 
 	// TODO CONNECTION????????
 	public static boolean connectionClient(String email, String motDePasse) {
-		String sql = "SELECT * FROM CLIENT WHERE email = ? AND motDePasse = ?";
+		String sql = "SELECT * FROM CLIENT WHERE EMAIL = ? AND MOT_DE_PASSE = ?";
 		boolean isConnected = false;
 		
 
@@ -329,7 +332,7 @@ public class GestionDB {
 			statement.setString(2, motDePasse);
 
 			ResultSet result = statement.executeQuery();
-			if (result != null) {
+			if (result.next()) {
 				isConnected = true;
 
 			}
