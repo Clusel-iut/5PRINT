@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -156,11 +158,32 @@ public class GestionDB {
 
 			cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"),
 					getAllAdresseByClientId(email), result.getString("MOT_DE_PASSE"), getAllPhotosByClientId(email),
-					getAllPhotosPartageesByClientId(email));
+					getAllPhotosPartageesByClientId(email), getAllImpressionsByClientId(email));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return cli;
+	}
+
+	private static <T extends Impression> ArrayList<Impression> getAllImpressionsByClientId(String email) {
+		ArrayList<Impression> impressions = new ArrayList<Impression>();
+		String sql = "SELECT ID_IMPRESSION FROM IMPRESSION WHERE EMAIL = " + email;
+		PreparedStatement statement;
+		T impression;
+		try {
+			statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery(sql);
+			while (result.next()) {
+				impression = getImpressionById(result.getInt("ID_IMPRESSION"));
+				if(impression != null) {
+					impressions.add(impression);
+				}				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	private static ArrayList<FichierPhoto> getAllPhotosPartageesByClientId(String email) {
@@ -444,12 +467,30 @@ public class GestionDB {
 			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery(sql);
 			fiPhoto = new FichierPhoto(result.getString("CHEMIN"), getClientByEmail(result.getString("EMAIL")),
-					result.getString("RESOLUTION"), result.getString("INFO_PRISE_VUE"),
-					result.getBoolean("EST_PARTAGE"), getClientsByFichierId(chemin));
+					result.getString("RESOLUTION"), result.getDate("DATE_AJOUT"),result.getDate("DATE_NO_PHOTO"),result.getString("INFO_PRISE_VUE"),
+					result.getBoolean("EST_PARTAGE"), getClientsByFichierId(chemin), getPhotoByFichierId(chemin));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return fiPhoto;
+	}
+
+	private static ArrayList<Photo> getPhotoByFichierId(String chemin) {
+		ArrayList<Photo> photos = new ArrayList<Photo>();
+		String sql = "SELECT ID_PHOTO FROM PHOTO WHERE CHEMIN = " + chemin;
+		PreparedStatement statement;
+
+		try {
+			statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery(sql);
+			while (result.next()) {
+				photos.add(getPhotoById(result.getInt("ID_PHOTO")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return photos;
 	}
 
 	private static ArrayList<Client> getClientsByFichierId(String chemin) {
@@ -470,20 +511,22 @@ public class GestionDB {
 	}
 
 	// CREATE
-	public static boolean createFichierPhoto(String chemin, String email, String resolution, Date date_ajout,
-			String info_vue, boolean est_partage) {
-		String sql = "INSERT INTO FICHIERPHOTO (CHEMIN, EMAIL, RESOLUTION, DATE_AJOUT, INFO_PRISE_VUE, EST_PARTAGE) VALUES (?,?,?,?,?,?)";
+	public static boolean createFichierPhoto(String chemin, String email, String resolution, String info_vue, boolean est_partage) {
+		String sql = "INSERT INTO FICHIERPHOTO (CHEMIN, EMAIL, RESOLUTION, DATE_AJOUT, DATE_NO_PHOTO, INFO_PRISE_VUE, EST_PARTAGE) VALUES (?,?,?,?,?,?,?)";
 		boolean isAdded = false;
-
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Date date_no_photo = new Date();
+		Date date_ajout = new Date();
 		PreparedStatement statement;
 		try {
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			statement.setString(2, email);
 			statement.setString(3, resolution);
-			statement.setDate(4, java.sql.Date.valueOf(date_ajout.toString()));
-			statement.setString(5, info_vue);
-			statement.setBoolean(6, est_partage);
+			statement.setDate(4, java.sql.Date.valueOf(dateFormat.format(date_ajout)));
+			statement.setDate(5, java.sql.Date.valueOf(dateFormat.format(date_no_photo)));
+			statement.setString(6, info_vue);
+			statement.setBoolean(7, est_partage);
 
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
@@ -610,6 +653,9 @@ public class GestionDB {
 
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
+				sql = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = null WHERE CHEMIN = " + chemin;
+				statement = conn.prepareStatement(sql);
+				statement.executeUpdate();
 				isAdded = true;
 			}
 
@@ -648,15 +694,27 @@ public class GestionDB {
 	// DELETE
 	public static boolean deletePhoto(int id_photo) {
 		String sql = "DELETE PHOTO WHERE ID_PHOTO = ?";
+		String sqlChemin = "SELECT CHEMIN FROM PHOTO WHERE ID_PHOTO = " + id_photo;
 		boolean isDeleted = false;
-
+		String chemin;
 		try {
+			PreparedStatement statementChemin = conn.prepareStatement(sqlChemin);
+			ResultSet resultChemin = statementChemin.executeQuery();
+			chemin = resultChemin.getString("CHEMIN");
+			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id_photo);
 
 			int rowsDeleted = statement.executeUpdate();
 			if (rowsDeleted > 0) {
 				isDeleted = true;
+			}
+			if(getPhotoByFichierId(chemin).size() == 0) {
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+				Date date = new Date();
+				String sqlUpdate = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = " + java.sql.Date.valueOf(dateFormat.format(date)) + "WHERE CHEMIN = " + chemin;
+				PreparedStatement statementUpdate = conn.prepareStatement(sqlUpdate);
+				statementUpdate.executeUpdate(sqlUpdate);
 			}
 		} catch (SQLException e) {
 			isDeleted = false;
