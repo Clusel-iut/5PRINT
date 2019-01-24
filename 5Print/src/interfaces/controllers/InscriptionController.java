@@ -1,19 +1,28 @@
 package interfaces.controllers;
 
+import java.awt.Dialog;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import DB.GestionDB;
 import DTO.Adresse;
+import DTO.Client;
+import DTO.FichierPhoto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class InscriptionController {
@@ -58,9 +67,8 @@ public class InscriptionController {
 	 * @throws IOException
 	 */
 	private void changeView(Stage app_stage, String path) {
-		Parent home_page_parent;
 		try {
-			home_page_parent = FXMLLoader.load(this.getClass().getResource(path));
+			Parent home_page_parent = new FXMLLoader(getClass().getResource(path)).load();
 			Scene home_page_scene = new Scene(home_page_parent);
 			app_stage.setScene(home_page_scene);
 			app_stage.show();
@@ -77,17 +85,16 @@ public class InscriptionController {
 	 */
 	@FXML
 	void create(MouseEvent event) throws IOException {
-
-		System.out.println(nom.getText());
-		System.out.println(prenom.getText());
-		System.out.println(email.getText());
-		System.out.println(numero.getText());
-		System.out.println(rue.getText());
-		System.out.println(ville.getText());
-		System.out.println(codepostal.getText());
-		System.out.println(pays.getText());
-		System.out.println(motdepasse.getText());
-
+		
+		Client client = new Client(email.getText(), nom.getText(), prenom.getText() , motdepasse.getText(), 
+				new Adresse(pays.getText(),  ville.getText(), codepostal.getText(), rue.getText(), numero.getText()));
+		
+		GestionDB.createClient(client);
+		
+		//POPUP 
+		this.popup("Création d'un client", "Votre compte a été enregistré", "Fermer cette fenêtre");
+		
+		//redirection
 		this.changeView((Stage) ((Node) event.getSource()).getScene().getWindow(), "/interfaces/views/Connexion.fxml");
 	}
 
@@ -109,8 +116,23 @@ public class InscriptionController {
 		codepostal.setText("");
 		pays.setText("");
 		motdepasse.setText("");
+		this.popup("Réinitialisation", "Les champs ont été réinitialisés", "Fermer cette fenêtre");		
 	}
-
+	
+	void popup(String title, String label, String buttonText) {
+		Stage popupwindow=new Stage();	      
+		popupwindow.initModality(Modality.APPLICATION_MODAL);
+		popupwindow.setTitle(title);
+		Label texte = new Label(label);
+		Button button= new Button(buttonText);
+		button.setOnAction(e -> popupwindow.close());
+		VBox layout= new VBox(10);
+		layout.getChildren().addAll(texte, button);
+		layout.setAlignment(Pos.CENTER);
+		Scene scene= new Scene(layout, 300, 250);
+		popupwindow.setScene(scene);
+		popupwindow.showAndWait();
+	}
 	/**
 	 * Create the frame.
 	 * 

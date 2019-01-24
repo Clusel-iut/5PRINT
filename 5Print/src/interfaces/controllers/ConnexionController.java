@@ -6,17 +6,28 @@ import DB.GestionDB;
 import DTO.Adresse;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
 public class ConnexionController {
 
+	@FXML
+	private TextField email;
+	@FXML
+	private PasswordField motdepasse;
 	
     /**
      * Permet à l'utilisateur de s'inscire.
@@ -33,6 +44,39 @@ public class ConnexionController {
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
     }
+    
+    @FXML
+    void connect(MouseEvent event) throws IOException {
+    	if(GestionDB.connectionClient(email.getText(), motdepasse.getText())) {
+    		Parent home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
+    		Scene home_page_scene = new Scene(home_page_parent);
+    		Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+    			.getWindow();
+    		app_stage.setScene(home_page_scene);
+    		app_stage.show();
+    	}
+    	else
+    	{
+    		this.popup("Erreur", "Combinaison email/mot de passe érronée", "Fermer");
+    	}
+    }
+    
+    
+    void popup(String title, String label, String buttonText) {
+		Stage popupwindow=new Stage();	      
+		popupwindow.initModality(Modality.APPLICATION_MODAL);
+		popupwindow.setTitle(title);
+		Label texte = new Label(label);
+		Button button= new Button(buttonText);
+		button.setOnAction(e -> popupwindow.close());
+		VBox layout= new VBox(10);
+		layout.getChildren().addAll(texte, button);
+		layout.setAlignment(Pos.CENTER);
+		Scene scene= new Scene(layout, 300, 250);
+		popupwindow.setScene(scene);
+		popupwindow.showAndWait();
+	}
+    
     
     /**
      * Permet à l'utilisateur de fermer la vue.
