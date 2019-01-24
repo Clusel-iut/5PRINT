@@ -8,8 +8,8 @@ public class Agenda extends Impression{
 	private int nbPages;
 
 	public Agenda(int id_impression, Date date_impression, int nb_impression, Client client, Stock stock, int numero,
-			float montant_total, boolean etat_impression, ArrayList<Photo> photos, String modele) {
-		super(id_impression, date_impression, nb_impression, client, stock, numero, montant_total, etat_impression, photos);
+			float montant_total, boolean etat_impression, ArrayList<Photo> photos,Commande commande, String modele) {
+		super(id_impression, date_impression, nb_impression, client, stock, numero, montant_total, etat_impression, photos, commande);
 		this.modele = modele;
 		if(modele == "365")
 			this.nbPages = 365;

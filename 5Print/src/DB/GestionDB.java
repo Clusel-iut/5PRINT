@@ -778,27 +778,28 @@ public class GestionDB {
 				Date date_impression = resultImp.getDate("DATE_IMPRESSION");
 				int numero = resultImp.getInt("NUMERO");
 				Client client = getClientByEmail(resultImp.getString("EMAIL"));
+				Commande commande = getCommandeById(resultImp.getInt("NUMERO"));
 				Stock stock = getStockById(Type.valueOf(resultImp.getString("TYPE_SUPPORT")),resultImp.getString("QUALITE"),resultImp.getString("FORMAT"));
 				
 				if (type == "AGENDA") {
 					t = (T) new Agenda(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT), resultT.getString("MODELE"));
+							etat_impression, getAllPhotoByIdImpression(idT),commande, resultT.getString("MODELE"));
 				}
 				if (type == "ALBUM") {
 					t = (T) new Album(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT),  resultT.getString("TITRE"), resultT.getString("MISE_EN_PAGE"));
+							etat_impression, getAllPhotoByIdImpression(idT),commande,  resultT.getString("TITRE"), resultT.getString("MISE_EN_PAGE"));
 				}
 				if (type == "CADRE") {
 					t = (T) new Cadre(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT), resultT.getString("MISE_EN_PAGE"), resultT.getString("MODELE"));
+							etat_impression, getAllPhotoByIdImpression(idT),commande, resultT.getString("MISE_EN_PAGE"), resultT.getString("MODELE"));
 				}
 				if (type == "CALENDRIER") {
 					t = (T) new Calendrier(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT),  resultT.getString("MODELE"));
+							etat_impression, getAllPhotoByIdImpression(idT),commande,  resultT.getString("MODELE"));
 				}
 				if (type == "TIRAGE") {
 					t = (T) new Tirage(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT));
+							etat_impression, getAllPhotoByIdImpression(idT), commande);
 				}
 
 			}
@@ -925,7 +926,7 @@ public class GestionDB {
 			statement = conn.prepareStatement(sqlImp);
 			statement.setString(1, impression.getCatalogue().getFormat());
 			statement.setString(2, impression.getCatalogue().getQualite());
-			statement.setInt(3, impression.getNumero());
+			statement.setInt(3, impression.getCommande().getNumero());
 			statement.setFloat(4, impression.getMontant_total());
 			statement.setBoolean(5, impression.getEtat_impression());
 			statement.setInt(6, impression.getNb_impression());

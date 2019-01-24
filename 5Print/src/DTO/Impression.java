@@ -11,9 +11,10 @@ public abstract class Impression{
 	protected float montant_total;
 	protected boolean etat_impression;
 	protected ArrayList<Photo> photos;
+	protected Commande commande;
 
 	public Impression(int id_impression, Date date_impression, int nb_impression, Client client, Stock stock,
-			int numero, float montant_total, boolean etat_impression, ArrayList<Photo> photos) {
+			int numero, float montant_total, boolean etat_impression, ArrayList<Photo> photos, Commande commande) {
 		this.id_impression = id_impression;
 		this.date_impression = date_impression;
 		this.nb_impression = nb_impression;
@@ -22,7 +23,7 @@ public abstract class Impression{
 		this.montant_total = montant_total;
 		this.etat_impression = etat_impression;
 		this.photos = photos;
-		this.numero = numero;
+		this.commande = commande;
 	}
 	
 	public int getId_impression() {
@@ -76,15 +77,21 @@ public abstract class Impression{
 		this.photos = photos;
 	}
 
-	public int getNumero() {
-		return numero;
+	public Stock getStock() {
+		return stock;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
+	public void setStock(Stock stock) {
+		this.stock = stock;
 	}
 
-	protected int numero;
+	public Commande getCommande() {
+		return commande;
+	}
+
+	public void setCommande(Commande commande) {
+		this.commande = commande;
+	}
 
 	
 }
