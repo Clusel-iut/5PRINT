@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.InscriptionController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.InscriptionController">
    <children>
       <Accordion layoutX="-180.0" layoutY="-171.0">
         <panes>
@@ -29,33 +29,38 @@
       </Accordion>
       <Label layoutX="410.0" layoutY="76.0" prefHeight="62.0" prefWidth="180.0" text="Formulaire ">
          <font>
-            <Font size="36.0" />
+            <Font name="System Bold" size="32.0" />
          </font>
       </Label>
-      <Label layoutX="124.0" layoutY="201.0" text="Nom" />
-      <Label layoutX="116.0" layoutY="250.0" text="Prenom" />
-      <Label layoutX="123.0" layoutY="291.0" text="Email" />
-      <Label layoutX="115.0" layoutY="363.0" text="Mot de passe" />
-      <Label layoutX="500.0" layoutY="184.0" text="Adresse :" />
-      <Label layoutX="562.0" layoutY="210.0" text="Numéro" />
-      <Label layoutX="562.0" layoutY="250.0" text="Rue" />
-      <Label layoutX="559.0" layoutY="291.0" text="Code postal" />
-      <Label layoutX="561.0" layoutY="341.0" text="Ville" />
-      <Label layoutX="560.0" layoutY="395.0" text="Pays" />
-      <TextField id="nom" layoutX="222.0" layoutY="197.0" />
-      <TextField id="prenom" layoutX="222.0" layoutY="238.0" />
-      <TextField id="email" layoutX="222.0" layoutY="287.0" />
-      <TextField id="numero" layoutX="659.0" layoutY="206.0" />
-      <TextField id="rue" layoutX="659.0" layoutY="251.0" />
-      <TextField id="codepostal" layoutX="659.0" layoutY="296.0" />
-      <TextField id="ville" layoutX="659.0" layoutY="337.0" />
-      <TextField id="pays" layoutX="659.0" layoutY="391.0" />
-      <PasswordField id="motdepasse" layoutX="222.0" layoutY="350.0" />
-      <Button layoutX="384.0" layoutY="493.0" text="S'inscire" onMouseClicked="#create"/>
-      <Button layoutX="522.0" layoutY="493.0" text="Effacer" onMouseClicked="#clear"/>
-      <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="15.0" layoutY="14.0" onMouseClicked="#back" pickOnBounds="true" preserveRatio="true">
+      <Label layoutX="172.0" layoutY="163.0" text="Nom" />
+      <Label layoutX="172.0" layoutY="241.0" text="Prénom" />
+      <Label layoutX="171.0" layoutY="317.0" text="Email" />
+      <Label layoutX="171.0" layoutY="395.0" text="Mot de passe" />
+      <Label layoutX="469.0" layoutY="163.0" text="Adresse :" />
+      <Label layoutX="496.0" layoutY="190.0" text="Numéro" />
+      <Label layoutX="496.0" layoutY="257.0" text="Rue" />
+      <Label layoutX="497.0" layoutY="328.0" text="Code postal" />
+      <Label layoutX="696.0" layoutY="328.0" text="Ville" />
+      <Label layoutX="496.0" layoutY="397.0" text="Pays" />
+      <TextField id="nom" layoutX="172.0" layoutY="190.0" />
+      <TextField id="prenom" layoutX="172.0" layoutY="267.0" />
+      <TextField id="email" layoutX="172.0" layoutY="347.0" />
+      <TextField id="numero" layoutX="496.0" layoutY="213.0" />
+      <TextField id="rue" layoutX="496.0" layoutY="283.0" />
+      <TextField id="codepostal" layoutX="497.0" layoutY="355.0" />
+      <TextField id="ville" layoutX="696.0" layoutY="355.0" />
+      <TextField id="pays" layoutX="496.0" layoutY="422.0" />
+      <PasswordField id="motdepasse" layoutX="172.0" layoutY="422.0" />
+      <Button layoutX="410.0" layoutY="493.0" onMouseClicked="#create" style="-fx-background-color: orange; -fx-text-fill: white;" text="Valider" />
+      <Button layoutX="511.0" layoutY="493.0" onMouseClicked="#clear" style="-fx-background-color: orange; -fx-text-fill: white;" text="Effacer" />
+      <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="12.0" layoutY="14.0" onMouseClicked="#back" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../Ressources/left-arrow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="62.0" fitWidth="148.0" layoutX="838.0" layoutY="14.0">
+         <image>
+            <Image url="@../../Ressources/logo.png" />
          </image>
       </ImageView>
    </children>
