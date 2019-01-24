@@ -297,6 +297,7 @@ public class GestionDB {
 	public static boolean connectionClient(String email, String motDePasse) {
 		String sql = "SELECT * FROM CLIENT WHERE email = ? AND motDePasse = ?";
 		boolean isConnected = false;
+		
 
 		PreparedStatement statement;
 		try {
@@ -720,25 +721,26 @@ public class GestionDB {
 				int numero = resultImp.getInt("NUMERO");
 				Client client = getClientByEmail(resultImp.getString("EMAIL"));
 				Stock stock = getStockById(Type.valueOf(resultImp.getString("TYPE_SUPPORT")),resultImp.getString("QUALITE"),resultImp.getString("FORMAT"));
+				
 				if (type == "AGENDA") {
 					t = (T) new Agenda(idT, date_impression, nb_impression, client, stock, numero, montant_total,
 							etat_impression, getAllPhotoByIdImpression(idT), resultT.getString("MODELE"));
 				}
 				if (type == "ALBUM") {
-					t = (T) new Album(idT, date_impression, nb_impression, null, null, numero, montant_total,
-							etat_impression, null, resultT.getString("TITRE"), resultT.getString("MISE_EN_PAGE"));
+					t = (T) new Album(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+							etat_impression, getAllPhotoByIdImpression(idT),  resultT.getString("TITRE"), resultT.getString("MISE_EN_PAGE"));
 				}
 				if (type == "CADRE") {
-					t = (T) new Cadre(idT, date_impression, nb_impression, null, null, numero, montant_total,
-							etat_impression, null, resultT.getString("MISE_EN_PAGE"), resultT.getString("MODELE"));
+					t = (T) new Cadre(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+							etat_impression, getAllPhotoByIdImpression(idT), resultT.getString("MISE_EN_PAGE"), resultT.getString("MODELE"));
 				}
 				if (type == "CALENDRIER") {
-					t = (T) new Calendrier(idT, date_impression, nb_impression, null, null, numero, montant_total,
-							etat_impression, null, resultT.getString("MODELE"));
+					t = (T) new Calendrier(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+							etat_impression, getAllPhotoByIdImpression(idT),  resultT.getString("MODELE"));
 				}
 				if (type == "TIRAGE") {
-					t = (T) new Tirage(idT, date_impression, nb_impression, null, null, numero, montant_total,
-							etat_impression, null);
+					t = (T) new Tirage(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+							etat_impression, getAllPhotoByIdImpression(idT));
 				}
 
 			}
@@ -751,16 +753,14 @@ public class GestionDB {
 
 	private static ArrayList<Photo> getAllPhotoByIdImpression(int idT) {
 		ArrayList<Photo> photos = new ArrayList<Photo>();
-		String sql = "SELECT  FROM POINT_RELAIS";
-		ArrayList<PointRelais> list_point_relais = new ArrayList<PointRelais>();
+		String sql = "SELECT ID_PHOTO FROM PHOTO WHERE ID_IMPRESSION = " + idT;
 
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery(sql);
 
 			while (result.next()) {
-				list_point_relais.add(new PointRelais(result.getString("NOM"),
-						GestionDB.getAdresseById(result.getInt("ID_ADRESSE"))));
+				photos.add(getPhotoById(result.getInt("ID_PHOTO")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -963,12 +963,23 @@ public class GestionDB {
 	public static BonAchat getBonAchatById(String id) {
 		String sql = "SELECT * FROM BON_ACHAT WHERE CODE_BON = ?";
 		BonAchat bon_achat = null;
-
+		Commande commande = null;
+		Commande commandeG = null;
+		Client client = null;
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, id);
 			ResultSet result = statement.executeQuery(sql);
-			bon_achat = new BonAchat(result.getString("CODE_BON"), null, null, null, result.getInt("POURCENTAGEREDUC"),
+			if(result.getInt("NUMERO") >= 0) {
+				commande = getCommandeById(result.getInt("NUMERO"));
+			}
+			if(result.getInt("NUMERO_GENERE") >= 0) {
+				commandeG = getCommandeById(result.getInt("NUMERO_GENERE"));
+			}
+			if(result.getString("EMAIL") != null) {
+				client = getClientByEmail(result.getString("EMAIL"));
+			}
+			bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client, result.getInt("POURCENTAGEREDUC"),
 					result.getString("TYPE_BONACHAT"));
 
 		} catch (SQLException e) {

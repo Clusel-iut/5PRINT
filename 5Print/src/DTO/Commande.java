@@ -1,5 +1,6 @@
 package DTO;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Commande{
@@ -8,13 +9,14 @@ public class Commande{
 	private BonAchat bon_achat_genere;
 	private Adresse adresse;
 	private Client client;
+	private ArrayList<Impression> impressions;
 	private String mode_livraison;
 	private Date date_commande;
 	private String statut;
 	private boolean etat_paiement;
 	private float montant_total_cmd;
 	
-	public Commande(int numero, BonAchat bon_achat, BonAchat bon_achat_g, Adresse adresse, Client client, String mode_livraison,
+	public Commande(int numero, BonAchat bon_achat, BonAchat bon_achat_g, Adresse adresse, Client client, ArrayList<Impression> impressions,String mode_livraison,
 			Date date_commande, String statut, boolean etat_paiement, float montant_total_cmd) {
 		super();
 		this.numero = numero;
@@ -22,6 +24,23 @@ public class Commande{
 		this.bon_achat_genere = bon_achat_g;
 		this.adresse = adresse;
 		this.client = client;
+		this.setImpressions(impressions);
+		this.mode_livraison = mode_livraison;
+		this.date_commande = date_commande;
+		this.statut = statut;
+		this.etat_paiement = etat_paiement;
+		this.montant_total_cmd = montant_total_cmd;
+	}
+	
+	public Commande(int numero, BonAchat bon_achat, BonAchat bon_achat_g, Adresse adresse, Client client,String mode_livraison,
+			Date date_commande, String statut, boolean etat_paiement, float montant_total_cmd) {
+		super();
+		this.numero = numero;
+		this.bon_achat = bon_achat;
+		this.bon_achat_genere = bon_achat_g;
+		this.adresse = adresse;
+		this.client = client;
+		this.setImpressions(new ArrayList<Impression>());
 		this.mode_livraison = mode_livraison;
 		this.date_commande = date_commande;
 		this.statut = statut;
@@ -107,6 +126,14 @@ public class Commande{
 
 	public void setMontant_total_cmd(float montant_total_cmd) {
 		this.montant_total_cmd = montant_total_cmd;
+	}
+
+	public ArrayList<Impression> getImpressions() {
+		return impressions;
+	}
+
+	public void setImpressions(ArrayList<Impression> impressions) {
+		this.impressions = impressions;
 	}
 
 	

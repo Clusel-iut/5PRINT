@@ -11,9 +11,10 @@ public class Client {
 	private ArrayList<Adresse> adresses;
 	private ArrayList<FichierPhoto> photos; //Les photos dont il est propri�taire
 	private ArrayList<FichierPhoto> photos_partagees; //Les photos qui ne sont pas � lui
+	private ArrayList<Impression> impressions;
 
 	public Client(String email, String nom, String prenom, ArrayList<Adresse> adresses, String motDePasse,
-			ArrayList<FichierPhoto> photosP, ArrayList<FichierPhoto> photos) {
+			ArrayList<FichierPhoto> photosP, ArrayList<FichierPhoto> photos, ArrayList<Impression> impressions) {
 		this.email = email;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -22,6 +23,7 @@ public class Client {
 		this.adresses = adresses;
 		this.photos = photos;
 		this.photos_partagees = photosP;
+		this.setImpressions(impressions);
 	}
 	
 	public Client(String email, String nom, String prenom, String motDePasse) {
@@ -32,6 +34,7 @@ public class Client {
 		this.adresses = new ArrayList<Adresse>();
 		this.photos = new ArrayList<FichierPhoto>();
 		this.photos_partagees = new ArrayList<FichierPhoto>();
+		this.setImpressions(new ArrayList<Impression>());
 	}
 	
 	public Client(String email, String nom, String prenom, String motDePasse, Adresse adresse) {
@@ -43,6 +46,7 @@ public class Client {
 		this.adresses.add(adresse);
 		this.photos = new ArrayList<FichierPhoto>();
 		this.photos_partagees = new ArrayList<FichierPhoto>();
+		this.setImpressions(new ArrayList<Impression>());
 	}
 
 	public String getEmail() {
@@ -108,7 +112,25 @@ public class Client {
 		this.photos = photos;
 	}
 	
+	public void addPhotoPartagee(FichierPhoto fichier) {
+		this.photos_partagees.add(fichier);
+	}
 	
+	public void addPhoto(FichierPhoto fichier) {
+		this.photos.add(fichier);
+	}
+
+	public ArrayList<Impression> getImpressions() {
+		return impressions;
+	}
+
+	public void setImpressions(ArrayList<Impression> impressions) {
+		this.impressions = impressions;
+	}
+	
+	public void addImpression(Impression impression) {
+		this.impressions.add(impression);
+	}
 	
 	
 }

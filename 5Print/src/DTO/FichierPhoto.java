@@ -9,15 +9,17 @@ public class FichierPhoto{
 	private String info_prise_de_vue;
 	private boolean est_partage;
 	private ArrayList<Client> clients_partages;
+	private ArrayList<Photo> photos;
 	
 	public FichierPhoto(String chemin, Client client, String resolution, String info_prise_de_vue, boolean est_partage,
-			ArrayList<Client> clients_partages) {
+			ArrayList<Client> clients_partages, ArrayList<Photo> photos) {
 		this.chemin = chemin;
 		this.client = client;
 		this.resolution = resolution;
 		this.info_prise_de_vue = info_prise_de_vue;
 		this.est_partage = est_partage;
 		this.clients_partages = clients_partages;
+		this.photos = photos;
 	}
 	public String getChemin() {
 		return chemin;
@@ -55,6 +57,17 @@ public class FichierPhoto{
 	public void setClients_partages(ArrayList<Client> clients_partages) {
 		this.clients_partages = clients_partages;
 	}
-	
+	public ArrayList<Photo> getPhotos() {
+		return photos;
+	}
+	public void setPhotos(ArrayList<Photo> photos) {
+		this.photos = photos;
+	}
+	public void addClient(Client client) {
+		this.clients_partages.add(client);
+	}
+	public void addPhoto(Photo photo) {
+		this.photos.add(photo); 
+	}
 	
 }
