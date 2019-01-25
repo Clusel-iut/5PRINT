@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.GestionImpressionController">
    <children>
       <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
          <image>
@@ -173,25 +173,27 @@
       <ComboBox id="cbQualite" layoutX="669.0" layoutY="184.0" prefWidth="150.0" />
       <ComboBox id="cbFormat" layoutX="669.0" layoutY="253.0" prefWidth="150.0" />
       <Spinner layoutX="669.0" layoutY="323.0" prefHeight="31.0" prefWidth="150.0" />
-      <Label layoutX="669.0" layoutY="515.0" text="Montant total:">
+      <Label layoutX="670.0" layoutY="473.0" text="Montant total:">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label id="montantTotal" layoutX="800.0" layoutY="515.0" text="\@montantTotal">
+      <Label id="montantTotal" layoutX="801.0" layoutY="473.0" text="\@montantTotal">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="669.0" layoutY="488.0" text="Etat:">
+      <Label layoutX="670.0" layoutY="446.0" text="Etat:">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label id="etatImpression" layoutX="800.0" layoutY="488.0" text="\@etatImpression">
+      <Label id="etatImpression" layoutX="801.0" layoutY="446.0" text="\@etatImpression">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
+      <Button id="commander" layoutX="739.0" layoutY="530.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Commander" />
+      <Button id="sauvegarder" layoutX="832.0" layoutY="530.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Sauvegarder" />
    </children>
 </AnchorPane>

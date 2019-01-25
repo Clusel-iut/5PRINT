@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.22073578595317725" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.22073578595317725" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.PageRecapController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: white;">
          <children>
@@ -21,8 +21,8 @@
                   <Image url="@../../Ressources/logo.png" />
                </image>
             </ImageView>
-            <Button layoutX="905.0" layoutY="27.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Profil" onMouseClicked="profil"/>
-  <Button layoutX="863.0" layoutY="75.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Déconnexion" onMouseClicked="deconnect"/>
+            <Button layoutX="905.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#profil" style="-fx-background-color: orange; -fx-text-fill: white;" text="Profil" />
+  <Button layoutX="863.0" layoutY="75.0" mnemonicParsing="false" onMouseClicked="#deconnect" style="-fx-background-color: orange; -fx-text-fill: white;" text="Déconnexion" />
             <Label fx:id="prenomNomClient" layoutX="263.0" layoutY="42.0" text="\@PrenomNomClient">
                <font>
                   <Font size="30.0" />
@@ -43,11 +43,12 @@
                                        <children>
                                           <TableView prefHeight="371.0" prefWidth="495.0">
                                             <columns>
-                                              <TableColumn prefWidth="75.0" text="C1" />
-                                              <TableColumn prefWidth="75.0" text="C2" />
+                                              <TableColumn prefWidth="75.0" text="ID" />
+                                              <TableColumn prefWidth="75.0" text="DATE" />
+                                                <TableColumn prefWidth="75.0" text="TYPE" />
                                             </columns>
                                           </TableView>
-                                          <Button layoutX="14.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Créer" />
+                                          <Button layoutX="14.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Créer" onMouseClicked="#create"/>
                                           <Button layoutX="422.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Editer" />
                                        </children>
                                     </AnchorPane>

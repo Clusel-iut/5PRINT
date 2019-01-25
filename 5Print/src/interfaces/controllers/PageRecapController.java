@@ -23,7 +23,7 @@ public class PageRecapController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		prenomNomClient.setText(LocalDataClient.client.getPrenom() + " " + LocalDataClient.client.getPrenom());
+		prenomNomClient.setText(LocalDataClient.client.getPrenom() + " " + LocalDataClient.client.getNom());
 	}
 	
 	 @FXML
@@ -57,5 +57,19 @@ public class PageRecapController implements Initializable {
 		}
 		
     }
-
+	 
+	 @FXML
+	 void create(MouseEvent event) {
+		 Parent home_page_parent;
+			try {
+				home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/CreationImpression.fxml")).load();
+				Scene home_page_scene = new Scene(home_page_parent);
+				Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+					.getWindow();
+				app_stage.setScene(home_page_scene);
+				app_stage.show();
+			} catch (IOException e) {
+				System.err.println("Impossible d'afficher la page 'Connexion'");
+			}
+	 }
 }
