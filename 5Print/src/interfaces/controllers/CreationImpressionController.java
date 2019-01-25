@@ -22,18 +22,11 @@ import javafx.stage.Stage;
 public class CreationImpressionController implements Initializable{
 	
 	@FXML
-	private ComboBox<ArrayList<TypeSupport>> listeImpressions;
+	private ComboBox<TypeSupport> listeImpressions;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		ArrayList<TypeSupport> types = new ArrayList<TypeSupport>();
-		types.add(TypeSupport.AGENDA);
-		types.add(TypeSupport.ALBUM);
-		types.add(TypeSupport.CADRE);
-		types.add(TypeSupport.CALENDRIER);
-		types.add(TypeSupport.TIRAGE);
-		
-		listeImpressions.setValue(types);		
+		listeImpressions.getItems().setAll(TypeSupport.values());		
 	}
 	
 	@FXML

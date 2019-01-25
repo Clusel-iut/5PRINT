@@ -38,7 +38,7 @@ public class ProfilController implements Initializable {
 	@FXML 
 	private TextField userPassword;
 	@FXML 
-	private ComboBox<ArrayList<Adresse>> listAddress;
+	private ComboBox<Adresse> listAddress;
 	
 	
 	@FXML
@@ -88,7 +88,7 @@ public class ProfilController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		userEmail.setText(LocalDataClient.client.getEmail());
-		listAddress.setValue(LocalDataClient.client.getAdresse());
+		listAddress.getItems().setAll(LocalDataClient.client.getAdresse());
 	}
 	
 	void popup(String title, String label, String buttonText) {
