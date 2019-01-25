@@ -62,7 +62,7 @@ public class PageRecapController implements Initializable {
 	 void create(MouseEvent event) {
 		 Parent home_page_parent;
 			try {
-				home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/Connexion.fxml")).load();
+				home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/CreationImpression.fxml")).load();
 				Scene home_page_scene = new Scene(home_page_parent);
 				Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
 					.getWindow();
