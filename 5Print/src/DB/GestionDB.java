@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -771,6 +773,7 @@ public class GestionDB {
 		String sqlImp = "SELECT * FROM IMPRESSION WHERE ID_IMPRESSION = ?";
 		String sqlT = "SELECT * FROM "+ type.toString()+ " WHERE ID_IMPRESSION = ?";
 		T t = null;
+		System.out.println(sqlT);
 		try {
 			// REQUETE TYPE POUR VERIFIER SI EXISTE
 			PreparedStatement statementType = conn.prepareStatement(sqlT);
@@ -790,7 +793,7 @@ public class GestionDB {
 				int nb_impression = resultImp.getInt("NB_IMPRESSION");
 				int montant_total = resultImp.getInt("MONTANT_TOTAL");
 				boolean etat_impression = resultImp.getBoolean("ETAT_IMPRESSION");
-				Date date_impression = resultImp.getDate("DATE_IMPRESSION");
+				Date date_impression = resultImp.getTimestamp("DATE_IMPRESSION");
 				int numero = resultImp.getInt("NUMERO");
 				Client client = getClientByEmail(resultImp.getString("EMAIL"));
 				Commande commande = getCommandeById(resultImp.getInt("NUMERO"));
@@ -845,14 +848,14 @@ public class GestionDB {
 
 	// CREATE
 	public static int createImpression(TypeSupport type, Client client, Stock stock,
-			int numero, Date date_impression, float montant_total, boolean etat_impression, int nb_impression,
+			int numero , float montant_total, boolean etat_impression, int nb_impression,
 			String modele, String titre, String mise_en_page) {
 		String sqlImp = "INSERT INTO IMPRESSION(EMAIL, TYPE_SUPPORT, FORMAT, QUALITE, DATE_IMPRESSION, MONTANT_TOTAL, ETAT_IMPRESSION, NB_IMPRESSION) "
 				+ "VALUES (?,?,?,?,?,?,?) RETURNING ID_IMPRESSION";
 		String sqlImpExt = "";
 		int isAdded = -1;
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		dateFormat.format(date_impression);
+		LocalDate todayLocalDate = LocalDate.now( ZoneId.systemDefault() );  
+		java.sql.Date sqlDate = java.sql.Date.valueOf( todayLocalDate );
 		
 		PreparedStatement statementImp = null;
 		PreparedStatement statementImpExt = null;
@@ -862,7 +865,7 @@ public class GestionDB {
 			statementImp.setString(2, stock==null?null:stock.getType_support().toString());
 			statementImp.setString(3, stock==null?null:stock.getFormat());
 			statementImp.setString(4, stock==null?null:stock.getQualite());
-			statementImp.setDate(5, new java.sql.Date(date_impression.getDate()));
+			statementImp.setDate(5, sqlDate);
 			statementImp.setFloat(6, montant_total);
 			statementImp.setBoolean(7, etat_impression);
 			statementImp.setInt(8, nb_impression);
