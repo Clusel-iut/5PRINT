@@ -52,7 +52,7 @@ public class GestionDB {
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, Integer.toString(id));
-			ResultSet result = statement.executeQuery(sql);
+			ResultSet result = statement.executeQuery();
 
 			Client client = null;
 			if (result.getString("EMAIL") != null) {
@@ -153,11 +153,14 @@ public class GestionDB {
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
-			ResultSet result = statement.executeQuery(sql);
+			ResultSet result = statement.executeQuery();
 
-			cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"),
-					getAllAdresseByClientId(email), result.getString("MOT_DE_PASSE"), getAllPhotosByClientId(email),
-					getAllPhotosPartageesByClientId(email), getAllImpressionsByClientId(email));
+			if(result.next())
+			{
+				cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"),
+						getAllAdresseByClientId(email), result.getString("MOT_DE_PASSE"), getAllPhotosByClientId(email),
+						getAllPhotosPartageesByClientId(email), getAllImpressionsByClientId(email));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -210,7 +213,8 @@ public class GestionDB {
 
 		try {
 			statement = conn.prepareStatement(sql);
-			ResultSet result = statement.executeQuery(sql);
+			statement.setString(1, email);
+			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				photos.add(getFichierPhotoById(result.getString("CHEMIN")));
 			}
@@ -223,12 +227,13 @@ public class GestionDB {
 
 	private static ArrayList<Adresse> getAllAdresseByClientId(String email) {
 		ArrayList<Adresse> adresses = new ArrayList<Adresse>();
-		String sql = "SELECT ID_ADRESSE FROM ADRESSE WHERE EMAIL = " + email;
+		String sql = "SELECT ID_ADRESSE FROM ADRESSE WHERE EMAIL = ?";
 		PreparedStatement statement;
 
 		try {
 			statement = conn.prepareStatement(sql);
-			ResultSet result = statement.executeQuery(sql);
+			statement.setString(1, email);
+			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				adresses.add(getAdresseById(result.getInt("ID_ADRESSE")));
 			}
