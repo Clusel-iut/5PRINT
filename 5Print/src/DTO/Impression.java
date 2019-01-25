@@ -50,12 +50,6 @@ public abstract class Impression{
 	public void setClient(Client client) {
 		this.client = client;
 	}
-	public Stock getCatalogue() {
-		return stock;
-	}
-	public void setCatalogue(Stock stock) {
-		this.stock = stock;
-	}
 	public float getMontant_total() {
 		return montant_total;
 	}

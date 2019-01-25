@@ -4,5 +4,5 @@ import DTO.Client;
 
 public class LocalDataClient {
 
-	public static Client client ;
+	public static Client client;
 }

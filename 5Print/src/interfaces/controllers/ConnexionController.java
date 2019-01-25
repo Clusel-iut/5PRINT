@@ -31,7 +31,7 @@ public class ConnexionController {
 	private PasswordField motdepasse;
 	
     /**
-     * Permet à l'utilisateur de s'inscire.
+     * Permet ï¿½ l'utilisateur de s'inscire.
      * 
      * @param event
      * @throws IOException 
@@ -59,7 +59,7 @@ public class ConnexionController {
     	}
     	else
     	{
-    		this.popup("Erreur", "Combinaison email/mot de passe érronée", "Fermer");
+    		this.popup("Erreur", "Combinaison email/mot de passe ï¿½rronï¿½e", "Fermer");
     	}
     }
     
@@ -81,7 +81,7 @@ public class ConnexionController {
     
     
     /**
-     * Permet à l'utilisateur de fermer la vue.
+     * Permet ï¿½ l'utilisateur de fermer la vue.
      * 
      * @param event
      

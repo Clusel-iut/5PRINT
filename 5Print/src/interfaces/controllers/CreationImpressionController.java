@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import DB.LocalDataClient;
 import DTO.Adresse;
 import DTO.Impression;
 import javafx.fxml.FXML;
@@ -14,11 +15,11 @@ import javafx.scene.input.MouseEvent;
 public class CreationImpressionController implements Initializable{
 	
 	@FXML
-	private ComboBox<ArrayList<Impression>> listeImpressions;
+	private ComboBox<ArrayList<TypeSupport>> listeImpressions;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		listeImpressions.setValue(GestionDB.get);
 		
 	}
 	
