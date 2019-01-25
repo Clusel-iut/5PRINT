@@ -65,8 +65,7 @@ public class ProfilController implements Initializable {
 		}
 		else {
 			this.popup("Mise à jour", "Erreur dans la mise à jour de votre profil !", "Fermer");
-		}
-		
+		}	
 	}
 	
 	@FXML
