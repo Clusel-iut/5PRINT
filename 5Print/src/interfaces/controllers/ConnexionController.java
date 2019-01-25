@@ -3,6 +3,7 @@ package interfaces.controllers;
 import java.io.IOException;
 
 import DB.GestionDB;
+import DB.LocalDataClient;
 import DTO.Adresse;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,6 +49,7 @@ public class ConnexionController {
     @FXML
     void connect(MouseEvent event) throws IOException {
     	if(GestionDB.connectionClient(email.getText(), motdepasse.getText())) {
+    		LocalDataClient.client = GestionDB.getClientByEmail(email.getText());
     		Parent home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
     		Scene home_page_scene = new Scene(home_page_parent);
     		Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
