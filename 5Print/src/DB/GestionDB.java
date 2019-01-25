@@ -35,6 +35,7 @@ public class GestionDB {
 		try {
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 			conn = DriverManager.getConnection(CONN_URL, user, passwd);
+			conn.setAutoCommit(false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,6 +75,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, pays);
 			statement.setString(2, email);
@@ -86,11 +88,11 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
-
+		
 		return isAdded;
 	}
 
