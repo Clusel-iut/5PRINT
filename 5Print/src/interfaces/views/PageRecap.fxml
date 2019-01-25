@@ -21,8 +21,8 @@
                   <Image url="@../../Ressources/logo.png" />
                </image>
             </ImageView>
-            <Button layoutX="905.0" layoutY="27.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Profil" onMouseClicked="profil"/>
-  <Button layoutX="863.0" layoutY="75.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Déconnexion" onMouseClicked="deconnect"/>
+            <Button layoutX="905.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="profil" style="-fx-background-color: orange; -fx-text-fill: white;" text="Profil" />
+  <Button layoutX="863.0" layoutY="75.0" mnemonicParsing="false" onMouseClicked="deconnect" style="-fx-background-color: orange; -fx-text-fill: white;" text="Déconnexion" />
             <Label fx:id="prenomNomClient" layoutX="263.0" layoutY="42.0" text="\@PrenomNomClient">
                <font>
                   <Font size="30.0" />
@@ -43,8 +43,9 @@
                                        <children>
                                           <TableView prefHeight="371.0" prefWidth="495.0">
                                             <columns>
-                                              <TableColumn prefWidth="75.0" text="C1" />
-                                              <TableColumn prefWidth="75.0" text="C2" />
+                                              <TableColumn prefWidth="75.0" text="ID" />
+                                              <TableColumn prefWidth="75.0" text="DATE" />
+                                                <TableColumn prefWidth="75.0" text="TYPE" />
                                             </columns>
                                           </TableView>
                                           <Button layoutX="14.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Créer" />

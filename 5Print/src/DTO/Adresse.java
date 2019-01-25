@@ -71,5 +71,10 @@ public class Adresse {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+
+	@Override
+	public String toString() {
+		return numero + " " + rue + " " +code_postal + " " +ville + " " + pays;
+	}
 	
 }

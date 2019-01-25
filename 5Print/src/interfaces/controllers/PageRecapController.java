@@ -23,7 +23,7 @@ public class PageRecapController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		prenomNomClient.setText(LocalDataClient.client.getPrenom() + " " + LocalDataClient.client.getPrenom());
+		prenomNomClient.setText(LocalDataClient.client.getPrenom() + " " + LocalDataClient.client.getNom());
 	}
 	
 	 @FXML
