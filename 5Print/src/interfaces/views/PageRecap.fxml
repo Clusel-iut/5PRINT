@@ -21,8 +21,8 @@
                   <Image url="@../../Ressources/logo.png" />
                </image>
             </ImageView>
-            <Button layoutX="905.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="profil" style="-fx-background-color: orange; -fx-text-fill: white;" text="Profil" />
-  <Button layoutX="863.0" layoutY="75.0" mnemonicParsing="false" onMouseClicked="deconnect" style="-fx-background-color: orange; -fx-text-fill: white;" text="Déconnexion" />
+            <Button layoutX="905.0" layoutY="27.0" mnemonicParsing="false" onMouseClicked="#profil" style="-fx-background-color: orange; -fx-text-fill: white;" text="Profil" />
+  <Button layoutX="863.0" layoutY="75.0" mnemonicParsing="false" onMouseClicked="#deconnect" style="-fx-background-color: orange; -fx-text-fill: white;" text="Déconnexion" />
             <Label fx:id="prenomNomClient" layoutX="263.0" layoutY="42.0" text="\@PrenomNomClient">
                <font>
                   <Font size="30.0" />
