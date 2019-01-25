@@ -48,7 +48,7 @@
                                                 <TableColumn prefWidth="75.0" text="TYPE" />
                                             </columns>
                                           </TableView>
-                                          <Button layoutX="14.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Créer" />
+                                          <Button layoutX="14.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Créer" onMouseClicked="#create"/>
                                           <Button layoutX="422.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Editer" />
                                        </children>
                                     </AnchorPane>
