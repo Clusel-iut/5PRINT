@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import DB.GestionDB;
 import DB.LocalDataClient;
-import DTO.Adresse;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -37,6 +36,7 @@ public class AjoutAdresseController {
 		if(GestionDB.createAdresse(pays.getText(), LocalDataClient.client.getEmail(), ville.getText(), cp.getText(),  rue.getText(), num.getText())) {
 			Parent home_page_parent;
 			try {
+				LocalDataClient.refresh();
 				home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/Profil.fxml")).load();
 				Scene home_page_scene = new Scene(home_page_parent);
 				Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
@@ -47,13 +47,11 @@ public class AjoutAdresseController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 			this.popup("Création d'adresse", "Votre adresse a été ajoutée", "Fermer");
 		}
 		else {
 			this.popup("Création d'adresse", "Erreur lors de l'ajout de l'adresse", "Fermer");
 		}
-		
 	}
 	
 	@FXML
@@ -86,6 +84,4 @@ public class AjoutAdresseController {
 		popupwindow.setScene(scene);
 		popupwindow.showAndWait();
 	}
-	
-
 }

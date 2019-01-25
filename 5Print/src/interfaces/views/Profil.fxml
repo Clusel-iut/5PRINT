@@ -62,7 +62,7 @@
             <Font size="23.0" />
          </font>
       </Button>
-      <ImageView id="backButton" fitHeight="26.0" fitWidth="21.0" layoutX="14.0" layoutY="106.0" onMouseClicked="#back" pickOnBounds="true" preserveRatio="true" onMouseClicked="#back">
+      <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="14.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#back">
          <image>
             <Image url="@../../Ressources/left-arrow.png" />
          </image>

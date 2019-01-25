@@ -52,7 +52,6 @@ public class ProfilController implements Initializable {
 			app_stage.setScene(home_page_scene);
 			app_stage.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
@@ -61,6 +60,7 @@ public class ProfilController implements Initializable {
 	@FXML
     void save(MouseEvent event) {
 		if(GestionDB.updateClient(new Client(userEmail.getText(), userNom.getText(), userPrenom.getText(), userPassword.getText()))) {
+			LocalDataClient.refresh();
 			this.popup("Mise à jour", "Votre profil a été mise à jour !", "Fermer");
 		}
 		else {
@@ -88,6 +88,10 @@ public class ProfilController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		userEmail.setText(LocalDataClient.client.getEmail());
+		userPrenom.setText(LocalDataClient.client.getPrenom());
+		userNom.setText(LocalDataClient.client.getNom());
+		userPassword.setText(LocalDataClient.client.getMotDePasse());
+		System.out.println("fefse");
 		listAddress.getItems().setAll(LocalDataClient.client.getAdresse());
 	}
 	
@@ -105,8 +109,4 @@ public class ProfilController implements Initializable {
 		popupwindow.setScene(scene);
 		popupwindow.showAndWait();
 	}
-	
-	
-	
-
 }
