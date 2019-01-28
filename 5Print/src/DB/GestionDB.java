@@ -1196,6 +1196,24 @@ public class GestionDB {
 	// STOCK
 	//
 	// GET
+	public static ArrayList<Stock> getAllStock() {
+		String sql = "SELECT * FROM STOCK";
+		ArrayList<Stock> stocks = null;
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				stocks.add(new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT")), result.getString("QUALITE"),
+						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX")));
+			}
+			statement.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return stocks;
+	}
 	public static Stock getStockById(TypeSupport type, String qualite, String format) {
 		String sql = "SELECT * FROM STOCK WHERE TYPE_SUPPORT = ? AND QUALITE = ? AND FORMAT = ?";
 		Stock stock = null;

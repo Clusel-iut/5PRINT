@@ -5,9 +5,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import DB.GestionDB;
 import DB.LocalDataClient;
 import DTO.Adresse;
 import DTO.Impression;
+import DTO.Stock;
 import DTO.TypeSupport;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,16 +24,16 @@ import javafx.stage.Stage;
 public class CreationImpressionController implements Initializable{
 	
 	@FXML
-	private ComboBox<TypeSupport> listeImpressions;
+	private ComboBox<Stock> listeStock;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		listeImpressions.getItems().setAll(TypeSupport.values());		
+		listeStock.getItems().setAll(GestionDB.getAllStock());		
 	}
 	
 	@FXML
     void create(MouseEvent event) { 
-		System.out.println(listeImpressions.getSelectionModel().getSelectedItem().toString());
+		System.out.println(listeStock.getSelectionModel().getSelectedItem().toString());
 	}
 	
 	@FXML
