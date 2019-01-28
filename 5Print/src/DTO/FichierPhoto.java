@@ -86,5 +86,10 @@ public class FichierPhoto{
 	public void setDate_ajout(Date date_ajout) {
 		this.date_ajout = date_ajout;
 	}
+	@Override
+	public String toString() {
+		return  this.est_partage ? "Partagée; " : "Perso; " + "chemin=" + chemin + " resolution=" + resolution + " date_ajout=" + date_ajout;
+	}
+	
 	
 }
