@@ -59,7 +59,7 @@ public class ConnexionController {
     	}
     	else
     	{
-    		this.popup("Erreur", "Combinaison email/mot de passe ï¿½rronï¿½e", "Fermer");
+    		this.popup("Erreur", "Combinaison email/mot de passe érronée", "Fermer");
     	}
     }
     
