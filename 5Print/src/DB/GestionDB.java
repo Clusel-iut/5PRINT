@@ -56,9 +56,9 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
-			
+
 			Client client = null;
-			if(result.next()) {
+			if (result.next()) {
 				adr = new Adresse(result.getInt("ID_ADRESSE"), result.getString("PAYS"), result.getString("VILLE"),
 						result.getString("CODE_POSTAL"), result.getString("RUE"), result.getString("NUMERO"), client);
 				result.close();
@@ -96,7 +96,7 @@ public class GestionDB {
 		} catch (SQLException e) {
 			isAdded = false;
 		}
-		
+
 		return isAdded;
 	}
 
@@ -142,7 +142,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
-			
+
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -164,16 +164,40 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 
-			if(result.next()){
+			if (result.next()) {
 				cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"),
-						getAllAdresseByClientId(cli, email), result.getString("MOT_DE_PASSE"), getAllPhotosByClientId(cli, email),
-						getAllPhotosPartageesByClientId(cli, email), getAllImpressionsByClientId(cli, email));
+						getAllAdresseByClientId(cli, email), result.getString("MOT_DE_PASSE"),
+						getAllPhotosByClientId(cli, email), getAllPhotosPartageesByClientId(cli, email),
+						getAllImpressionsByClientId(cli, email), getAllCommandesByClientId(cli, email));
 			}
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return cli;
+	}
+
+	private static ArrayList<Commande> getAllCommandesByClientId(Client cli, String email) {
+		ArrayList<Commande> commandes = new ArrayList<Commande>();
+		String sql = "SELECT NUMERO FROM COMMANDE WHERE EMAIL = ?";
+		PreparedStatement statement;
+		Commande commande;
+		try {
+			statement = conn.prepareStatement(sql);
+			statement.setString(1, email);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				commande = getCommandeById(result.getInt("NUMERO"));
+				if (commande != null) {
+					commande.setClient(cli);
+					commandes.add(commande);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return commandes;
 	}
 
 	private static <T extends Impression> ArrayList<Impression> getAllImpressionsByClientId(Client cli, String email) {
@@ -187,11 +211,10 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				impression = getImpressionById(result.getInt("ID_IMPRESSION"));
-				System.out.println(impression.getId_impression());
-				if(impression != null) {
+				if (impression != null) {
 					impression.setClient(cli);
 					impressions.add(impression);
-				}				
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -231,7 +254,7 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				FichierPhoto fp  = getFichierPhotoById(result.getString("CHEMIN"));
+				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
 				fp.setClient(cli);
 				photos.add(fp);
 			}
@@ -345,7 +368,6 @@ public class GestionDB {
 	public static boolean connectionClient(String email, String motDePasse) {
 		String sql = "SELECT * FROM CLIENT WHERE EMAIL = ? AND MOT_DE_PASSE = ?";
 		boolean isConnected = false;
-		
 
 		PreparedStatement statement;
 		try {
@@ -380,22 +402,24 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
+			if (result.next()) {
+				BonAchat bon_achat = null;
+				BonAchat bon_achat_genere = null;
+				Client client = null;
+				Adresse adresse = getAdresseById(result.getInt("ID_ADRESSE"));
 
-			BonAchat bon_achat = null;
-			BonAchat bon_achat_genere = null;
-			Client client = getClientByEmail(result.getString("EMAIL"));
-			Adresse adresse = getAdresseById(result.getInt("ID_ADRESSE"));
+				if (result.getString("CODE_BON") != null) {
+					bon_achat = getBonAchatById(result.getString("CODE_BON"));
+				}
+				if (result.getString("CODE_BON_GENERE") != null) {
+					bon_achat = getBonAchatById(result.getString("CODE_BON_GENERE"));
+				}
 
-			if (result.getString("CODE_BON") != null) {
-				bon_achat = getBonAchatById(result.getString("CODE_BON"));
+				cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client,
+						result.getString("MODE_LIVRAISON"), result.getDate("DATE_COMMANDE"), result.getString("STATUT"),
+						result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
+
 			}
-			if (result.getString("CODE_BON_GENERE") != null) {
-				bon_achat = getBonAchatById(result.getString("CODE_BON_GENERE"));
-			}
-
-			cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client,
-					result.getString("MODE_LIVRAISON"), result.getDate("DATE_COMMANDE"), result.getString("STATUT"),
-					result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -491,13 +515,14 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery();
-			if(result.next()) {
-				fiPhoto = new FichierPhoto(result.getString("CHEMIN"), null,
-						result.getString("RESOLUTION"), result.getDate("DATE_AJOUT"),result.getDate("DATE_NO_PHOTO"),result.getString("INFO_PRISE_VUE"),
-						result.getBoolean("EST_PARTAGE"), null, getPhotosByFichierId(fiPhoto, chemin));
+			if (result.next()) {
+				fiPhoto = new FichierPhoto(result.getString("CHEMIN"), null, result.getString("RESOLUTION"),
+						result.getDate("DATE_AJOUT"), result.getDate("DATE_NO_PHOTO"),
+						result.getString("INFO_PRISE_VUE"), result.getBoolean("EST_PARTAGE"), null,
+						getPhotosByFichierId(fiPhoto, chemin));
 			}
 			statement.close();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -545,7 +570,8 @@ public class GestionDB {
 	}
 
 	// CREATE
-	public static boolean createFichierPhoto(String chemin, String email, String resolution, String info_vue, boolean est_partage) {
+	public static boolean createFichierPhoto(String chemin, String email, String resolution, String info_vue,
+			boolean est_partage) {
 		String sql = "INSERT INTO FICHIERPHOTO (CHEMIN, EMAIL, RESOLUTION, DATE_AJOUT, DATE_NO_PHOTO, INFO_PRISE_VUE, EST_PARTAGE) VALUES (?,?,?,?,?,?,?)";
 		boolean isAdded = false;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -630,7 +656,7 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
-			if(result.next()) {
+			if (result.next()) {
 				photo = new Photo(result.getInt("ID_PHOTO"), null, null, result.getString("DESCRIPTION"),
 						result.getString("RETOUCHE"), result.getInt("NUMERO_PAGE"), result.getInt("POSITION_X"),
 						result.getInt("POSITION_Y"), result.getInt("NB_EXEMPLAIRE"));
@@ -645,20 +671,18 @@ public class GestionDB {
 
 	static <T extends Impression> T getImpressionById(int id) {
 		T impression = null;
-		System.out.println(id);
-		TypeSupport[] types = { TypeSupport.AGENDA, TypeSupport.ALBUM, TypeSupport.CADRE,
-				TypeSupport.CALENDRIER, TypeSupport.TIRAGE };
+		TypeSupport[] types = { TypeSupport.AGENDA, TypeSupport.ALBUM, TypeSupport.CADRE, TypeSupport.CALENDRIER,
+				TypeSupport.TIRAGE };
 		String select = "SELECT ID_IMPRESSION FROM ";
-		String where = " WHERE ID_IMPRESSION = ?" ;
+		String where = " WHERE ID_IMPRESSION = ?";
 		String sql = "";
 		PreparedStatement statement = null;
 
 		try {
 			ResultSet result = null;
 			int cpt = 0;
-			while ((result == null || !result.next()) && cpt < 5) {
+			while (cpt < 5) {
 				sql = select + types[cpt] + where;
-				System.out.println(sql);
 				statement = conn.prepareStatement(sql);
 				statement.setInt(1, id);
 				result = statement.executeQuery();
@@ -667,14 +691,13 @@ public class GestionDB {
 				}
 				cpt++;
 			}
-			
+
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return impression;
 	}
-
 
 	// CREATE
 	public static boolean createPhoto(String chemin, Impression impression, String description, int position_x,
@@ -744,7 +767,7 @@ public class GestionDB {
 			statementChemin.setInt(1, id_photo);
 			ResultSet resultChemin = statementChemin.executeQuery();
 			chemin = resultChemin.getString("CHEMIN");
-			
+
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id_photo);
 
@@ -752,10 +775,11 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
-			if(getPhotosByFichierId(null, chemin).size() == 0) {
+			if (getPhotosByFichierId(null, chemin).size() == 0) {
 				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 				Date date = new Date();
-				String sqlUpdate = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = " + java.sql.Date.valueOf(dateFormat.format(date)) + "WHERE CHEMIN = " + chemin;
+				String sqlUpdate = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = "
+						+ java.sql.Date.valueOf(dateFormat.format(date)) + "WHERE CHEMIN = " + chemin;
 				PreparedStatement statementUpdate = conn.prepareStatement(sqlUpdate);
 				statementUpdate.executeUpdate(sqlUpdate);
 			}
@@ -797,7 +821,7 @@ public class GestionDB {
 	@SuppressWarnings("unchecked")
 	public static <T extends Impression> T getImpressionByIdAndType(TypeSupport type, int id) {
 		String sqlImp = "SELECT * FROM IMPRESSION WHERE ID_IMPRESSION = ?";
-		String sqlT = "SELECT * FROM "+ type.toString()+ " WHERE ID_IMPRESSION = ?";
+		String sqlT = "SELECT * FROM " + type.toString() + " WHERE ID_IMPRESSION = ?";
 		T t = null;
 		try {
 			// REQUETE TYPE POUR VERIFIER SI EXISTE
@@ -806,7 +830,7 @@ public class GestionDB {
 			ResultSet resultT = statementType.executeQuery();
 
 			if (resultT.next()) {
-				
+
 				// REQUETE IMPRESSION POUR RECUP DONNEES
 
 				int idT = resultT.getInt("ID_IMPRESSION");
@@ -814,7 +838,7 @@ public class GestionDB {
 				PreparedStatement statementImp = conn.prepareStatement(sqlImp);
 				statementImp.setInt(1, idT);
 				ResultSet resultImp = statementImp.executeQuery();
-				if(resultImp.next()) {
+				if (resultImp.next()) {
 					int nb_impression = resultImp.getInt("NB_IMPRESSION");
 					int montant_total = resultImp.getInt("MONTANT_TOTAL");
 					boolean etat_impression = resultImp.getBoolean("ETAT_IMPRESSION");
@@ -822,30 +846,34 @@ public class GestionDB {
 					int numero = resultImp.getInt("NUMERO");
 					Client client = null;
 					Commande commande = null;
-					Stock stock = getStockById(type,resultImp.getString("QUALITE"),resultImp.getString("FORMAT"));
+					Stock stock = getStockById(type, resultImp.getString("QUALITE"), resultImp.getString("FORMAT"));
 					
 					if (type == TypeSupport.AGENDA) {
 						t = (T) new Agenda(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-								etat_impression, getAllPhotoByIdImpression(t, idT),commande, resultT.getString("MODELE"));
+								etat_impression, getAllPhotoByIdImpression(t, idT), commande,
+								resultT.getString("MODELE"));
 					}
 					if (type == TypeSupport.ALBUM) {
 						t = (T) new Album(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-								etat_impression, getAllPhotoByIdImpression(t, idT),commande,  resultT.getString("TITRE"), resultT.getString("MISE_EN_PAGE"));
+								etat_impression, getAllPhotoByIdImpression(t, idT), commande,
+								resultT.getString("TITRE"), resultT.getString("MISE_EN_PAGE"));
 					}
 					if (type == TypeSupport.CADRE) {
 						t = (T) new Cadre(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-								etat_impression, getAllPhotoByIdImpression(t, idT),commande, resultT.getString("MISE_EN_PAGE"), resultT.getString("MODELE"));
+								etat_impression, getAllPhotoByIdImpression(t, idT), commande,
+								resultT.getString("MISE_EN_PAGE"), resultT.getString("MODELE"));
 					}
 					if (type == TypeSupport.CALENDRIER) {
-						t = (T) new Calendrier(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-								etat_impression, getAllPhotoByIdImpression(t, idT),commande,  resultT.getString("MODELE"));
+						t = (T) new Calendrier(idT, date_impression, nb_impression, client, stock, numero,
+								montant_total, etat_impression, getAllPhotoByIdImpression(t, idT), commande,
+								resultT.getString("MODELE"));
 					}
 					if (type == TypeSupport.TIRAGE) {
 						t = (T) new Tirage(idT, date_impression, nb_impression, client, stock, numero, montant_total,
 								etat_impression, getAllPhotoByIdImpression(t, idT), commande);
 					}
 				}
-				
+
 				statementImp.close();
 			}
 		} catch (SQLException e) {
@@ -875,24 +903,23 @@ public class GestionDB {
 	}
 
 	// CREATE
-	public static int createImpression(TypeSupport type, Client client, Stock stock,
-			int numero , float montant_total, boolean etat_impression, int nb_impression,
-			String modele, String titre, String mise_en_page) {
+	public static int createImpression(TypeSupport type, Client client, Stock stock, int numero, float montant_total,
+			boolean etat_impression, int nb_impression, String modele, String titre, String mise_en_page) {
 		String sqlImp = "INSERT INTO IMPRESSION(EMAIL, TYPE_SUPPORT, FORMAT, QUALITE, DATE_IMPRESSION, MONTANT_TOTAL, ETAT_IMPRESSION, NB_IMPRESSION) "
 				+ "VALUES (?,?,?,?,?,?,?) RETURNING ID_IMPRESSION";
 		String sqlImpExt = "";
 		int isAdded = -1;
-		LocalDate todayLocalDate = LocalDate.now( ZoneId.systemDefault() );  
-		java.sql.Date sqlDate = java.sql.Date.valueOf( todayLocalDate );
-		
+		LocalDate todayLocalDate = LocalDate.now(ZoneId.systemDefault());
+		java.sql.Date sqlDate = java.sql.Date.valueOf(todayLocalDate);
+
 		PreparedStatement statementImp = null;
 		PreparedStatement statementImpExt = null;
 		try {
 			statementImp = conn.prepareStatement(sqlImp);
 			statementImp.setString(1, client.getEmail());
-			statementImp.setString(2, stock==null?null:stock.getType_support().toString());
-			statementImp.setString(3, stock==null?null:stock.getFormat());
-			statementImp.setString(4, stock==null?null:stock.getQualite());
+			statementImp.setString(2, stock == null ? null : stock.getType_support().toString());
+			statementImp.setString(3, stock == null ? null : stock.getFormat());
+			statementImp.setString(4, stock == null ? null : stock.getQualite());
 			statementImp.setDate(5, sqlDate);
 			statementImp.setFloat(6, montant_total);
 			statementImp.setBoolean(7, etat_impression);
@@ -901,46 +928,40 @@ public class GestionDB {
 			ResultSet resultImp = statementImp.executeQuery();
 			int id_impression = -1;
 			int rowsInsertedTirage = -1;
-			
-			if(resultImp.next())
-			{
+
+			if (resultImp.next()) {
 				id_impression = resultImp.getInt("ID_IMPRESSION");
-				
+
 				if (type == TypeSupport.AGENDA) {
 					sqlImpExt = "INSERT INTO AGENDA (ID_IMPRESSION, MODELE) " + "VALUES (?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
 					statementImpExt.setString(2, modele);
-				}
-				else if (type == TypeSupport.ALBUM) {
+				} else if (type == TypeSupport.ALBUM) {
 					sqlImpExt = "INSERT INTO ALBUM (ID_IMPRESSION, TITRE, MISE_EN_PAGE) " + "VALUES (?,?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
 					statementImpExt.setString(2, titre);
 					statementImpExt.setString(3, mise_en_page);
-				}
-				else if (type == TypeSupport.CADRE) {
+				} else if (type == TypeSupport.CADRE) {
 					sqlImpExt = "INSERT INTO CADRE (ID_IMPRESSION, MISE_EN_PAGE, MODELE)" + " VALUES (?,?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
 					statementImpExt.setString(2, mise_en_page);
 					statementImpExt.setString(3, modele);
-				}
-				else if (type == TypeSupport.CALENDRIER) {
+				} else if (type == TypeSupport.CALENDRIER) {
 					sqlImpExt = "INSERT INTO CALENDRIER (ID_IMPRESSION, MODELE) " + "VALUES (?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
 					statementImpExt.setString(2, modele);
-				}
-				else if (type == TypeSupport.TIRAGE) {
+				} else if (type == TypeSupport.TIRAGE) {
 					sqlImpExt = "INSERT INTO TIRAGE (ID_IMPRESSION)" + " VALUES (?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
 				}
-				
+
 				rowsInsertedTirage = statementImpExt.executeUpdate();
 			}
-			
 
 			if (rowsInsertedTirage > 0) {
 				isAdded = id_impression;
@@ -1039,10 +1060,10 @@ public class GestionDB {
 		try {
 			PreparedStatement statementImp = conn.prepareStatement(sqlImp);
 			PreparedStatement statementImpExt = conn.prepareStatement(sqlImpExt);
-			
+
 			statementImp.setString(1, type);
 			statementImp.setInt(2, id);
-			
+
 			statementImpExt.setInt(1, id);
 
 			int rowsDeletedImp = statementImp.executeUpdate();
@@ -1072,18 +1093,18 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, id);
 			ResultSet result = statement.executeQuery();
-			if(result.next()) {
-				if(result.getInt("NUMERO") >= 0) {
+			if (result.next()) {
+				if (result.getInt("NUMERO") >= 0) {
 					commande = getCommandeById(result.getInt("NUMERO"));
 				}
-				if(result.getInt("NUMERO_GENERE") >= 0) {
+				if (result.getInt("NUMERO_GENERE") >= 0) {
 					commandeG = getCommandeById(result.getInt("NUMERO_GENERE"));
 				}
-				if(result.getString("EMAIL") != null) {
+				if (result.getString("EMAIL") != null) {
 					client = getClientByEmail(result.getString("EMAIL"));
 				}
-				bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client, result.getInt("POURCENTAGEREDUC"),
-						result.getString("TYPE_BONACHAT"));
+				bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client,
+						result.getInt("POURCENTAGEREDUC"), result.getString("TYPE_BONACHAT"));
 			}
 			statement.close();
 
@@ -1092,7 +1113,7 @@ public class GestionDB {
 		}
 		return bon_achat;
 	}
-	
+
 	public static BonAchat getBonAchatByEmail(String email) {
 		String sql = "SELECT * FROM BON_ACHAT WHERE EMAIL = ? AND NUMERO = null";
 		BonAchat bon_achat = null;
@@ -1103,15 +1124,14 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
-			if(result.next()) {
-				if(result.getInt("NUMERO_GENERE") >= 0) {
+			if (result.next()) {
+				if (result.getInt("NUMERO_GENERE") >= 0) {
 					commandeG = getCommandeById(result.getInt("NUMERO_GENERE"));
 				}
-				bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client, result.getInt("POURCENTAGEREDUC"),
-						result.getString("TYPE_BONACHAT"));
+				bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client,
+						result.getInt("POURCENTAGEREDUC"), result.getString("TYPE_BONACHAT"));
 			}
 			statement.close();
-			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1199,19 +1219,20 @@ public class GestionDB {
 	public static Stock getStockById(TypeSupport type, String qualite, String format) {
 		String sql = "SELECT * FROM STOCK WHERE TYPE_SUPPORT = ? AND QUALITE = ? AND FORMAT = ?";
 		Stock stock = null;
+		String type_s = type.toString().toLowerCase();
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setString(1, type.name());
+			statement.setString(1, type_s);
 			statement.setString(2, qualite);
 			statement.setString(3, format);
 			ResultSet result = statement.executeQuery();
-			if(result.next()) {
-				stock = new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT")), result.getString("QUALITE"),
+			if (result.next()) {
+				stock = new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT").toUpperCase()), result.getString("QUALITE"),
 						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX"));
 
 			}
 			statement.close();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

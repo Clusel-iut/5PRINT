@@ -8,13 +8,14 @@ public class Client {
 	private String nom;
 	private String prenom;
 	private String motDePasse;
-	private ArrayList<Adresse> adresses;
-	private ArrayList<FichierPhoto> photos; //Les photos dont il est propri�taire
-	private ArrayList<FichierPhoto> photos_partagees; //Les photos qui ne sont pas � lui
-	private ArrayList<Impression> impressions;
+	private ArrayList<Adresse> adresses = new ArrayList<Adresse>();
+	private ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>(); //Les photos dont il est propri�taire
+	private ArrayList<FichierPhoto> photos_partagees = new ArrayList<FichierPhoto>(); //Les photos qui ne sont pas � lui
+	private ArrayList<Impression> impressions = new ArrayList<Impression>();
+	private ArrayList<Commande> commandes = new ArrayList<Commande>();
 
 	public Client(String email, String nom, String prenom, ArrayList<Adresse> adresses, String motDePasse,
-			ArrayList<FichierPhoto> photosP, ArrayList<FichierPhoto> photos, ArrayList<Impression> impressions) {
+			ArrayList<FichierPhoto> photosP, ArrayList<FichierPhoto> photos, ArrayList<Impression> impressions, ArrayList<Commande> commandes) {
 		this.email = email;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -24,6 +25,7 @@ public class Client {
 		this.photos = photos;
 		this.photos_partagees = photosP;
 		this.setImpressions(impressions);
+		this.setCommandes(commandes);
 	}
 	
 	public Client(String email, String nom, String prenom, String motDePasse) {
@@ -130,6 +132,18 @@ public class Client {
 	
 	public void addImpression(Impression impression) {
 		this.impressions.add(impression);
+	}
+
+	public ArrayList<Commande> getCommandes() {
+		return commandes;
+	}
+
+	public void setCommandes(ArrayList<Commande> commandes) {
+		this.commandes = commandes;
+	}
+	
+	public void addCommande(Commande commande) {
+		this.commandes.add(commande);
 	}
 	
 	
