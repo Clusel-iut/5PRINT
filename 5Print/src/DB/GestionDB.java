@@ -166,16 +166,17 @@ public class GestionDB {
 
 			if(result.next()){
 				cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"),
-						getAllAdresseByClientId(email), result.getString("MOT_DE_PASSE"), getAllPhotosByClientId(email),
-						getAllPhotosPartageesByClientId(email), getAllImpressionsByClientId(email));
+						getAllAdresseByClientId(cli, email), result.getString("MOT_DE_PASSE"), getAllPhotosByClientId(cli, email),
+						getAllPhotosPartageesByClientId(cli, email), getAllImpressionsByClientId(cli, email));
 			}
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return cli;
 	}
 
-	private static <T extends Impression> ArrayList<Impression> getAllImpressionsByClientId(String email) {
+	private static <T extends Impression> ArrayList<Impression> getAllImpressionsByClientId(Client cli, String email) {
 		ArrayList<Impression> impressions = new ArrayList<Impression>();
 		String sql = "SELECT ID_IMPRESSION FROM IMPRESSION WHERE EMAIL = ?";
 		PreparedStatement statement;
@@ -186,7 +187,9 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				impression = getImpressionById(result.getInt("ID_IMPRESSION"));
+				System.out.println(impression.getId_impression());
 				if(impression != null) {
+					impression.setClient(cli);
 					impressions.add(impression);
 				}				
 			}
@@ -194,10 +197,10 @@ public class GestionDB {
 			e.printStackTrace();
 		}
 
-		return null;
+		return impressions;
 	}
 
-	private static ArrayList<FichierPhoto> getAllPhotosPartageesByClientId(String email) {
+	private static ArrayList<FichierPhoto> getAllPhotosPartageesByClientId(Client cli, String email) {
 		ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>();
 		String sql = "SELECT CHEMIN FROM PARTAGE WHERE EMAIL = ?";
 		PreparedStatement statement;
@@ -207,7 +210,9 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				photos.add(getFichierPhotoById(result.getString("CHEMIN")));
+				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				fp.setClient(cli);
+				photos.add(fp);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -216,7 +221,7 @@ public class GestionDB {
 		return photos;
 	}
 
-	private static ArrayList<FichierPhoto> getAllPhotosByClientId(String email) {
+	private static ArrayList<FichierPhoto> getAllPhotosByClientId(Client cli, String email) {
 		ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>();
 		String sql = "SELECT CHEMIN FROM FICHIERPHOTO WHERE EMAIL = ?";
 		PreparedStatement statement;
@@ -226,8 +231,11 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				photos.add(getFichierPhotoById(result.getString("CHEMIN")));
+				FichierPhoto fp  = getFichierPhotoById(result.getString("CHEMIN"));
+				fp.setClient(cli);
+				photos.add(fp);
 			}
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -235,7 +243,7 @@ public class GestionDB {
 		return photos;
 	}
 
-	private static ArrayList<Adresse> getAllAdresseByClientId(String email) {
+	private static ArrayList<Adresse> getAllAdresseByClientId(Client cli, String email) {
 		ArrayList<Adresse> adresses = new ArrayList<Adresse>();
 		String sql = "SELECT ID_ADRESSE FROM ADRESSE WHERE EMAIL = ?";
 		PreparedStatement statement;
@@ -245,8 +253,11 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				adresses.add(getAdresseById(result.getInt("ID_ADRESSE")));
+				Adresse adresse = getAdresseById(result.getInt("ID_ADRESSE"));
+				adresse.setClient(cli);
+				adresses.add(adresse);
 			}
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -480,16 +491,20 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery();
-			fiPhoto = new FichierPhoto(result.getString("CHEMIN"), getClientByEmail(result.getString("EMAIL")),
-					result.getString("RESOLUTION"), result.getDate("DATE_AJOUT"),result.getDate("DATE_NO_PHOTO"),result.getString("INFO_PRISE_VUE"),
-					result.getBoolean("EST_PARTAGE"), getClientsByFichierId(chemin), getPhotoByFichierId(chemin));
+			if(result.next()) {
+				fiPhoto = new FichierPhoto(result.getString("CHEMIN"), null,
+						result.getString("RESOLUTION"), result.getDate("DATE_AJOUT"),result.getDate("DATE_NO_PHOTO"),result.getString("INFO_PRISE_VUE"),
+						result.getBoolean("EST_PARTAGE"), null, getPhotosByFichierId(fiPhoto, chemin));
+			}
+			statement.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return fiPhoto;
 	}
 
-	private static ArrayList<Photo> getPhotoByFichierId(String chemin) {
+	private static ArrayList<Photo> getPhotosByFichierId(FichierPhoto fichier, String chemin) {
 		ArrayList<Photo> photos = new ArrayList<Photo>();
 		String sql = "SELECT ID_PHOTO FROM PHOTO WHERE CHEMIN = ?";
 		PreparedStatement statement;
@@ -499,8 +514,11 @@ public class GestionDB {
 			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				photos.add(getPhotoById(result.getInt("ID_PHOTO")));
+				Photo photo = getPhotoById(result.getInt("ID_PHOTO"));
+				photo.setFichier(fichier);
+				photos.add(photo);
 			}
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -612,9 +630,12 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
-			photo = new Photo(result.getInt("ID_PHOTO"), getFichierPhotoById(result.getString("CHEMIN")), getImpressionById(result.getInt("ID_IMPRESSION")), result.getString("DESCRIPTION"),
-					result.getString("RETOUCHE"), result.getInt("NUMERO_PAGE"), result.getInt("POSITION_X"),
-					result.getInt("POSITION_Y"), result.getInt("NB_EXEMPLAIRE"));
+			if(result.next()) {
+				photo = new Photo(result.getInt("ID_PHOTO"), null, null, result.getString("DESCRIPTION"),
+						result.getString("RETOUCHE"), result.getInt("NUMERO_PAGE"), result.getInt("POSITION_X"),
+						result.getInt("POSITION_Y"), result.getInt("NB_EXEMPLAIRE"));
+			}
+			statement.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -622,29 +643,32 @@ public class GestionDB {
 		return photo;
 	}
 
-	private static <T extends Impression> T getImpressionById(int id) {
+	static <T extends Impression> T getImpressionById(int id) {
 		T impression = null;
+		System.out.println(id);
 		TypeSupport[] types = { TypeSupport.AGENDA, TypeSupport.ALBUM, TypeSupport.CADRE,
 				TypeSupport.CALENDRIER, TypeSupport.TIRAGE };
-		String select = "SELECT ID_IMPRESSION FROM";
-		String where = "WHERE ID_IMPRESSION = ?" ;
+		String select = "SELECT ID_IMPRESSION FROM ";
+		String where = " WHERE ID_IMPRESSION = ?" ;
 		String sql = "";
-		PreparedStatement statement;
+		PreparedStatement statement = null;
 
 		try {
 			ResultSet result = null;
 			int cpt = 0;
-			while (result == null && cpt < 5) {
+			while ((result == null || !result.next()) && cpt < 5) {
 				sql = select + types[cpt] + where;
+				System.out.println(sql);
 				statement = conn.prepareStatement(sql);
 				statement.setInt(1, id);
 				result = statement.executeQuery();
+				if (result.next()) {
+					impression = getImpressionByIdAndType(types[cpt], id);
+				}
 				cpt++;
-
 			}
-			if (cpt < 5) {
-				impression = getImpressionByIdAndType(types[cpt], id);
-			}
+			
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -728,7 +752,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
-			if(getPhotoByFichierId(chemin).size() == 0) {
+			if(getPhotosByFichierId(null, chemin).size() == 0) {
 				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 				Date date = new Date();
 				String sqlUpdate = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = " + java.sql.Date.valueOf(dateFormat.format(date)) + "WHERE CHEMIN = " + chemin;
@@ -775,7 +799,6 @@ public class GestionDB {
 		String sqlImp = "SELECT * FROM IMPRESSION WHERE ID_IMPRESSION = ?";
 		String sqlT = "SELECT * FROM "+ type.toString()+ " WHERE ID_IMPRESSION = ?";
 		T t = null;
-		System.out.println(sqlT);
 		try {
 			// REQUETE TYPE POUR VERIFIER SI EXISTE
 			PreparedStatement statementType = conn.prepareStatement(sqlT);
@@ -791,46 +814,47 @@ public class GestionDB {
 				PreparedStatement statementImp = conn.prepareStatement(sqlImp);
 				statementImp.setInt(1, idT);
 				ResultSet resultImp = statementImp.executeQuery();
-
-				int nb_impression = resultImp.getInt("NB_IMPRESSION");
-				int montant_total = resultImp.getInt("MONTANT_TOTAL");
-				boolean etat_impression = resultImp.getBoolean("ETAT_IMPRESSION");
-				Date date_impression = resultImp.getTimestamp("DATE_IMPRESSION");
-				int numero = resultImp.getInt("NUMERO");
-				Client client = getClientByEmail(resultImp.getString("EMAIL"));
-				Commande commande = getCommandeById(resultImp.getInt("NUMERO"));
-				Stock stock = getStockById(type,resultImp.getString("QUALITE"),resultImp.getString("FORMAT"));
+				if(resultImp.next()) {
+					int nb_impression = resultImp.getInt("NB_IMPRESSION");
+					int montant_total = resultImp.getInt("MONTANT_TOTAL");
+					boolean etat_impression = resultImp.getBoolean("ETAT_IMPRESSION");
+					Date date_impression = resultImp.getTimestamp("DATE_IMPRESSION");
+					int numero = resultImp.getInt("NUMERO");
+					Client client = null;
+					Commande commande = null;
+					Stock stock = getStockById(type,resultImp.getString("QUALITE"),resultImp.getString("FORMAT"));
+					
+					if (type == TypeSupport.AGENDA) {
+						t = (T) new Agenda(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+								etat_impression, getAllPhotoByIdImpression(t, idT),commande, resultT.getString("MODELE"));
+					}
+					if (type == TypeSupport.ALBUM) {
+						t = (T) new Album(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+								etat_impression, getAllPhotoByIdImpression(t, idT),commande,  resultT.getString("TITRE"), resultT.getString("MISE_EN_PAGE"));
+					}
+					if (type == TypeSupport.CADRE) {
+						t = (T) new Cadre(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+								etat_impression, getAllPhotoByIdImpression(t, idT),commande, resultT.getString("MISE_EN_PAGE"), resultT.getString("MODELE"));
+					}
+					if (type == TypeSupport.CALENDRIER) {
+						t = (T) new Calendrier(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+								etat_impression, getAllPhotoByIdImpression(t, idT),commande,  resultT.getString("MODELE"));
+					}
+					if (type == TypeSupport.TIRAGE) {
+						t = (T) new Tirage(idT, date_impression, nb_impression, client, stock, numero, montant_total,
+								etat_impression, getAllPhotoByIdImpression(t, idT), commande);
+					}
+				}
 				
-				if (type == TypeSupport.AGENDA) {
-					t = (T) new Agenda(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT),commande, resultT.getString("MODELE"));
-				}
-				if (type == TypeSupport.ALBUM) {
-					t = (T) new Album(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT),commande,  resultT.getString("TITRE"), resultT.getString("MISE_EN_PAGE"));
-				}
-				if (type == TypeSupport.CADRE) {
-					t = (T) new Cadre(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT),commande, resultT.getString("MISE_EN_PAGE"), resultT.getString("MODELE"));
-				}
-				if (type == TypeSupport.CALENDRIER) {
-					t = (T) new Calendrier(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT),commande,  resultT.getString("MODELE"));
-				}
-				if (type == TypeSupport.TIRAGE) {
-					t = (T) new Tirage(idT, date_impression, nb_impression, client, stock, numero, montant_total,
-							etat_impression, getAllPhotoByIdImpression(idT), commande);
-				}
-
+				statementImp.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return t;
 	}
 
-	private static ArrayList<Photo> getAllPhotoByIdImpression(int idT) {
+	private static ArrayList<Photo> getAllPhotoByIdImpression(Impression imp, int idT) {
 		ArrayList<Photo> photos = new ArrayList<Photo>();
 		String sql = "SELECT ID_PHOTO FROM PHOTO WHERE ID_IMPRESSION = ?";
 
@@ -840,7 +864,9 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
-				photos.add(getPhotoById(result.getInt("ID_PHOTO")));
+				Photo photo = getPhotoById(result.getInt("ID_PHOTO"));
+				photo.setImpression(imp);
+				photos.add(photo);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1046,17 +1072,46 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, id);
 			ResultSet result = statement.executeQuery();
-			if(result.getInt("NUMERO") >= 0) {
-				commande = getCommandeById(result.getInt("NUMERO"));
+			if(result.next()) {
+				if(result.getInt("NUMERO") >= 0) {
+					commande = getCommandeById(result.getInt("NUMERO"));
+				}
+				if(result.getInt("NUMERO_GENERE") >= 0) {
+					commandeG = getCommandeById(result.getInt("NUMERO_GENERE"));
+				}
+				if(result.getString("EMAIL") != null) {
+					client = getClientByEmail(result.getString("EMAIL"));
+				}
+				bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client, result.getInt("POURCENTAGEREDUC"),
+						result.getString("TYPE_BONACHAT"));
 			}
-			if(result.getInt("NUMERO_GENERE") >= 0) {
-				commandeG = getCommandeById(result.getInt("NUMERO_GENERE"));
+			statement.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return bon_achat;
+	}
+	
+	public static BonAchat getBonAchatByEmail(String email) {
+		String sql = "SELECT * FROM BON_ACHAT WHERE EMAIL = ? AND NUMERO = null";
+		BonAchat bon_achat = null;
+		Commande commande = null;
+		Commande commandeG = null;
+		Client client = null;
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, email);
+			ResultSet result = statement.executeQuery();
+			if(result.next()) {
+				if(result.getInt("NUMERO_GENERE") >= 0) {
+					commandeG = getCommandeById(result.getInt("NUMERO_GENERE"));
+				}
+				bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client, result.getInt("POURCENTAGEREDUC"),
+						result.getString("TYPE_BONACHAT"));
 			}
-			if(result.getString("EMAIL") != null) {
-				client = getClientByEmail(result.getString("EMAIL"));
-			}
-			bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client, result.getInt("POURCENTAGEREDUC"),
-					result.getString("TYPE_BONACHAT"));
+			statement.close();
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1150,9 +1205,13 @@ public class GestionDB {
 			statement.setString(2, qualite);
 			statement.setString(3, format);
 			ResultSet result = statement.executeQuery();
-			stock = new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT")), result.getString("QUALITE"),
-					result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX"));
+			if(result.next()) {
+				stock = new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT")), result.getString("QUALITE"),
+						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX"));
 
+			}
+			statement.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
