@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.ProfilController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.ProfilController">
    <children>
       <ImageView fitHeight="62.0" fitWidth="145.0" layoutX="14.0" layoutY="14.0">
          <image>
@@ -56,16 +56,17 @@
       <TextField fx:id="userNom" layoutX="186.0" layoutY="262.0" prefHeight="31.0" prefWidth="358.0" />
       <PasswordField fx:id="userPassword" layoutX="186.0" layoutY="331.0" prefHeight="31.0" prefWidth="358.0" />
       <ComboBox fx:id="listAddress" layoutX="184.0" layoutY="403.0" prefHeight="31.0" prefWidth="358.0" />
-      <Button layoutX="550.0" layoutY="403.0" mnemonicParsing="false" onMouseClicked="#addAddress" style="-fx-text-fill: white; -fx-background-color: orange;" text="Ajouter" />
+      <Button layoutX="652.0" layoutY="403.0" mnemonicParsing="false" onMouseClicked="#addAddress" style="-fx-text-fill: white; -fx-background-color: orange;" text="Ajouter" />
       <Button layoutX="186.0" layoutY="466.0" mnemonicParsing="false" onMouseClicked="#save" prefHeight="62.0" prefWidth="358.0" style="-fx-background-color: orange; -fx-text-fill: white;" text="Sauvegarder">
          <font>
             <Font size="23.0" />
          </font>
       </Button>
-      <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="14.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#back">
+      <ImageView fitHeight="26.0" fitWidth="21.0" layoutX="14.0" layoutY="106.0" onMouseClicked="#back" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../Ressources/left-arrow.png" />
          </image>
       </ImageView>
+      <Button layoutX="554.0" layoutY="403.0" mnemonicParsing="false" onMouseClicked="#deleteAddress" style="-fx-text-fill: white; -fx-background-color: orange;" text="Supprimer" />
    </children>
 </AnchorPane>
