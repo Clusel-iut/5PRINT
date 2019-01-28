@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+   <children>
+      <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
+         <image>
+            <Image url="@../../Ressources/logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="81.0" layoutY="131.0" text="ID COMMANDE :">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label id="idCommande" layoutX="235.0" layoutY="131.0" text="\@idCommande">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="107.0" layoutY="167.0" text="BON ACHAT :">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <ComboBox id="bonsAchats" layoutX="235.0" layoutY="165.0" prefHeight="31.0" prefWidth="293.0" />
+      <Label layoutX="133.0" layoutY="245.0" text="ADRESSE :">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <ComboBox id="adresses" layoutX="235.0" layoutY="243.0" prefHeight="31.0" prefWidth="293.0" />
+      <Label layoutX="275.0" layoutY="38.0" text="COMMANDE">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Label layoutX="61.0" layoutY="206.0" text="MODE LIVRAISON :">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <ComboBox id="modeLivraison" layoutX="235.0" layoutY="203.0" prefHeight="31.0" prefWidth="293.0" />
+      <Label layoutX="149.0" layoutY="281.0" text="PAYER :">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <CheckBox id="payer" layoutX="235.0" layoutY="284.0" mnemonicParsing="false" />
+      <TableView layoutX="61.0" layoutY="344.0" prefHeight="199.0" prefWidth="566.0">
+        <columns>
+          <TableColumn prefWidth="128.0" style="-fx-background-color: orange;" text="ID IMPRESSION" />
+          <TableColumn minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="DATE" />
+            <TableColumn minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="TYPE" />
+            <TableColumn minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="FORMAT" />
+            <TableColumn minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="QUALITE" />
+        </columns>
+      </TableView>
+      <Button layoutX="766.0" layoutY="312.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="VALIDER">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Button>
+      <Button layoutX="748.0" layoutY="226.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="ANNULER">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
