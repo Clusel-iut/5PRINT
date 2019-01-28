@@ -145,6 +145,11 @@ public class Client {
 	public void addCommande(Commande commande) {
 		this.commandes.add(commande);
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Client [email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", motDePasse=" + motDePasse
+				+ ", adresses=" + adresses + ", photos=" + photos + ", photos_partagees=" + photos_partagees
+				+ ", impressions=" + impressions + ", commandes=" + commandes + "]";
+	}	
 }
