@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.22073578595317725" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.PageRecapController">
+<SplitPane dividerPositions="0.22073578595317725" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.PageRecapController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: white;">
          <children>
@@ -31,25 +31,27 @@
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-            <SplitPane dividerPositions="0.501004016064257" prefHeight="462.0" prefWidth="998.0">
+            <SplitPane dividerPositions="0.33433734939759036, 0.6736947791164659" prefHeight="462.0" prefWidth="998.0">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="460.0" prefWidth="530.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="460.0" prefWidth="847.0">
                      <children>
-                        <TabPane prefHeight="462.0" prefWidth="495.0" tabClosingPolicy="UNAVAILABLE">
+                        <TabPane prefHeight="462.0" prefWidth="332.0" tabClosingPolicy="UNAVAILABLE">
                           <tabs>
                             <Tab style="-fx-background-color: orange; -fx-text-fill: white;" text="Impressions">
                               <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="315.0" prefWidth="495.0">
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="423.0" prefWidth="332.0">
                                        <children>
-                                          <TableView prefHeight="371.0" prefWidth="495.0">
+                                          <TableView prefHeight="371.0" prefWidth="332.0">
                                             <columns>
-                                              <TableColumn prefWidth="75.0" text="ID" />
-                                              <TableColumn prefWidth="75.0" text="DATE" />
-                                                <TableColumn prefWidth="75.0" text="TYPE" />
+                                              <TableColumn prefWidth="32.0" text="ID" />
+                                              <TableColumn prefWidth="86.0" text="DATE" />
+                                                <TableColumn prefWidth="66.0" text="TYPE" />
+                                                <TableColumn prefWidth="71.0" text="FORMAT" />
+                                                <TableColumn prefWidth="76.0" text="QUALITE" />
                                             </columns>
                                           </TableView>
-                                          <Button layoutX="14.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Créer" onMouseClicked="#create"/>
-                                          <Button layoutX="422.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Editer" />
+                                          <Button layoutX="14.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#create" style="-fx-background-color: orange; -fx-text-fill: white;" text="Créer" />
+                                          <Button layoutX="259.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Editer" />
                                        </children>
                                     </AnchorPane>
                               </content>
@@ -60,20 +62,22 @@
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="460.0" prefWidth="577.0">
                      <children>
-                        <TabPane prefHeight="460.0" prefWidth="495.0" tabClosingPolicy="UNAVAILABLE">
+                        <TabPane prefHeight="460.0" prefWidth="332.0" tabClosingPolicy="UNAVAILABLE">
                           <tabs>
                             <Tab style="-fx-background-color: orange; -fx-text-fill: white;" text="Photos">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <TableView prefHeight="371.0" prefWidth="495.0">
+                                          <TableView prefHeight="371.0" prefWidth="332.0">
                                             <columns>
-                                              <TableColumn prefWidth="75.0" text="C1" />
-                                              <TableColumn prefWidth="75.0" text="C2" />
+                                              <TableColumn prefWidth="42.0" text="ID" />
+                                              <TableColumn prefWidth="88.0" text="FICHIER" />
+                                                <TableColumn prefWidth="122.0" text="RESOLUTION" />
+                                                <TableColumn prefWidth="79.0" text="DATE" />
                                             </columns>
                                           </TableView>
                                           <Button layoutX="14.0" layoutY="380.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Ajouter" />
-                                          <Button layoutX="405.0" layoutY="380.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Partager" />
+                                          <Button layoutX="242.0" layoutY="380.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Partager" />
                                        </children>
                                     </AnchorPane>
                               </content>
@@ -82,10 +86,12 @@
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <TableView prefHeight="371.0" prefWidth="495.0">
+                                          <TableView prefHeight="371.0" prefWidth="332.0">
                                             <columns>
-                                              <TableColumn prefWidth="75.0" text="C1" />
-                                              <TableColumn prefWidth="75.0" text="C2" />
+                                              <TableColumn prefWidth="37.0" text="ID" />
+                                                <TableColumn prefWidth="97.0" text="FICHIER" />
+                                                <TableColumn prefWidth="130.0" text="RESOLUTION" />
+                                                <TableColumn prefWidth="67.0" text="DATE" />
                                             </columns>
                                           </TableView>
                                        </children>
@@ -93,6 +99,32 @@
                               </content>
                             </Tab>
                           </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="460.0" prefWidth="328.0">
+                     <children>
+                        <TabPane prefHeight="460.0" prefWidth="332.0" tabClosingPolicy="UNAVAILABLE">
+                           <tabs>
+                              <Tab style="-fx-background-color: orange; -fx-text-fill: white;" text="Panier">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="261.0">
+                                       <children>
+                                          <TableView prefHeight="371.0" prefWidth="321.0">
+                                             <columns>
+                                                <TableColumn prefWidth="30.0" text="ID" />
+                                                <TableColumn minWidth="0.0" prefWidth="76.0" text="DATE" />
+                                                <TableColumn minWidth="0.0" prefWidth="75.0" text="TYPE" />
+                                                <TableColumn minWidth="0.0" prefWidth="69.0" text="FORMAT" />
+                                                <TableColumn minWidth="0.0" prefWidth="70.0" text="QUALITE" />
+                                             </columns>
+                                          </TableView>
+                                          <Button layoutX="236.0" layoutY="380.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Valider" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                           </tabs>
                         </TabPane>
                      </children>
                   </AnchorPane>
