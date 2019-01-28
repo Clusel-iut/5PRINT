@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="318.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="interfaces.controllers.CreationImpressionController">
+<AnchorPane prefHeight="318.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.CreationImpressionController">
    <children>
       <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
          <image>
@@ -21,13 +20,13 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <ComboBox fx:id="listeImpressions" layoutX="426.0" layoutY="150.0" prefWidth="150.0" />
-      <Label layoutX="426.0" layoutY="124.0" text="Type impression">
+      <ComboBox fx:id="listeStock" layoutX="98.0" layoutY="151.0" prefHeight="31.0" prefWidth="797.0" />
+      <Label layoutX="345.0" layoutY="124.0" text="Choix type/qualité/format d'impression :">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Button layoutX="630.0" layoutY="242.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Créer" onMouseClicked="#create"/>
-      <Button layoutX="315.0" layoutY="242.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Annuler" onMouseClicked="#back"/>
+      <Button layoutX="630.0" layoutY="242.0" mnemonicParsing="false" onMouseClicked="#create" style="-fx-background-color: orange; -fx-text-fill: white;" text="Créer" />
+      <Button layoutX="315.0" layoutY="242.0" mnemonicParsing="false" onMouseClicked="#back" style="-fx-background-color: orange; -fx-text-fill: white;" text="Annuler" />
    </children>
 </AnchorPane>

@@ -58,6 +58,13 @@ public class ProfilController implements Initializable {
 	}
 	
 	@FXML
+    void deleteAddress(MouseEvent event) {
+		if(this.listAddress.getSelectionModel() != null) {
+			GestionDB.deleteAdresseById(listAddress.getSelectionModel().getSelectedItem().getId_adresse());
+		}
+	}
+	
+	@FXML
     void save(MouseEvent event) {
 		if(GestionDB.updateClient(new Client(userEmail.getText(), userNom.getText(), userPrenom.getText(), userPassword.getText()))) {
 			LocalDataClient.refresh();

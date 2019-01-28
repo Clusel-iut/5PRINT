@@ -44,6 +44,11 @@ public class Stock {
 	public void setPrix(int prix) {
 		this.prix = prix;
 	}
+	@Override
+	public String toString() {
+		return "Stock [type_support=" + type_support.toString() + ", qualite=" + qualite + ", format=" + format + ", prix=" + prix
+				+ "€]";
+	}
 	
 	
 }
