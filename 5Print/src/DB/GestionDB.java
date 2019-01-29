@@ -1258,11 +1258,11 @@ public class GestionDB {
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
-
+			stocks = new ArrayList<Stock>();
 			while (result.next()) {
-				stocks = new ArrayList<Stock>();
-				stocks.add(new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT")), result.getString("QUALITE"),
-						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX")));
+				Stock stock = new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT").toUpperCase()), result.getString("QUALITE"),
+						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX"));
+				stocks.add(stock);
 			}
 			statement.close();
 			
