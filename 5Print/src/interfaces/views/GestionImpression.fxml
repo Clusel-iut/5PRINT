@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.GestionImpressionController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.GestionImpressionController">
    <children>
       <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
          <image>
@@ -31,14 +31,14 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label id="impressionId" layoutX="807.0" layoutY="37.0" prefHeight="27.0" prefWidth="179.0" text="\@impressionId">
+      <Label id="impressionId" fx:id="impressionID" layoutX="807.0" layoutY="37.0" prefHeight="27.0" prefWidth="179.0" text="\@impressionId">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TabPane layoutX="69.0" layoutY="103.0" prefHeight="492.0" prefWidth="562.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabType" layoutX="69.0" layoutY="103.0" prefHeight="492.0" prefWidth="562.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab style="-fx-background-color: orange;" text="Cadre">
+          <Tab fx:id="cadre" style="-fx-background-color: orange;" text="Cadre">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="477.0">
                      <children>
@@ -74,7 +74,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab style="-fx-background-color: orange;" text="Album">
+          <Tab fx:id="album" style="-fx-background-color: orange;" text="Album">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -111,7 +111,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab style="-fx-background-color: orange;" text="Agenda">
+            <Tab fx:id="agenda" style="-fx-background-color: orange;" text="Agenda">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -142,7 +142,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab style="-fx-background-color: orange;" text="Tirage">
+            <Tab fx:id="tirage" style="-fx-background-color: orange;" text="Tirage">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -168,7 +168,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab style="-fx-background-color: orange;" text="Calendrier">
+            <Tab fx:id="calendrier" style="-fx-background-color: orange;" text="Calendrier">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -211,7 +211,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label id="impressionDate" layoutX="807.0" layoutY="60.0" prefHeight="27.0" prefWidth="179.0" text="\@impressionDate">
+      <Label fx:id="impressionDate" layoutX="807.0" layoutY="60.0" prefHeight="27.0" prefWidth="179.0" text="\@impressionDate">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -231,7 +231,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Spinner layoutX="669.0" layoutY="323.0" prefHeight="31.0" prefWidth="150.0" />
+      <Spinner fx:id="nbImpression" layoutX="669.0" layoutY="323.0" prefHeight="31.0" prefWidth="150.0" />
       <Label layoutX="670.0" layoutY="473.0" text="Montant total:">
          <font>
             <Font name="System Bold" size="18.0" />
