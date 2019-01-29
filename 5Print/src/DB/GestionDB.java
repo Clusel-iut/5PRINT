@@ -233,8 +233,9 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
+				Client client = getClientSansPhotosByEmail(result.getString("EMAIL"));
 				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
-				fp.setClient(cli);
+				fp.setClient(client);
 				photos.add(fp);
 			}
 		} catch (SQLException e) {
@@ -242,6 +243,26 @@ public class GestionDB {
 		}
 
 		return photos;
+	}
+
+	private static Client getClientSansPhotosByEmail(String email) {
+		String sql = "SELECT * FROM CLIENT WHERE EMAIL = ?";
+		Client cli = null;
+
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, email);
+			ResultSet result = statement.executeQuery();
+
+			if (result.next()) {
+				cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"),
+						null, result.getString("MOT_DE_PASSE"),	null, null,	null, null);
+			}
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cli;
 	}
 
 	private static ArrayList<FichierPhoto> getAllPhotosByClientId(Client cli, String email) {
@@ -673,7 +694,7 @@ public class GestionDB {
 		T impression = null;
 		TypeSupport[] types = { TypeSupport.AGENDA, TypeSupport.ALBUM, TypeSupport.CADRE, TypeSupport.CALENDRIER,
 				TypeSupport.TIRAGE };
-		String select = "SELECT ID_IMPRESSION FROM ";
+		String select = "SELECT TYPE_SUPPORT FROM IMPRESSION";
 		String where = " WHERE ID_IMPRESSION = ?";
 		String sql = "";
 		PreparedStatement statement = null;
@@ -682,12 +703,13 @@ public class GestionDB {
 			ResultSet result = null;
 			int cpt = 0;
 			while (cpt < 5) {
-				sql = select + types[cpt] + where;
+				sql = select + where;
 				statement = conn.prepareStatement(sql);
 				statement.setInt(1, id);
 				result = statement.executeQuery();
 				if (result.next()) {
-					impression = getImpressionByIdAndType(types[cpt], id);
+					impression = getImpressionByIdAndType(TypeSupport.valueOf(result.getString("TYPE_SUPPORT").toUpperCase()), id);
+					cpt = 5;
 				}
 				cpt++;
 			}
@@ -847,7 +869,7 @@ public class GestionDB {
 					Client client = null;
 					Commande commande = null;
 					Stock stock = getStockById(type, resultImp.getString("QUALITE"), resultImp.getString("FORMAT"));
-					
+										
 					if (type == TypeSupport.AGENDA) {
 						t = (T) new Agenda(idT, date_impression, nb_impression, client, stock, numero, montant_total,
 								etat_impression, getAllPhotoByIdImpression(t, idT), commande,
