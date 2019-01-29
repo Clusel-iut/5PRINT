@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import DB.GestionDB;
 import DB.LocalDataClient;
+import DTO.Client;
 import DTO.Commande;
 import DTO.FichierPhoto;
 import DTO.Impression;
@@ -63,7 +64,7 @@ public class PageRecapController implements Initializable {
 	@FXML
 	private TableColumn<FichierPhoto, Date> datePhotoPartagee;
 	@FXML
-	private TableColumn<FichierPhoto, String> proprio;
+	private TableColumn<FichierPhoto, Client> proprio;
 	@FXML
 	private TableColumn<Commande, Integer> idPanier;
 	@FXML
@@ -127,8 +128,8 @@ public class PageRecapController implements Initializable {
 		idImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("id_impression"));
 		dateImpression.setCellValueFactory((new PropertyValueFactory<Impression, String>("date_impression")));
 		typeImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.type_support"));
-		formatImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.format"));	
-		qualiteImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.qualite"));
+		formatImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.getFormat()"));	
+		qualiteImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.getQualite()"));
 		
 		//PHOTO
 		fichierPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("chemin"));
@@ -139,7 +140,7 @@ public class PageRecapController implements Initializable {
 		fichierPhotoPartagee.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("chemin"));
 		resolutionPhotoPartagee.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("resolution"));
 		datePhotoPartagee.setCellValueFactory(new PropertyValueFactory<FichierPhoto, Date>("date_ajout"));
-		proprio.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("client"));
+		proprio.setCellValueFactory(new PropertyValueFactory<FichierPhoto, Client>("client"));
 		
 		///COMMANDE
 		idPanier.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("numero"));
@@ -165,7 +166,7 @@ public class PageRecapController implements Initializable {
 		
 		impressionsView.getColumns().addAll(idImpression, dateImpression, typeImpression, formatImpression, qualiteImpression);
 		photosView.getColumns().addAll(fichierPhoto, resolutionPhoto, datePhoto);
-		photosViewShare.getColumns().addAll(fichierPhotoPartagee, resolutionPhotoPartagee, datePhotoPartagee);
+		photosViewShare.getColumns().addAll(fichierPhotoPartagee, resolutionPhotoPartagee, datePhotoPartagee, proprio);
 		paniersView.getColumns().addAll(idPanier, datePanier, montantPanier, etatPanier);
 	}
 	
@@ -202,7 +203,7 @@ public class PageRecapController implements Initializable {
     }
 	 
 	 @FXML
-	 void create(MouseEvent event) {
+	 void createImpress(MouseEvent event) {
 		 Parent home_page_parent;
 			try {
 				home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/CreationImpression.fxml")).load();
@@ -212,7 +213,54 @@ public class PageRecapController implements Initializable {
 				app_stage.setScene(home_page_scene);
 				app_stage.show();
 			} catch (IOException e) {
-				System.err.println("Impossible d'afficher la page 'Connexion'");
+				System.err.println("Impossible d'afficher la page 'CreationImpression'");
 			}
+	 }
+	 
+	 @FXML
+	 void editImpress(MouseEvent event) {
+		 	int idImpress = impressionsView.getSelectionModel().getSelectedItem().getId_impression();
+		 
+		 	FXMLLoader Loader = new FXMLLoader();
+		    Loader.setLocation(this.getClass().getResource(
+			    "/application/views/GestionImpression.fxml"));
+		    try {
+				Loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		    GestionImpressionController controller = Loader.getController();
+		    controller.setObjects(idImpress);
+
+		    Parent home_page_parent = Loader.getRoot();
+		    Scene home_page_scene = new Scene(home_page_parent);
+		    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+			    .getWindow();
+		    app_stage.setScene(home_page_scene);
+		    app_stage.show();
+
+	 }
+	 
+	 @FXML
+	 void addFiles(MouseEvent event) {
+		 Parent home_page_parent;
+			try {
+				home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/AjoutFichierPhoto.fxml")).load();
+				Scene home_page_scene = new Scene(home_page_parent);
+				Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+					.getWindow();
+				app_stage.setScene(home_page_scene);
+				app_stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.err.println("Impossible d'afficher la page 'AjoutFichierPhoto'");
+			}
+	 }
+	 
+	 @FXML
+	 void shareFiles(MouseEvent event) {
+		 System.out.println(photosView.getSelectionModel().getSelectedItem().toString());
 	 }
 }

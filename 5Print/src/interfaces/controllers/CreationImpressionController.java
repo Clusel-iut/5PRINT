@@ -8,7 +8,9 @@ import java.util.ResourceBundle;
 import DB.GestionDB;
 import DB.LocalDataClient;
 import DTO.Adresse;
+import DTO.Client;
 import DTO.Impression;
+import DTO.StatutCommande;
 import DTO.Stock;
 import DTO.TypeSupport;
 import javafx.fxml.FXML;
@@ -33,12 +35,28 @@ public class CreationImpressionController implements Initializable{
 	
 	@FXML
     void create(MouseEvent event) { 
-		System.out.println(listeStock.getSelectionModel().getSelectedItem().toString());
+		Stock stock = listeStock.getSelectionModel().getSelectedItem();
+		//GestionDB.createImpression(stock.getType_support(), LocalDataClient.client, stock, 0, 0, false, 0, null, null, null);
+				
+		Parent home_page_parent;
+		try {
+			home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/GestionImpression.fxml")).load();
+			Scene home_page_scene = new Scene(home_page_parent);
+			Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+				.getWindow();
+			app_stage.setScene(home_page_scene);
+			app_stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
     void back(MouseEvent event) { 
+		
 		Parent home_page_parent;
+		 
 		try {
 			home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
 			Scene home_page_scene = new Scene(home_page_parent);

@@ -184,7 +184,7 @@ public class GestionDB {
 			if (result.next()) {
 				cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"),
 						getAllAdresseByClientId(cli, email), result.getString("MOT_DE_PASSE"),
-						getAllPhotosByClientId(cli, email), getAllPhotosPartageesByClientId(cli, email),
+						getAllPhotosPartageesByClientId(cli, email), getAllPhotosByClientId(cli, email),
 						getAllImpressionsByClientId(cli, email), getAllCommandesByClientId(cli, email));
 			}
 			statement.close();

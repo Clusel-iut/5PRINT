@@ -10,8 +10,8 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.ConnexionController">
    <children>
-      <TextField fx:id="email" layoutX="354.0" layoutY="296.0" prefHeight="25.0" prefWidth="293.0" />
-      <PasswordField fx:id="motdepasse" layoutX="354.0" layoutY="350.0" prefHeight="25.0" prefWidth="293.0" />
+      <TextField fx:id="email" layoutX="354.0" layoutY="296.0" prefHeight="25.0" prefWidth="293.0" text="biancabernard@disney.paris"/>
+      <PasswordField fx:id="motdepasse" layoutX="354.0" layoutY="350.0" prefHeight="25.0" prefWidth="293.0" text="mdpbb"/>
       <Label layoutX="354.0" layoutY="279.0" text="Email" />
       <Label layoutX="354.0" layoutY="333.0" text="Mot de passe" />
       <Button layoutX="464.0" layoutY="415.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Connexion" onMouseClicked="#connect"/>

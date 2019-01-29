@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.AjoutFichierPhotoController">
    <children>
       <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
          <image>
@@ -45,12 +45,12 @@
       <TextField fx:id="resolution" layoutX="285.0" layoutY="201.0" prefHeight="31.0" prefWidth="327.0" />
       <TextField id="infovue" fx:id="infovue" layoutX="285.0" layoutY="235.0" prefHeight="31.0" prefWidth="327.0" />
       <CheckBox fx:id="partage" layoutX="285.0" layoutY="277.0" mnemonicParsing="false" />
-      <Button layoutX="285.0" layoutY="454.0" mnemonicParsing="false" style="-fx-background-color: orange;" text="ANNULER" textFill="WHITE">
+      <Button layoutX="285.0" layoutY="454.0" mnemonicParsing="false" style="-fx-background-color: orange;" text="ANNULER" textFill="WHITE" onMouseClicked="#back">
          <font>
             <Font size="30.0" />
          </font>
       </Button>
-      <Button layoutX="535.0" layoutY="454.0" mnemonicParsing="false" style="-fx-background-color: orange;" text="VALIDER" textFill="WHITE">
+      <Button layoutX="535.0" layoutY="454.0" mnemonicParsing="false" style="-fx-background-color: orange;" text="VALIDER" textFill="WHITE" onMouseClicked="#save">
          <font>
             <Font size="30.0" />
          </font>
