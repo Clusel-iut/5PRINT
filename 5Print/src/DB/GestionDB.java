@@ -1335,10 +1335,7 @@ public class GestionDB {
 			while (result.next()) {
 				Stock stock = new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT").toUpperCase()), result.getString("QUALITE"),
 						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX"));
-				stocks = new ArrayList<Stock>();
 				stocks.add(stock);
-				stocks.add(new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT")), result.getString("QUALITE"),
-						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX")));
 				}
 			statement.close();
 			conn.commit();
