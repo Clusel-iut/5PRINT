@@ -804,7 +804,7 @@ public class GestionDB {
 		return photo;
 	}
 
-	static <T extends Impression> T getImpressionById(int id) {
+	public static <T extends Impression> T getImpressionById(int id) {
 		T impression = null;
 		TypeSupport[] types = { TypeSupport.AGENDA, TypeSupport.ALBUM, TypeSupport.CADRE, TypeSupport.CALENDRIER,
 				TypeSupport.TIRAGE };
@@ -1027,6 +1027,21 @@ public class GestionDB {
 			e.printStackTrace();
 		}
 		return t;
+	}
+	
+	
+	public static <T extends Impression> ArrayList<T> getAllImpression(){
+		ArrayList<T> impressions = new ArrayList<T>();
+		String sql = "SELECT * FROM IMPRESSION";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return impressions;
 	}
 
 	private static ArrayList<Photo> getAllPhotoByIdImpression(Impression imp, int idT) {
