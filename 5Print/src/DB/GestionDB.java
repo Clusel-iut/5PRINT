@@ -41,6 +41,16 @@ public class GestionDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void configure() {
+		try {
+			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+			conn = DriverManager.getConnection(CONN_URL, "ouzzineo", "Oussama123");
+			conn.setAutoCommit(false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
