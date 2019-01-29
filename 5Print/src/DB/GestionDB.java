@@ -946,20 +946,24 @@ public class GestionDB {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
-			statement.setString(2, description);
-			statement.setString(3, retouche);
-			statement.setInt(4, position_x);
-			statement.setInt(5, position_y);
-			statement.setInt(5, numero_page);
-			statement.setInt(6, nb_exemplaire);
+			statement.setInt(2, impression.getId_impression());
+			statement.setString(3, description);
+			statement.setString(4, retouche);
+			statement.setInt(5, position_x);
+			statement.setInt(6, position_y);
+			statement.setInt(7, numero_page);
+			statement.setInt(8, nb_exemplaire);
 
 			int rowsInserted = statement.executeUpdate();
+			statement.close();
 			if (rowsInserted > 0) {
-				sql = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = null WHERE CHEMIN = " + chemin;
+				sql = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = null WHERE CHEMIN = ?";
 				statement = conn.prepareStatement(sql);
+				statement.setString(1, chemin);
 				statement.executeUpdate();
 				isAdded = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
