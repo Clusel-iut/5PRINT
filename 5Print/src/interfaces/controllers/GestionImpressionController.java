@@ -2,10 +2,15 @@ package interfaces.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import DB.GestionDB;
+import DTO.Client;
+import DTO.Commande;
+import DTO.FichierPhoto;
 import DTO.Impression;
+import DTO.Photo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +22,10 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -51,6 +59,84 @@ public class GestionImpressionController implements Initializable {
 	private Tab calendrier;
 	@FXML
 	private TabPane tabType;
+	@FXML
+	private TableView<Photo> cadreView;
+	@FXML
+	private TableView<Photo> albumView;
+	@FXML
+	private TableView<Photo> agendaView;
+	@FXML
+	private TableView<Photo> tirageView;
+	@FXML
+	private TableView<Photo> calendrierView;
+	//CADRE
+	@FXML
+	private TableColumn<Photo, String> pageCadre;
+	@FXML
+	private TableColumn<Photo, String> cheminCadre;
+	@FXML
+	private TableColumn<Photo, String> resolutionCadre;
+	@FXML
+	private TableColumn<Photo, Integer> xCadre;
+	@FXML
+	private TableColumn<Photo, Integer> yCadre;
+	@FXML
+	private TableColumn<Photo, String> retoucheCadre;
+	//ALBUM
+	@FXML
+	private TableColumn<Photo, String> pageAlbum;
+	@FXML
+	private TableColumn<Photo, String> cheminAlbum;
+	@FXML
+	private TableColumn<Photo, String> resolutionAlbum;
+	@FXML
+	private TableColumn<Photo, Integer> xAlbum;
+	@FXML
+	private TableColumn<Photo, String> yAlbum;
+	@FXML
+	private TableColumn<Photo, String> retoucheAlbum;
+	//AGENDA
+	@FXML
+	private TableColumn<Photo, String> pageAgenda;
+	@FXML
+	private TableColumn<Photo, String> cheminAgenda;
+	@FXML
+	private TableColumn<Photo, String> resolutionAgenda;
+	@FXML
+	private TableColumn<Photo, Integer> xAgenda;
+	@FXML
+	private TableColumn<Photo, String> yAgenda;
+	@FXML
+	private TableColumn<Photo, String> retoucheAgenda;
+	//TIRAGE
+	@FXML
+	private TableColumn<Photo, String> pageTirage;
+	@FXML
+	private TableColumn<Photo, String> cheminTirage;
+	@FXML
+	private TableColumn<Photo, String> resolutionTirage;
+	@FXML
+	private TableColumn<Photo, Integer> xTirage;
+	@FXML
+	private TableColumn<Photo, String> yTirage;
+	@FXML
+	private TableColumn<Photo, String> retoucheTirage;
+	@FXML
+	private TableColumn<Photo, String> nbExTirage;
+	//CALENDRIER
+	@FXML
+	private TableColumn<Photo, String> pageCalendrier;
+	@FXML
+	private TableColumn<Photo, String> cheminCalendrier;
+	@FXML
+	private TableColumn<Photo, String> resolutionCalendrier;
+	@FXML
+	private TableColumn<Photo, Integer> xCalendrier;
+	@FXML
+	private TableColumn<Photo, String> yCalendrier;
+	@FXML
+	private TableColumn<Photo, String> retoucheCalendrier;
+	
 	
 	private int idImpression;
 	
@@ -75,6 +161,16 @@ public class GestionImpressionController implements Initializable {
 			{
 				tabType.getTabs().get(index).setDisable(true);
 			}
+		}
+		
+		switch(this.impression.getStock().getType_support()) {
+			case CADRE : 
+				pageCadre.setCellValueFactory(new PropertyValueFactory<Photo, String>(""));
+				cheminCadre.setCellValueFactory(new PropertyValueFactory<Photo, String>("resolution"));
+				resolutionCadre.setCellValueFactory(new PropertyValueFactory<Photo,String >("date_ajout"));
+				xCadre.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("client"));
+				yCadre.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("date_ajout"));
+				retoucheCadre.setCellValueFactory(new PropertyValueFactory<Photo, String>("client"));
 		}
 	}
 
