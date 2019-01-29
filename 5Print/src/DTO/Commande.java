@@ -12,12 +12,12 @@ public class Commande{
 	private ArrayList<Impression> impressions;
 	private String mode_livraison;
 	private Date date_commande;
-	private String statut;
+	private StatutCommande statut;
 	private boolean etat_paiement;
 	private float montant_total_cmd;
 	
 	public Commande(int numero, BonAchat bon_achat, BonAchat bon_achat_g, Adresse adresse, Client client, ArrayList<Impression> impressions,String mode_livraison,
-			Date date_commande, String statut, boolean etat_paiement, float montant_total_cmd) {
+			Date date_commande, StatutCommande statut, boolean etat_paiement, float montant_total_cmd) {
 		super();
 		this.numero = numero;
 		this.bon_achat = bon_achat;
@@ -33,7 +33,7 @@ public class Commande{
 	}
 	
 	public Commande(int numero, BonAchat bon_achat, BonAchat bon_achat_g, Adresse adresse, Client client,String mode_livraison,
-			Date date_commande, String statut, boolean etat_paiement, float montant_total_cmd) {
+			Date date_commande, StatutCommande statut, boolean etat_paiement, float montant_total_cmd) {
 		super();
 		this.numero = numero;
 		this.bon_achat = bon_achat;
@@ -104,11 +104,11 @@ public class Commande{
 		this.date_commande = date_commande;
 	}
 
-	public String getStatut() {
+	public StatutCommande getStatut() {
 		return statut;
 	}
 
-	public void setStatut(String statut) {
+	public void setStatut(StatutCommande statut) {
 		this.statut = statut;
 	}
 

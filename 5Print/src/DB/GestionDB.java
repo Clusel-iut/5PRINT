@@ -24,6 +24,7 @@ import DTO.FichierPhoto;
 import DTO.Impression;
 import DTO.Photo;
 import DTO.PointRelais;
+import DTO.StatutCommande;
 import DTO.Stock;
 import DTO.Tirage;
 import DTO.TypeSupport;
@@ -437,7 +438,7 @@ public class GestionDB {
 				}
 
 				cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client,
-						result.getString("MODE_LIVRAISON"), result.getDate("DATE_COMMANDE"), result.getString("STATUT"),
+						result.getString("MODE_LIVRAISON"), result.getDate("DATE_COMMANDE"), StatutCommande.valueOf(result.getString("STATUT")),
 						result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
 
 			}
@@ -449,7 +450,7 @@ public class GestionDB {
 
 	// CREATE
 	public static boolean createCommande(int adresse, String email, String mode_livraison, Date date_commande,
-			String statut, boolean etat_paiement, float montant_total_cmd) {
+			StatutCommande statut, boolean etat_paiement, float montant_total_cmd) {
 		String sql = "INSERT INTO COMMANDE (ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) VALUES (?,?,?,?,?,?,?)";
 		boolean isAdded = false;
 
@@ -460,7 +461,7 @@ public class GestionDB {
 			statement.setString(2, email);
 			statement.setString(3, mode_livraison);
 			statement.setDate(4, java.sql.Date.valueOf(date_commande.toString()));
-			statement.setString(5, statut);
+			statement.setString(5, statut.toString());
 			statement.setBoolean(6, etat_paiement);
 			statement.setFloat(7, montant_total_cmd);
 
@@ -487,7 +488,7 @@ public class GestionDB {
 			statement.setInt(1, commande.getAdresse().getId_adresse());
 			statement.setString(2, commande.getBon_achat().getCode_bon());
 			statement.setString(3, commande.getMode_livraison());
-			statement.setString(4, commande.getStatut());
+			statement.setString(4, commande.getStatut().toString());
 			statement.setBoolean(5, commande.getEtat_paiement());
 			statement.setFloat(6, commande.getMontant_total_cmd());
 			statement.setInt(6, commande.getNumero());

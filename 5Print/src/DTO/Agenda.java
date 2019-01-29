@@ -17,7 +17,6 @@ public class Agenda extends Impression{
 			this.nbPages = 52;
 	}
 
-
 	public String getModele() {
 		return modele;
 	}
