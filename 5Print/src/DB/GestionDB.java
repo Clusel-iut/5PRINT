@@ -53,6 +53,7 @@ public class GestionDB {
 		Adresse adr = null;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
@@ -64,6 +65,7 @@ public class GestionDB {
 				result.close();
 				statement.close();
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -107,6 +109,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, adresse.getPays());
 			statement.setString(2, adresse.getVille());
@@ -121,6 +124,7 @@ public class GestionDB {
 				isUpdated = true;
 			}
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
 		}
@@ -134,6 +138,7 @@ public class GestionDB {
 		boolean isDeleted = false;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 
@@ -142,7 +147,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -160,6 +165,7 @@ public class GestionDB {
 		Client cli = null;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
@@ -171,6 +177,7 @@ public class GestionDB {
 						getAllImpressionsByClientId(cli, email), getAllCommandesByClientId(cli, email));
 			}
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -183,6 +190,7 @@ public class GestionDB {
 		PreparedStatement statement;
 		Commande commande;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
@@ -193,6 +201,7 @@ public class GestionDB {
 					commandes.add(commande);
 				}
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -206,6 +215,7 @@ public class GestionDB {
 		PreparedStatement statement;
 		T impression;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
@@ -216,6 +226,7 @@ public class GestionDB {
 					impressions.add(impression);
 				}
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -229,6 +240,7 @@ public class GestionDB {
 		PreparedStatement statement;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
@@ -238,6 +250,7 @@ public class GestionDB {
 				fp.setClient(client);
 				photos.add(fp);
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -250,6 +263,7 @@ public class GestionDB {
 		Client cli = null;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
@@ -259,6 +273,7 @@ public class GestionDB {
 						null, result.getString("MOT_DE_PASSE"),	null, null,	null, null);
 			}
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -271,6 +286,7 @@ public class GestionDB {
 		PreparedStatement statement;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
@@ -280,6 +296,7 @@ public class GestionDB {
 				photos.add(fp);
 			}
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -293,6 +310,7 @@ public class GestionDB {
 		PreparedStatement statement;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
@@ -302,6 +320,7 @@ public class GestionDB {
 				adresses.add(adresse);
 			}
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -316,6 +335,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			statement.setString(2, nom);
@@ -326,7 +346,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -349,6 +369,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, client.getNom());
 			statement.setString(2, client.getPrenom());
@@ -359,6 +380,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
 		}
@@ -372,6 +394,7 @@ public class GestionDB {
 		boolean isDeleted = false;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 
@@ -379,6 +402,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -392,6 +416,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			statement.setString(2, motDePasse);
@@ -401,6 +426,7 @@ public class GestionDB {
 				isConnected = true;
 
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isConnected = false;
 
@@ -420,6 +446,7 @@ public class GestionDB {
 		Commande cmd = null;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
@@ -441,6 +468,7 @@ public class GestionDB {
 						result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
 
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -455,6 +483,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, adresse);
 			statement.setString(2, email);
@@ -468,7 +497,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -483,6 +512,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, commande.getAdresse().getId_adresse());
 			statement.setString(2, commande.getBon_achat().getCode_bon());
@@ -496,6 +526,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
 		}
@@ -509,6 +540,7 @@ public class GestionDB {
 		boolean isDeleted = false;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, numero);
 
@@ -516,6 +548,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -533,6 +566,7 @@ public class GestionDB {
 		FichierPhoto fiPhoto = null;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery();
@@ -543,7 +577,7 @@ public class GestionDB {
 						getPhotosByFichierId(fiPhoto, chemin));
 			}
 			statement.close();
-
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -556,6 +590,7 @@ public class GestionDB {
 		PreparedStatement statement;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery();
@@ -565,6 +600,7 @@ public class GestionDB {
 				photos.add(photo);
 			}
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -578,12 +614,14 @@ public class GestionDB {
 		PreparedStatement statement;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				clients.add(getClientByEmail(result.getString("EMAIL")));
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -600,6 +638,7 @@ public class GestionDB {
 		Date date_ajout = new Date();
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			statement.setString(2, email);
@@ -613,7 +652,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -628,6 +667,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, fiPhoto.getResolution());
 			statement.setString(2, fiPhoto.getInfo_prise_de_vue());
@@ -637,6 +677,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
 		}
@@ -650,6 +691,7 @@ public class GestionDB {
 		boolean isDeleted = false;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 
@@ -657,6 +699,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -674,6 +717,7 @@ public class GestionDB {
 		Photo photo = null;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
@@ -683,7 +727,7 @@ public class GestionDB {
 						result.getInt("POSITION_Y"), result.getInt("NB_EXEMPLAIRE"));
 			}
 			statement.close();
-
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -700,6 +744,7 @@ public class GestionDB {
 		PreparedStatement statement = null;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = null;
 			int cpt = 0;
 			while (cpt < 5) {
@@ -715,6 +760,7 @@ public class GestionDB {
 			}
 
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -729,6 +775,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			statement.setString(2, description);
@@ -745,7 +792,7 @@ public class GestionDB {
 				statement.executeUpdate();
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -760,6 +807,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, photo.getDescription());
 			statement.setString(2, photo.getRetouche());
@@ -771,6 +819,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
 		}
@@ -785,6 +834,7 @@ public class GestionDB {
 		boolean isDeleted = false;
 		String chemin;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statementChemin = conn.prepareStatement(sqlChemin);
 			statementChemin.setInt(1, id_photo);
 			ResultSet resultChemin = statementChemin.executeQuery();
@@ -805,6 +855,7 @@ public class GestionDB {
 				PreparedStatement statementUpdate = conn.prepareStatement(sqlUpdate);
 				statementUpdate.executeUpdate(sqlUpdate);
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -820,6 +871,7 @@ public class GestionDB {
 		ArrayList<PointRelais> list_point_relais = new ArrayList<PointRelais>();
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 
@@ -827,6 +879,7 @@ public class GestionDB {
 				list_point_relais.add(new PointRelais(result.getString("NOM"),
 						GestionDB.getAdresseById(result.getInt("ID_ADRESSE"))));
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -846,6 +899,7 @@ public class GestionDB {
 		String sqlT = "SELECT * FROM " + type.toString() + " WHERE ID_IMPRESSION = ?";
 		T t = null;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			// REQUETE TYPE POUR VERIFIER SI EXISTE
 			PreparedStatement statementType = conn.prepareStatement(sqlT);
 			statementType.setInt(1, id);
@@ -897,6 +951,7 @@ public class GestionDB {
 				}
 
 				statementImp.close();
+				conn.commit();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -909,6 +964,7 @@ public class GestionDB {
 		String sql = "SELECT ID_PHOTO FROM PHOTO WHERE ID_IMPRESSION = ?";
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, idT);
 			ResultSet result = statement.executeQuery();
@@ -918,6 +974,7 @@ public class GestionDB {
 				photo.setImpression(imp);
 				photos.add(photo);
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -937,6 +994,7 @@ public class GestionDB {
 		PreparedStatement statementImp = null;
 		PreparedStatement statementImpExt = null;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statementImp = conn.prepareStatement(sqlImp);
 			statementImp.setString(1, client.getEmail());
 			statementImp.setString(2, stock == null ? null : stock.getType_support().toString());
@@ -988,7 +1046,7 @@ public class GestionDB {
 			if (rowsInsertedTirage > 0) {
 				isAdded = id_impression;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = -1;
 		}
@@ -1006,6 +1064,7 @@ public class GestionDB {
 		PreparedStatement statement;
 		PreparedStatement statementImp;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sqlImp);
 			statement.setString(1, impression.getStock().getType_support().toString());
 			statement.setString(2, impression.getStock().getFormat());
@@ -1066,6 +1125,7 @@ public class GestionDB {
 			if (rowsInsertedImp > 0 && rowsInsertedImpEx > 0) {
 				isUpdated = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
 		}
@@ -1080,6 +1140,7 @@ public class GestionDB {
 		boolean isDeleted = false;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statementImp = conn.prepareStatement(sqlImp);
 			PreparedStatement statementImpExt = conn.prepareStatement(sqlImpExt);
 
@@ -1093,6 +1154,7 @@ public class GestionDB {
 			if (rowsDeletedImp > 0 && rowsDeletedImpExt > 0) {
 				isDeleted = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -1112,6 +1174,7 @@ public class GestionDB {
 		Commande commandeG = null;
 		Client client = null;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, id);
 			ResultSet result = statement.executeQuery();
@@ -1129,7 +1192,7 @@ public class GestionDB {
 						result.getInt("POURCENTAGEREDUC"), result.getString("TYPE_BONACHAT"));
 			}
 			statement.close();
-
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1143,6 +1206,7 @@ public class GestionDB {
 		Commande commandeG = null;
 		Client client = null;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
@@ -1154,7 +1218,7 @@ public class GestionDB {
 						result.getInt("POURCENTAGEREDUC"), result.getString("TYPE_BONACHAT"));
 			}
 			statement.close();
-
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1169,6 +1233,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, numeroC);
 			statement.setInt(2, numeroCGenere);
@@ -1180,7 +1245,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -1195,6 +1260,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, bon.getCommande().getNumero());
 			statement.setInt(2, bon.getCommandeGeneree().getNumero());
@@ -1206,6 +1272,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
 		}
@@ -1219,6 +1286,7 @@ public class GestionDB {
 		boolean isDeleted = false;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, code_bon);
 
@@ -1226,6 +1294,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -1242,15 +1311,19 @@ public class GestionDB {
 		String sql = "SELECT * FROM STOCK";
 		ArrayList<Stock> stocks = null;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
-
+			stocks = new ArrayList<Stock>();
 			while (result.next()) {
+				Stock stock = new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT").toUpperCase()), result.getString("QUALITE"),
+						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX"));
+				stocks.add(stock);
 				stocks.add(new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT")), result.getString("QUALITE"),
 						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX")));
-			}
+				}
 			statement.close();
-			
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1261,6 +1334,7 @@ public class GestionDB {
 		Stock stock = null;
 		String type_s = type.toString().toLowerCase();
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, type_s);
 			statement.setString(2, qualite);
@@ -1272,7 +1346,7 @@ public class GestionDB {
 
 			}
 			statement.close();
-
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1286,6 +1360,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, type.name());
 			statement.setString(2, qualite);
@@ -1297,7 +1372,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -1312,6 +1387,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, stock.getQuantite());
 			statement.setInt(2, stock.getPrix());
@@ -1323,6 +1399,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
 		}
@@ -1336,6 +1413,7 @@ public class GestionDB {
 		boolean isDeleted = false;
 
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, type.name());
 			statement.setString(2, qualite);
@@ -1345,6 +1423,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
