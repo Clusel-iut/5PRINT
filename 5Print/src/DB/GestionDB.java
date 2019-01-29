@@ -242,15 +242,23 @@ public class GestionDB {
 			while(result.next()) {
 				ArrayList<Impression> imps = null; // result.getString("EMAIL") OK
 				
-				BonAchat bAcht = null; // result.getString("CODE_BON")
-				BonAchat bAchtGen = null; // result.getString("CODE_BON_GENERE")
-				Adresse ad = null; // result.getInt("ID_ADRESSE")
+				BonAchat bon_achat = getBonAchatById(result.getString("CODE_BON")); // result.getString("CODE_BON")
+				BonAchat bon_gen = getBonAchatById(result.getString("CODE_BON_GENERE")); // result.getString("CODE_BON_GENERE")
+				Adresse ad = getAdresseById(result.getInt("ID_ADRESSE"));
 				Client clt = getClientByEmail(result.getString("EMAIL"));
 				Date dtLivr = result.getDate("DATE_COMMANDE");
-				StatutCommande stCmd = null; // result.getString("STATUT")
 				
-				Commande c = new Commande(result.getInt("NUMERO"), bAcht, bAchtGen, ad, clt, imps, result.getString("MODE_LIVRAISON"), dtLivr, stCmd, result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
-				commandes.add(c);
+				Commande c = new Commande(result.getInt("NUMERO"), bon_achat, bon_gen, ad, clt, imps, result.getString("MODE_LIVRAISON"), dtLivr, StatutCommande.valueOf(result.getString("STATUT")), result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
+				if(c != null) {
+					if(bon_achat != null) {
+						bon_achat.setCommande(c);
+					}
+					if(bon_gen != null) {
+						bon_gen.setCommandeGeneree(c);
+					}
+					commandes.add(c);
+				}
+				
 			}
 			statement.close();
 			conn.commit();
