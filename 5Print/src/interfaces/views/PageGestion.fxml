@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,7 +21,7 @@
                   <Image url="@../../Ressources/logo.png" />
                </image>
             </ImageView>
-            <Label fx:id="prenomNomClient" layoutX="263.0" layoutY="42.0" text="Gestion des stocks">
+            <Label fx:id="prenomNomClient" layoutX="263.0" layoutY="42.0" text="Gestion de l'application">
                <font>
                   <Font size="30.0" />
                </font>
@@ -30,32 +33,120 @@
               <tabs>
                 <Tab style="-fx-background-color: orange;" text="Clients">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" text="Gestion des clients">
+                                 <font>
+                                    <Font name="System Bold" size="17.0" />
+                                 </font>
+                              </Label>
+                              <TableView layoutX="14.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                                <columns>
+                                  <TableColumn fx:id="nom" prefWidth="178.0" text="nom" />
+                                  <TableColumn fx:id="prenom" minWidth="0.0" prefWidth="174.0" text="prenom" />
+                                    <TableColumn fx:id="email" prefWidth="618.0" text="email" />
+                                </columns>
+                              </TableView>
+                              <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                           </children></AnchorPane>
                   </content>
                 </Tab>
                   <Tab style="-fx-background-color: orange;" text="Impressions">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="15.0" layoutY="14.0" text="Gestion des impressions">
+                                 <font>
+                                    <Font name="System Bold" size="17.0" />
+                                 </font>
+                              </Label>
+                              <TableView layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                                 <columns>
+                                    <TableColumn fx:id="idImpression" prefWidth="53.0" text="id" />
+                                    <TableColumn fx:id="dateImpression" minWidth="0.0" prefWidth="119.0" text="date" />
+                                    <TableColumn fx:id="emailImpression" prefWidth="194.0" text="email" />
+                                    <TableColumn fx:id="typeImpression" minWidth="0.0" prefWidth="132.0" text="type" />
+                                    <TableColumn fx:id="formatImpression" minWidth="0.0" prefWidth="132.0" text="format" />
+                                    <TableColumn fx:id="qualiteImpression" minWidth="0.0" prefWidth="132.0" text="qualite" />
+                                    <TableColumn fx:id="nbImpression" minWidth="0.0" prefWidth="132.0" text="nb impression" />
+                                 </columns>
+                              </TableView>
+                              <Button layoutX="897.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                           </children></AnchorPane>
                      </content>
                   </Tab>
                 <Tab style="-fx-background-color: orange;" text="Stocks">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="15.0" layoutY="14.0" text="Gestion des stocks">
+                                 <font>
+                                    <Font name="System Bold" size="17.0" />
+                                 </font>
+                              </Label>
+                              <TableView editable="true" layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                                 <columns>
+                                    <TableColumn fx:id="typeSupportStock" prefWidth="121.0" text="type support" />
+                                    <TableColumn fx:id="qualiteStock" minWidth="0.0" prefWidth="104.0" text="qualite" />
+                                    <TableColumn fx:id="formatStock" prefWidth="119.0" text="format" />
+                                    <TableColumn fx:id="quantiteStock" minWidth="0.0" prefWidth="154.0" text="quantité" />
+                                    <TableColumn fx:id="prixStock" minWidth="0.0" prefWidth="132.0" text="prix" />
+                                 </columns>
+                              </TableView>
+                              <Button layoutX="897.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                           </children></AnchorPane>
                   </content>
                 </Tab>
                   <Tab style="-fx-background-color: orange;" text="Fichiers photos">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" text="Gestion des fichiers photos">
+                                 <font>
+                                    <Font name="System Bold" size="17.0" />
+                                 </font>
+                              </Label>
+                              <TableView layoutX="14.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                                 <columns>
+                                    <TableColumn fx:id="cheminPhoto" prefWidth="163.0" text="chemin" />
+                                    <TableColumn fx:id="emailPhoto" minWidth="0.0" prefWidth="156.0" text="propriétaire" />
+                                    <TableColumn fx:id="formatStock1" prefWidth="120.0" text="resolution" />
+                                    <TableColumn fx:id="priseVuePhoto" minWidth="0.0" prefWidth="160.0" text="prise de vue" />
+                                    <TableColumn fx:id="datePhoto" minWidth="0.0" prefWidth="139.0" text="date" />
+                                    <TableColumn fx:id="partagePhoto" minWidth="0.0" prefWidth="139.0" text="partagé ?" />
+                                 </columns>
+                              </TableView>
+                              <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                           </children></AnchorPane>
                      </content>
                   </Tab>
                   <Tab style="-fx-background-color: orange;" text="Commandes">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-                  <Tab style="-fx-background-color: orange;" text="Statistiques">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="15.0" layoutY="14.0" text="Gestion des commandes">
+                                 <font>
+                                    <Font name="System Bold" size="17.0" />
+                                 </font>
+                              </Label>
+                              <TableView layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                                 <columns>
+                                    <TableColumn fx:id="idCommande" prefWidth="41.0" text="id" />
+                                    <TableColumn fx:id="dateCommande" minWidth="0.0" prefWidth="87.0" text="date" />
+                                    <TableColumn fx:id="emailCommande" prefWidth="103.0" text="email" />
+                                    <TableColumn fx:id="adresseCommande" minWidth="0.0" prefWidth="207.0" text="adresse" />
+                                    <TableColumn fx:id="bonAchatCommande" minWidth="0.0" prefWidth="114.0" text="bon achat" />
+                                    <TableColumn fx:id="bonAchatGenereCom" minWidth="0.0" prefWidth="129.0" text="bon achat généré" />
+                                    <TableColumn fx:id="statutCommande" minWidth="0.0" prefWidth="92.0" text="statut" />
+                                    <TableColumn fx:id="montantTotalCom" minWidth="0.0" prefWidth="110.0" text="montant total" />
+                                    <TableColumn fx:id="etatPayerCom" minWidth="0.0" prefWidth="87.0" text="payer?" />
+                                 </columns>
+                              </TableView>
+                              <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                              <Button layoutX="818.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Valider" />
+                              <Button layoutX="735.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Annuler" />
+                              <Button layoutX="665.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Livrer" />
+                           </children></AnchorPane>
                      </content>
                   </Tab>
               </tabs>

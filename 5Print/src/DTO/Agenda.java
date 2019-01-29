@@ -35,5 +35,10 @@ public class Agenda extends Impression{
 	public void setNbPages(int nbPages) {
 		this.nbPages = nbPages;
 	}
+
+	@Override
+	public String toString() {
+		return "\nAgenda [modele=" + modele + ", nbPages=" + nbPages + "]";
+	}
 	
 }

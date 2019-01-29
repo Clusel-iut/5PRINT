@@ -231,6 +231,35 @@ public class GestionDB {
 		
 		return clients;
 	}
+	
+	public static ArrayList<Commande> getAllCommandes(){
+		ArrayList<Commande> commandes = new ArrayList<Commande>();
+		String sql = "SELECT * FROM COMMANDE";
+		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				ArrayList<Impression> imps = null; // result.getString("EMAIL") OK
+				
+				BonAchat bAcht = null; // result.getString("CODE_BON")
+				BonAchat bAchtGen = null; // result.getString("CODE_BON_GENERE")
+				Adresse ad = null; // result.getInt("ID_ADRESSE")
+				Client clt = getClientByEmail(result.getString("EMAIL"));
+				Date dtLivr = result.getDate("DATE_COMMANDE");
+				StatutCommande stCmd = null; // result.getString("STATUT")
+				
+				Commande c = new Commande(result.getInt("NUMERO"), bAcht, bAchtGen, ad, clt, imps, result.getString("MODE_LIVRAISON"), dtLivr, stCmd, result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
+				commandes.add(c);
+			}
+			statement.close();
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return commandes;
+	}
 
 	private static ArrayList<Commande> getAllCommandesByClientId(Client cli, String email) {
 		ArrayList<Commande> commandes = new ArrayList<Commande>();
@@ -489,6 +518,21 @@ public class GestionDB {
 		} catch (SQLException e) {
 			isConnected = false;
 
+		}
+		
+		if(isConnected) {
+			String sqlU = "UPDATE CLIENT SET DATE_CONNECT = ? WHERE EMAIL = ?";
+			PreparedStatement statementU;
+			try {
+				conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				statementU = conn.prepareStatement(sqlU);
+				statementU.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+				statementU.setString(2, email);
+				statementU.executeUpdate();
+
+				conn.commit();
+			} catch (SQLException e) {
+			}
 		}
 
 		return isConnected;

@@ -96,6 +96,13 @@ public class Photo {
 	public void setFichier(FichierPhoto fichier) {
 		this.fichier = fichier;
 	}
+
+	@Override
+	public String toString() {
+		return "\nPhoto [id_photo=" + id_photo + ", fichier=" + fichier + ", impression=" + impression + ", description="
+				+ description + ", retouche=" + retouche + ", numero_page=" + numero_page + ", position_X=" + position_X
+				+ ", position_Y=" + position_Y + ", nb_exemplaire=" + nb_exemplaire + "]";
+	}
 	
 	
 }
