@@ -50,7 +50,7 @@ public class InscriptionController {
 	private ImageView btn_close;
 
 	/**
-	 * Permet à l'utilisateur de revenir en arrière.
+	 * Permet Ã  l'utilisateur de revenir en arriÃ¨re.
 	 * 
 	 * @param event
 	 */
@@ -79,7 +79,7 @@ public class InscriptionController {
 	}
 
 	/**
-	 * Permet de créer un client.
+	 * Permet de crÃ©er un client.
 	 * 
 	 * @param event
 	 */
@@ -92,7 +92,7 @@ public class InscriptionController {
 		GestionDB.createClient(client);
 		
 		//POPUP 
-		this.popup("Création d'un client", "Votre compte a été enregistré", "Fermer cette fenêtre");
+		this.popup("CrÃ©ation d'un client", "Votre compte a Ã©tÃ© enregistrÃ©", "Fermer cette fenÃªtre");
 		
 		//redirection
 		this.changeView((Stage) ((Node) event.getSource()).getScene().getWindow(), "/interfaces/views/Connexion.fxml");
@@ -116,7 +116,7 @@ public class InscriptionController {
 		codepostal.setText("");
 		pays.setText("");
 		motdepasse.setText("");
-		this.popup("Réinitialisation", "Les champs ont été réinitialisés", "Fermer cette fenêtre");		
+		this.popup("RÃ©initialisation", "Les champs ont Ã©tÃ© rÃ©initialisÃ©s", "Fermer cette fenÃªtre");		
 	}
 	
 	void popup(String title, String label, String buttonText) {

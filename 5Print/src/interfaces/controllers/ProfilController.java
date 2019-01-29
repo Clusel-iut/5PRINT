@@ -68,10 +68,10 @@ public class ProfilController implements Initializable {
     void save(MouseEvent event) {
 		if(GestionDB.updateClient(new Client(userEmail.getText(), userNom.getText(), userPrenom.getText(), userPassword.getText()))) {
 			LocalDataClient.refresh();
-			this.popup("Mise à jour", "Votre profil a été mise à jour !", "Fermer");
+			this.popup("Mise Ã  jour", "Votre profil a Ã©tÃ© mise Ã  jour !", "Fermer");
 		}
 		else {
-			this.popup("Mise à jour", "Erreur dans la mise à jour de votre profil !", "Fermer");
+			this.popup("Mise Ã  jour", "Erreur dans la mise Ã  jour de votre profil !", "Fermer");
 		}	
 	}
 	
