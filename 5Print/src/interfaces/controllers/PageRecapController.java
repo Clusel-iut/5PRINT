@@ -136,7 +136,7 @@ public class PageRecapController implements Initializable {
 		resolutionPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("resolution"));
 		datePhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, Date>("date_ajout"));
 		
-		//PHOTOS PARTAGÉE
+		//PHOTOS PARTAGEES
 		fichierPhotoPartagee.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("chemin"));
 		resolutionPhotoPartagee.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("resolution"));
 		datePhotoPartagee.setCellValueFactory(new PropertyValueFactory<FichierPhoto, Date>("date_ajout"));
@@ -156,7 +156,7 @@ public class PageRecapController implements Initializable {
 		ObservableList<FichierPhoto> listFichierPhoto = FXCollections.observableArrayList(LocalDataClient.client.getPhotos());
 		photosView.setItems(listFichierPhoto);
 		
-		//PHOTOS PARTAGÉS
+		//PHOTOS PARTAGEES
 		ObservableList<FichierPhoto> listFichierPhotoShare = FXCollections.observableArrayList(LocalDataClient.client.getPhotos_partagees());
 		photosViewShare.setItems(listFichierPhotoShare);
 		

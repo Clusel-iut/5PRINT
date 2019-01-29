@@ -47,10 +47,10 @@ public class AjoutAdresseController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			this.popup("Création d'adresse", "Votre adresse a été ajoutée", "Fermer");
+			this.popup("CrÃ©ation d'adresse", "Votre adresse a Ã©tÃ© ajoutÃ©e", "Fermer");
 		}
 		else {
-			this.popup("Création d'adresse", "Erreur lors de l'ajout de l'adresse", "Fermer");
+			this.popup("CrÃ©ation d'adresse", "Erreur lors de l'ajout de l'adresse", "Fermer");
 		}
 	}
 	
