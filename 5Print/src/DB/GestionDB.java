@@ -194,6 +194,22 @@ public class GestionDB {
 		}
 		return cli;
 	}
+	
+	public static ArrayList<Client> getAllClients(){
+		ArrayList<Client> clients = new ArrayList<Client>();
+		String sql = "SELECT * FROM CLIENT";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				clients.add(new Client(result.getString("EMAIL"),result.getString("NOM"), result.getString("PRENOM"), result.getString("MOT_DE_PASSE")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return clients;
+	}
 
 	private static ArrayList<Commande> getAllCommandesByClientId(Client cli, String email) {
 		ArrayList<Commande> commandes = new ArrayList<Commande>();
@@ -209,10 +225,14 @@ public class GestionDB {
 				commande = getCommandeById(result.getInt("NUMERO"));
 				if (commande != null) {
 					commande.setClient(cli);
+					if(commande.getBon_achat() != null) {
+						commande.getBon_achat().setClient(cli);
+					}
 					commandes.add(commande);
 				}
 			}
 			conn.commit();
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -476,9 +496,11 @@ public class GestionDB {
 
 				if (result.getString("CODE_BON") != null) {
 					bon_achat = getBonAchatById(result.getString("CODE_BON"));
+					bon_achat.setCommande(cmd);
 				}
 				if (result.getString("CODE_BON_GENERE") != null) {
 					bon_achat = getBonAchatById(result.getString("CODE_BON_GENERE"));
+					bon_achat.setCommandeGeneree(cmd);
 				}
 
 				cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client,
@@ -487,6 +509,7 @@ public class GestionDB {
 
 			}
 			conn.commit();
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -746,6 +769,7 @@ public class GestionDB {
 				isDeleted = true;
 			}
 			conn.commit();
+			statement.close();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -1250,7 +1274,7 @@ public class GestionDB {
 			statement.setString(1, id);
 			ResultSet result = statement.executeQuery();
 			if (result.next()) {
-				if (result.getInt("NUMERO") >= 0) {
+				/*if (result.getInt("NUMERO") >= 0) {
 					commande = getCommandeById(result.getInt("NUMERO"));
 				}
 				if (result.getInt("NUMERO_GENERE") >= 0) {
@@ -1258,7 +1282,7 @@ public class GestionDB {
 				}
 				if (result.getString("EMAIL") != null) {
 					client = getClientByEmail(result.getString("EMAIL"));
-				}
+				}*/
 				bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client,
 						result.getInt("POURCENTAGEREDUC"), result.getString("TYPE_BONACHAT"));
 			}
