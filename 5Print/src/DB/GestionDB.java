@@ -505,6 +505,7 @@ public class GestionDB {
 			statement.setInt(1, adresse);
 			statement.setString(2, email);
 			statement.setString(3, mode_livraison);
+			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
 			statement.setDate(4, java.sql.Date.valueOf(date_commande.toString()));
 			statement.setString(5, statut);
 			statement.setBoolean(6, etat_paiement);
@@ -660,8 +661,11 @@ public class GestionDB {
 			statement.setString(1, chemin);
 			statement.setString(2, email);
 			statement.setString(3, resolution);
-			statement.setDate(4, java.sql.Date.valueOf(dateFormat.format(date_ajout)));
-			statement.setDate(5, java.sql.Date.valueOf(dateFormat.format(date_no_photo)));
+			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
+			// statement.setDate(4, java.sql.Date.valueOf(dateFormat.format(date_ajout)));
+			// statement.setDate(5, java.sql.Date.valueOf(dateFormat.format(date_no_photo)));
+			statement.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+			statement.setDate(5, new java.sql.Date(System.currentTimeMillis()));
 			statement.setString(6, info_vue);
 			statement.setBoolean(7, est_partage);
 
@@ -1017,6 +1021,7 @@ public class GestionDB {
 			statementImp.setString(2, stock == null ? null : stock.getType_support().toString());
 			statementImp.setString(3, stock == null ? null : stock.getFormat());
 			statementImp.setString(4, stock == null ? null : stock.getQualite());
+			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
 			statementImp.setDate(5, sqlDate);
 			statementImp.setFloat(6, montant_total);
 			statementImp.setBoolean(7, etat_impression);
