@@ -195,6 +195,27 @@ public class GestionDB {
 		return cli;
 	}
 	
+	private static Client getSimpleClientByEmail(String email) {
+		String sql = "SELECT * FROM CLIENT WHERE EMAIL = ?";
+		Client cli = null;
+
+		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, email);
+			ResultSet result = statement.executeQuery();
+
+			if (result.next()) {
+				cli = new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"), result.getString("MOT_DE_PASSE"));
+			statement.close();
+			conn.commit();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cli;
+	}
+	
 	public static ArrayList<Client> getAllClients(){
 		ArrayList<Client> clients = new ArrayList<Client>();
 		String sql = "SELECT * FROM CLIENT";
@@ -209,6 +230,36 @@ public class GestionDB {
 		}
 		
 		return clients;
+	}
+	
+	public static ArrayList<Commande> getAllCommandes(){
+		ArrayList<Commande> commandes = new ArrayList<Commande>();
+		String sql = "SELECT * FROM COMMANDE";
+		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				ArrayList<Impression> imps = null; // result.getString("EMAIL") OK
+				
+				BonAchat bAcht = null;//getBonAchatByCommande(result.getString("CODE_BON"));
+				BonAchat bAchtGen = null;//getBonAchatGenereByCommande(result.getString("CODE_BON_GENERE"));
+				
+				Adresse ad = getAdresseById(result.getInt("ID_ADRESSE"));
+				Client clt = getClientByEmail(result.getString("EMAIL"));
+				Date dtLivr = result.getDate("DATE_COMMANDE");
+				StatutCommande stCmd = StatutCommande.valueOf(result.getString("STATUT"));
+				
+				Commande c = new Commande(result.getInt("NUMERO"), bAcht, bAchtGen, ad, clt, imps, result.getString("MODE_LIVRAISON"), dtLivr, stCmd, result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
+				commandes.add(c);
+			}
+			statement.close();
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return commandes;
 	}
 
 	private static ArrayList<Commande> getAllCommandesByClientId(Client cli, String email) {
@@ -652,7 +703,32 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
-				Client client = getClientByEmail(result.getString("EMAIL"));
+				Client client = getSimpleClientByEmail(result.getString("EMAIL"));
+				fp.setClient(client);
+				photos.add(fp);
+			}
+			statement.close();
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return photos;
+	}
+
+
+	public static ArrayList<FichierPhoto> getAllFichierPhotos() {
+		ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>();
+		String sql = "SELECT CHEMIN FROM FICHIERPHOTO";
+		PreparedStatement statement;
+
+		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				Client client = getSimpleClientByEmail(result.getString("EMAIL"));
 				fp.setClient(client);
 				photos.add(fp);
 			}
@@ -989,11 +1065,8 @@ public class GestionDB {
 			PreparedStatement statementType = conn.prepareStatement(sqlT);
 			statementType.setInt(1, id);
 			ResultSet resultT = statementType.executeQuery();
-
 			if (resultT.next()) {
-
 				// REQUETE IMPRESSION POUR RECUP DONNEES
-
 				int idT = resultT.getInt("ID_IMPRESSION");
 
 				PreparedStatement statementImp = conn.prepareStatement(sqlImp);
@@ -1051,9 +1124,13 @@ public class GestionDB {
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
-			
+			while(result.next()) {
+				T impression = getImpressionById(result.getInt("ID_IMPRESSION"));
+				if(impression != null) {
+					impressions.add(impression);
+				}
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return impressions;

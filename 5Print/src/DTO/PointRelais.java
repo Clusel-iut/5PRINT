@@ -28,7 +28,7 @@ public class PointRelais {
 
 	@Override
 	public String toString() {
-		return "PointRelais [nom=" + nom + ", adresse=" + adresse + "]";
+		return "PointRelais [nom=" + nom + ", adresse=" + adresse + "]\n";
 	}
 
 }

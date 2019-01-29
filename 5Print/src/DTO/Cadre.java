@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Cadre extends Impression{
+	@Override
+	public String toString() {
+		return "Cadre [mise_en_page=" + mise_en_page + ", modele=" + modele + "]\n";
+	}
 	private String mise_en_page;
 	private String modele;
 	

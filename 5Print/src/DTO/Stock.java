@@ -47,7 +47,7 @@ public class Stock {
 	@Override
 	public String toString() {
 		return "Stock [type_support=" + type_support.toString() + ", qualite=" + qualite + ", format=" + format + ", prix=" + prix
-				+ "€]";
+				+ "€]\n";
 	}
 	
 	

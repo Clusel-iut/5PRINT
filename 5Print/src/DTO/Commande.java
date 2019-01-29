@@ -136,5 +136,11 @@ public class Commande{
 		this.impressions = impressions;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Commande [numero=" + numero + ", bon_achat=" + bon_achat + ", bon_achat_genere=" + bon_achat_genere
+				+ ", adresse=" + adresse + ", client=" + client + ", impressions=" + impressions + ", mode_livraison="
+				+ mode_livraison + ", date_commande=" + date_commande + ", statut=" + statut + ", etat_paiement="
+				+ etat_paiement + ", montant_total_cmd=" + montant_total_cmd + "]\n";
+	}
 }

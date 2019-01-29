@@ -19,6 +19,11 @@ public class Calendrier extends Impression{
 	public void setModele(String modele) {
 		this.modele = modele;
 	}
+
+	@Override
+	public String toString() {
+		return "Calendrier [modele=" + modele + "]\n";
+	}
 	
 
 }

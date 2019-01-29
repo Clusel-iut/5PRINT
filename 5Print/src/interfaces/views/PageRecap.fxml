@@ -71,12 +71,13 @@
                                           <TableView fx:id="photosView" prefHeight="371.0" prefWidth="332.0">
                                             <columns>
                                               <TableColumn fx:id="fichierPhoto" prefWidth="88.0" text="CHEMIN" />
-                                                <TableColumn fx:id="resolutionPhoto" prefWidth="146.0" text="RESOLUTION" />
-                                                <TableColumn fx:id="datePhoto" prefWidth="97.0" text="DATE" />
+                                                <TableColumn fx:id="resolutionPhoto" prefWidth="90.0" text="RESOLUTION" />
+                                                <TableColumn fx:id="datePhoto" prefWidth="84.0" text="DATE" />
+                                                <TableColumn fx:id="partage" prefWidth="69.0" text="PARTAGE ?" />
                                             </columns>
                                           </TableView>
                                           <Button layoutX="14.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#addFiles" style="-fx-background-color: orange; -fx-text-fill: white;" text="Ajouter" />
-                                          <Button layoutX="242.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#shareFiles" style="-fx-background-color: orange; -fx-text-fill: white;" text="Partager" />
+                                          <Button layoutX="186.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#shareFiles" style="-fx-background-color: orange; -fx-text-fill: white;" text="Partager / Départager" />
                                        </children>
                                     </AnchorPane>
                               </content>
