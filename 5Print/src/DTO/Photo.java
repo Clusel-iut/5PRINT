@@ -99,9 +99,9 @@ public class Photo {
 
 	@Override
 	public String toString() {
-		return "\nPhoto [id_photo=" + id_photo + ", fichier=" + fichier + ", impression=" + impression + ", description="
+		return "Photo [id_photo=" + id_photo + ", fichier=" + fichier + ", impression=" + impression + ", description="
 				+ description + ", retouche=" + retouche + ", numero_page=" + numero_page + ", position_X=" + position_X
-				+ ", position_Y=" + position_Y + ", nb_exemplaire=" + nb_exemplaire + "]";
+				+ ", position_Y=" + position_Y + ", nb_exemplaire=" + nb_exemplaire + "]\n";
 	}
 	
 	

@@ -148,8 +148,8 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return "\nClient [email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", motDePasse=" + motDePasse
+		return "Client [email=" + email + ", nom=" + nom + ", prenom=" + prenom + ", motDePasse=" + motDePasse
 				+ ", adresses=" + adresses + ", photos=" + photos + ", photos_partagees=" + photos_partagees
-				+ ", impressions=" + impressions + ", commandes=" + commandes + "]";
+				+ ", impressions=" + impressions + ", commandes=" + commandes + "]\n";
 	}	
 }

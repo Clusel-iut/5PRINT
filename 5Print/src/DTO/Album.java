@@ -33,6 +33,6 @@ public class Album extends Impression{
 
 	@Override
 	public String toString() {
-		return "\nAlbum [titre=" + titre + ", mise_en_page=" + mise_en_page + "]";
+		return "Album [titre=" + titre + ", mise_en_page=" + mise_en_page + "]\n";
 	}
 }
