@@ -469,6 +469,21 @@ public class GestionDB {
 			isConnected = false;
 
 		}
+		
+		if(isConnected) {
+			String sqlU = "UPDATE CLIENT SET DATE_CONNECT = ? WHERE EMAIL = ?";
+			PreparedStatement statementU;
+			try {
+				conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				statementU = conn.prepareStatement(sqlU);
+				statementU.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+				statementU.setString(2, email);
+				statementU.executeUpdate();
+
+				conn.commit();
+			} catch (SQLException e) {
+			}
+		}
 
 		return isConnected;
 	}
