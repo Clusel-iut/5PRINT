@@ -625,6 +625,30 @@ public class GestionDB {
 		}
 		return fiPhoto;
 	}
+	
+	public static ArrayList<FichierPhoto> getAllFichierPhotosPartagees() {
+		ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>();
+		String sql = "SELECT CHEMIN, EMAIL FROM FICHIERPHOTO WHERE EST_PARTAGE = 1";
+		PreparedStatement statement;
+
+		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement = conn.prepareStatement(sql);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				Client client = getClientByEmail(result.getString("EMAIL"));
+				fp.setClient(client);
+				photos.add(fp);
+			}
+			statement.close();
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return photos;
+	}
 
 	private static ArrayList<Photo> getPhotosByFichierId(FichierPhoto fichier, String chemin) {
 		ArrayList<Photo> photos = new ArrayList<Photo>();
@@ -1179,7 +1203,31 @@ public class GestionDB {
 
 		return isUpdated;
 	}
+	
+	
+	public static boolean updateImp() {
+		String sql = "UPDATE IMPRESSION SET DATE_IMPRESSION = ? WHERE ID_IMPRESSION = ?";
+		boolean isUpdated = false;
+		LocalDate todayLocalDate = LocalDate.now(ZoneId.systemDefault());
+		java.sql.Date sqlDate = java.sql.Date.valueOf(todayLocalDate);
+		PreparedStatement statement;
 
+		try {
+			statement = conn.prepareStatement(sql);
+			statement.setDate(1, sqlDate);
+			statement.setInt(2, 37);
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+				isUpdated = true;
+			}
+			conn.commit();
+		} catch (SQLException e) {
+			isUpdated = false;
+		}
+
+		return isUpdated;
+	}
+	
 	// DELETE
 	public static boolean deleteImpression(int id, String type) {
 		String sqlImp = "DELETE IMPRESSION WHERE ID_IMPRESSION = ?";
