@@ -245,10 +245,17 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				Client client = getClientSansPhotosByEmail(result.getString("EMAIL"));
 				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
-				fp.setClient(client);
-				photos.add(fp);
+				String sqlC = "SELECT EMAIL FROM FICHIERPHOTO WHERE CHEMIN = ?";
+				PreparedStatement statement2;
+				statement2 = conn.prepareStatement(sqlC);
+				statement2.setString(1, result.getString("CHEMIN"));
+				ResultSet resultC = statement2.executeQuery();
+				if(resultC.next()) {
+					Client client = getClientSansPhotosByEmail(resultC.getString("EMAIL"));
+					fp.setClient(client);
+					photos.add(fp);
+				}
 			}
 			conn.commit();
 		} catch (SQLException e) {
@@ -1318,6 +1325,7 @@ public class GestionDB {
 			while (result.next()) {
 				Stock stock = new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT").toUpperCase()), result.getString("QUALITE"),
 						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX"));
+				stocks = new ArrayList<Stock>();
 				stocks.add(stock);
 				stocks.add(new Stock(TypeSupport.valueOf(result.getString("TYPE_SUPPORT")), result.getString("QUALITE"),
 						result.getString("FORMAT"), result.getInt("QUANTITE"), result.getInt("PRIX")));
