@@ -54,7 +54,6 @@ public class ProfilController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
 	}
 	
 	@FXML
@@ -86,10 +85,8 @@ public class ProfilController implements Initializable {
 			app_stage.setScene(home_page_scene);
 			app_stage.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
