@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.22073578595317725" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.PageRecapController">
+<SplitPane dividerPositions="0.22073578595317725" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.PageGestionController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: white;">
          <children>
@@ -42,9 +42,9 @@
                               </Label>
                               <TableView layoutX="14.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                 <columns>
-                                  <TableColumn fx:id="nom" prefWidth="178.0" text="nom" />
-                                  <TableColumn fx:id="prenom" minWidth="0.0" prefWidth="174.0" text="prenom" />
-                                    <TableColumn fx:id="email" prefWidth="618.0" text="email" />
+                                  <TableColumn fx:id="nom" prefWidth="178.0" style="-fx-background-color: orange;" text="nom" />
+                                  <TableColumn fx:id="prenom" minWidth="0.0" prefWidth="174.0" style="-fx-background-color: orange;" text="prenom" />
+                                    <TableColumn fx:id="email" prefWidth="618.0" style="-fx-background-color: orange;" text="email" />
                                 </columns>
                               </TableView>
                               <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
@@ -62,13 +62,13 @@
                               </Label>
                               <TableView layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                  <columns>
-                                    <TableColumn fx:id="idImpression" prefWidth="53.0" text="id" />
-                                    <TableColumn fx:id="dateImpression" minWidth="0.0" prefWidth="119.0" text="date" />
-                                    <TableColumn fx:id="emailImpression" prefWidth="194.0" text="email" />
-                                    <TableColumn fx:id="typeImpression" minWidth="0.0" prefWidth="132.0" text="type" />
-                                    <TableColumn fx:id="formatImpression" minWidth="0.0" prefWidth="132.0" text="format" />
-                                    <TableColumn fx:id="qualiteImpression" minWidth="0.0" prefWidth="132.0" text="qualite" />
-                                    <TableColumn fx:id="nbImpression" minWidth="0.0" prefWidth="132.0" text="nb impression" />
+                                    <TableColumn fx:id="idImpression" prefWidth="53.0" style="-fx-background-color: orange;" text="id" />
+                                    <TableColumn fx:id="dateImpression" minWidth="0.0" prefWidth="119.0" style="-fx-background-color: orange;" text="date" />
+                                    <TableColumn fx:id="emailImpression" prefWidth="194.0" style="-fx-background-color: orange;" text="email" />
+                                    <TableColumn fx:id="typeImpression" minWidth="0.0" prefWidth="132.0" style="-fx-background-color: orange;" text="type" />
+                                    <TableColumn fx:id="formatImpression" minWidth="0.0" prefWidth="132.0" style="-fx-background-color: orange;" text="format" />
+                                    <TableColumn fx:id="qualiteImpression" minWidth="0.0" prefWidth="132.0" style="-fx-background-color: orange;" text="qualite" />
+                                    <TableColumn fx:id="nbImpression" minWidth="0.0" prefWidth="132.0" style="-fx-background-color: orange;" text="nb impression" />
                                  </columns>
                               </TableView>
                               <Button layoutX="897.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
@@ -86,11 +86,11 @@
                               </Label>
                               <TableView editable="true" layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                  <columns>
-                                    <TableColumn fx:id="typeSupportStock" prefWidth="121.0" text="type support" />
-                                    <TableColumn fx:id="qualiteStock" minWidth="0.0" prefWidth="104.0" text="qualite" />
-                                    <TableColumn fx:id="formatStock" prefWidth="119.0" text="format" />
-                                    <TableColumn fx:id="quantiteStock" minWidth="0.0" prefWidth="154.0" text="quantité" />
-                                    <TableColumn fx:id="prixStock" minWidth="0.0" prefWidth="132.0" text="prix" />
+                                    <TableColumn fx:id="typeSupportStock" prefWidth="121.0" style="-fx-background-color: orange;" text="type support" />
+                                    <TableColumn fx:id="qualiteStock" minWidth="0.0" prefWidth="104.0" style="-fx-background-color: orange;" text="qualite" />
+                                    <TableColumn fx:id="formatStock" prefWidth="119.0" style="-fx-background-color: orange;" text="format" />
+                                    <TableColumn fx:id="quantiteStock" minWidth="0.0" prefWidth="154.0" style="-fx-background-color: orange;" text="quantité" />
+                                    <TableColumn fx:id="prixStock" minWidth="0.0" prefWidth="132.0" style="-fx-background-color: orange;" text="prix" />
                                  </columns>
                               </TableView>
                               <Button layoutX="897.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
@@ -108,12 +108,12 @@
                               </Label>
                               <TableView layoutX="14.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                  <columns>
-                                    <TableColumn fx:id="cheminPhoto" prefWidth="163.0" text="chemin" />
-                                    <TableColumn fx:id="emailPhoto" minWidth="0.0" prefWidth="156.0" text="propriétaire" />
-                                    <TableColumn fx:id="formatStock1" prefWidth="120.0" text="resolution" />
-                                    <TableColumn fx:id="priseVuePhoto" minWidth="0.0" prefWidth="160.0" text="prise de vue" />
-                                    <TableColumn fx:id="datePhoto" minWidth="0.0" prefWidth="139.0" text="date" />
-                                    <TableColumn fx:id="partagePhoto" minWidth="0.0" prefWidth="139.0" text="partagé ?" />
+                                    <TableColumn fx:id="cheminPhoto" prefWidth="163.0" style="-fx-background-color: orange;" text="chemin" />
+                                    <TableColumn fx:id="emailPhoto" minWidth="0.0" prefWidth="156.0" style="-fx-background-color: orange;" text="propriétaire" />
+                                    <TableColumn fx:id="formatStock1" prefWidth="120.0" style="-fx-background-color: orange;" text="resolution" />
+                                    <TableColumn fx:id="priseVuePhoto" minWidth="0.0" prefWidth="160.0" style="-fx-background-color: orange;" text="prise de vue" />
+                                    <TableColumn fx:id="datePhoto" minWidth="0.0" prefWidth="139.0" style="-fx-background-color: orange;" text="date" />
+                                    <TableColumn fx:id="partagePhoto" minWidth="0.0" prefWidth="139.0" style="-fx-background-color: orange;" text="partagé ?" />
                                  </columns>
                               </TableView>
                               <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
@@ -131,15 +131,15 @@
                               </Label>
                               <TableView layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                  <columns>
-                                    <TableColumn fx:id="idCommande" prefWidth="41.0" text="id" />
-                                    <TableColumn fx:id="dateCommande" minWidth="0.0" prefWidth="87.0" text="date" />
-                                    <TableColumn fx:id="emailCommande" prefWidth="103.0" text="email" />
-                                    <TableColumn fx:id="adresseCommande" minWidth="0.0" prefWidth="207.0" text="adresse" />
-                                    <TableColumn fx:id="bonAchatCommande" minWidth="0.0" prefWidth="114.0" text="bon achat" />
-                                    <TableColumn fx:id="bonAchatGenereCom" minWidth="0.0" prefWidth="129.0" text="bon achat généré" />
-                                    <TableColumn fx:id="statutCommande" minWidth="0.0" prefWidth="92.0" text="statut" />
-                                    <TableColumn fx:id="montantTotalCom" minWidth="0.0" prefWidth="110.0" text="montant total" />
-                                    <TableColumn fx:id="etatPayerCom" minWidth="0.0" prefWidth="87.0" text="payer?" />
+                                    <TableColumn fx:id="idCommande" prefWidth="41.0" style="-fx-background-color: orange;" text="id" />
+                                    <TableColumn fx:id="dateCommande" minWidth="0.0" prefWidth="87.0" style="-fx-background-color: orange;" text="date" />
+                                    <TableColumn fx:id="emailCommande" prefWidth="103.0" style="-fx-background-color: orange;" text="email" />
+                                    <TableColumn fx:id="adresseCommande" minWidth="0.0" prefWidth="207.0" style="-fx-background-color: orange;" text="adresse" />
+                                    <TableColumn fx:id="bonAchatCommande" minWidth="0.0" prefWidth="114.0" style="-fx-background-color: orange;" text="bon achat" />
+                                    <TableColumn fx:id="bonAchatGenereCom" minWidth="0.0" prefWidth="129.0" style="-fx-background-color: orange;" text="bon achat généré" />
+                                    <TableColumn fx:id="statutCommande" minWidth="0.0" prefWidth="92.0" style="-fx-background-color: orange;" text="statut" />
+                                    <TableColumn fx:id="montantTotalCom" minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="montant total" />
+                                    <TableColumn fx:id="etatPayerCom" minWidth="0.0" prefWidth="87.0" style="-fx-background-color: orange;" text="payer?" />
                                  </columns>
                               </TableView>
                               <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />

@@ -51,8 +51,8 @@ public class PageGestionController implements Initializable {
 		nom.setCellValueFactory(new PropertyValueFactory<Client, String>("nom"));
 		prenom.setCellValueFactory((new PropertyValueFactory<Client, String>("prenom")));
 		email.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
-		ObservableList<Client> listImpression = FXCollections.observableArrayList(GestionDB.getAllClients());
-		tableClient.setItems(listImpression);
+		ObservableList<Client> listClient = FXCollections.observableArrayList(GestionDB.getAllClients());
+		tableClient.setItems(listClient);
 		tableClient.getColumns().addAll(nom, prenom, email);
 		
 	}

@@ -220,15 +220,16 @@ public class GestionDB {
 		ArrayList<Client> clients = new ArrayList<Client>();
 		String sql = "SELECT * FROM CLIENT";
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
 				clients.add(new Client(result.getString("EMAIL"),result.getString("NOM"), result.getString("PRENOM"), result.getString("MOT_DE_PASSE")));
 			}
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return clients;
 	}
 	
