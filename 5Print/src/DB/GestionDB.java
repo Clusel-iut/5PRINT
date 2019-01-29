@@ -221,12 +221,13 @@ public class GestionDB {
 			while(result.next()) {
 				ArrayList<Impression> imps = null; // result.getString("EMAIL") OK
 				
-				BonAchat bAcht = null; // result.getString("CODE_BON")
-				BonAchat bAchtGen = null; // result.getString("CODE_BON_GENERE")
-				Adresse ad = null; // result.getInt("ID_ADRESSE")
+				BonAchat bAcht = null;//getBonAchatByCommande(result.getString("CODE_BON"));
+				BonAchat bAchtGen = null;//getBonAchatGenereByCommande(result.getString("CODE_BON_GENERE"));
+				
+				Adresse ad = getAdresseById(result.getInt("ID_ADRESSE"));
 				Client clt = getClientByEmail(result.getString("EMAIL"));
 				Date dtLivr = result.getDate("DATE_COMMANDE");
-				StatutCommande stCmd = null; // result.getString("STATUT")
+				StatutCommande stCmd = StatutCommande.valueOf(result.getString("STATUT"));
 				
 				Commande c = new Commande(result.getInt("NUMERO"), bAcht, bAchtGen, ad, clt, imps, result.getString("MODE_LIVRAISON"), dtLivr, stCmd, result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
 				commandes.add(c);
