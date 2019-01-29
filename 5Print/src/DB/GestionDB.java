@@ -316,6 +316,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			statement.setString(2, nom);
@@ -326,7 +327,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -455,6 +456,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, adresse);
 			statement.setString(2, email);
@@ -468,7 +470,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -600,6 +602,7 @@ public class GestionDB {
 		Date date_ajout = new Date();
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			statement.setString(2, email);
@@ -613,7 +616,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -729,6 +732,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, chemin);
 			statement.setString(2, description);
@@ -745,7 +749,7 @@ public class GestionDB {
 				statement.executeUpdate();
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -1169,6 +1173,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, numeroC);
 			statement.setInt(2, numeroCGenere);
@@ -1180,7 +1185,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
@@ -1286,6 +1291,7 @@ public class GestionDB {
 
 		PreparedStatement statement;
 		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, type.name());
 			statement.setString(2, qualite);
@@ -1297,7 +1303,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
-
+			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
 		}
