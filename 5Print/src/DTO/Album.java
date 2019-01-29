@@ -30,4 +30,9 @@ public class Album extends Impression{
 	public void setMise_en_page(String mise_en_page) {
 		this.mise_en_page = mise_en_page;
 	}
+
+	@Override
+	public String toString() {
+		return "\nAlbum [titre=" + titre + ", mise_en_page=" + mise_en_page + "]";
+	}
 }

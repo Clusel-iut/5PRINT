@@ -101,7 +101,7 @@ public abstract class Impression {
 
 	@Override
 	public String toString() {
-		return "Impression [id_impression=" + id_impression + ", date_impression=" + date_impression
+		return "\nImpression [id_impression=" + id_impression + ", date_impression=" + date_impression
 				+ ", nb_impression=" + nb_impression + ", client=" + client + ", stock=" + stock + ", montant_total="
 				+ montant_total + ", etat_impression=" + etat_impression + ", photos=" + photos + ", commande="
 				+ commande + "]";

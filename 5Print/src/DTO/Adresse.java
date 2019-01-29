@@ -74,7 +74,7 @@ public class Adresse {
 
 	@Override
 	public String toString() {
-		return numero + " " + rue + " " +code_postal + " " +ville + " " + pays;
+		return "\n" + numero + " " + rue + " " +code_postal + " " +ville + " " + pays;
 	}
 	
 }
