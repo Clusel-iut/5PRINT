@@ -61,9 +61,8 @@ public class CreationImpressionController implements Initializable{
 	
 	@FXML
     void back(MouseEvent event) { 
-		
 		Parent home_page_parent;
-		 
+		
 		try {
 			home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
 			Scene home_page_scene = new Scene(home_page_parent);
