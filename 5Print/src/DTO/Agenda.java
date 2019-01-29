@@ -38,7 +38,7 @@ public class Agenda extends Impression{
 
 	@Override
 	public String toString() {
-		return "\nAgenda [modele=" + modele + ", nbPages=" + nbPages + "]";
+		return "Agenda [modele=" + modele + ", nbPages=" + nbPages + "]\n";
 	}
 	
 }

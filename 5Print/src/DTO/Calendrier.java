@@ -22,7 +22,7 @@ public class Calendrier extends Impression{
 
 	@Override
 	public String toString() {
-		return "\nCalendrier [modele=" + modele + "]";
+		return "Calendrier [modele=" + modele + "]\n";
 	}
 	
 

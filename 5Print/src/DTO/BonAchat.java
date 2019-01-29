@@ -3,9 +3,9 @@ package DTO;
 public class BonAchat {
 	@Override
 	public String toString() {
-		return "\nBonAchat [code_bon=" + code_bon + ", commande=" + commande + ", commandeGeneree=" + commandeGeneree
+		return "BonAchat [code_bon=" + code_bon + ", commande=" + commande + ", commandeGeneree=" + commandeGeneree
 				+ ", client=" + client + ", pourcentage_reduc=" + pourcentage_reduc + ", type_bon_achat="
-				+ type_bon_achat + "]";
+				+ type_bon_achat + "]\n";
 	}
 
 	private String code_bon;

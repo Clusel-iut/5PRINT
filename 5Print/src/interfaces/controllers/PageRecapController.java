@@ -58,6 +58,8 @@ public class PageRecapController implements Initializable {
 	@FXML
 	private TableColumn<FichierPhoto, Date> datePhoto;
 	@FXML
+	private TableColumn<FichierPhoto, Boolean> partage;
+	@FXML
 	private TableColumn<FichierPhoto, String> fichierPhotoPartagee;
 	@FXML
 	private TableColumn<FichierPhoto, String> resolutionPhotoPartagee;
@@ -81,44 +83,14 @@ public class PageRecapController implements Initializable {
 		
 		initialiserTableau();
 		
-		
-		//photosView.getColumns().addAll(cheminPhoto, resolutionPhoto, datePhoto);
-		//photosViewShare.getColumns().addAll(cheminPhotoPartagee, resolutionPhotoPartagee, datePhotoPartagee);
-		//paniersView.getColumns().addAll(idPanier, datePanier, typePanier, formatPanier, qualitePanier);
-		//paniersViewShare.getColumns().addAll(idPanierEnCours, datePanierEnCours, montantPanierEnCours, etatPanierEnCours);
-		
-		/**
-		if (LocalDataClient.client.getImpressions() != null) {
-			for(int index = 0; index < LocalDataClient.client.getImpressions().size(); index++) {
-				idImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>(Integer.toString(LocalDataClient.client.getImpressions().get(index).getId_impression())));
-				System.out.println(LocalDataClient.client.getImpressions().get(index).getId_impression());
-				//dateImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>(LocalDataClient.client.getImpressions().get(index).getDate_impression().toString()));
-				//typeImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>(LocalDataClient.client.getImpressions().get(index).getStock().getType_support().name()));
-				//formatImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>(LocalDataClient.client.getImpressions().get(index).getStock().getQualite()));
-				//qualiteImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>(LocalDataClient.client.getImpressions().get(index).getStock().getQualite()));				
-			}
-		}
-		if (LocalDataClient.client.getPhotos() != null) {
-			for(int index = 0; index < LocalDataClient.client.getPhotos().size(); index++) {
-				cheminPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>(LocalDataClient.client.getPhotos().get(index).getChemin()));
-				resolutionPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>(LocalDataClient.client.getImpressions().get(index).getStock().getType_support().name()));
-				datePhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, Date>(LocalDataClient.client.getImpressions().get(index).getStock().getQualite()));
-			}
-		}
-		if (LocalDataClient.client.getCommandes() != null) {
-			for(int index = 0; index < LocalDataClient.client.getImpressions().size(); index++) {
-				idImpression.setCellValueFactory(new PropertyValueFactory<Impression, Integer>(Integer.toString(LocalDataClient.client.getImpressions().get(index).getId_impression())));
-				dateImpression.setCellValueFactory(new PropertyValueFactory<Impression, Date>(Integer.toString(LocalDataClient.client.getImpressions().get(index).getId_impression())));
-				typeImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>(LocalDataClient.client.getImpressions().get(index).getStock().getType_support().name()));
-				formatImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>(LocalDataClient.client.getImpressions().get(index).getStock().getQualite()));
-				qualiteImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>(LocalDataClient.client.getImpressions().get(index).getStock().getQualite()));				
-			}
-		}*/
 		System.out.println("erggr");
 		
 	}
 
 	private void initialiserTableau() {
+		
+		LocalDataClient.refresh();
+		
 		impressionsView.getColumns().clear();
 		photosView.getColumns().clear();
 		paniersView.getColumns().clear();
@@ -135,6 +107,7 @@ public class PageRecapController implements Initializable {
 		fichierPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("chemin"));
 		resolutionPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("resolution"));
 		datePhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, Date>("date_ajout"));
+		partage.setCellValueFactory(new PropertyValueFactory<FichierPhoto, Boolean>("est_partage"));
 		
 		//PHOTOS PARTAGEES
 		fichierPhotoPartagee.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("chemin"));
@@ -157,7 +130,7 @@ public class PageRecapController implements Initializable {
 		photosView.setItems(listFichierPhoto);
 		
 		//PHOTOS PARTAGEES
-		ObservableList<FichierPhoto> listFichierPhotoShare = FXCollections.observableArrayList(LocalDataClient.client.getPhotos_partagees());
+		ObservableList<FichierPhoto> listFichierPhotoShare = FXCollections.observableArrayList(GestionDB.getAllFichierPhotosPartagees());
 		photosViewShare.setItems(listFichierPhotoShare);
 		
 		//COMMANDE
@@ -165,7 +138,7 @@ public class PageRecapController implements Initializable {
 		paniersView.setItems(listCommande);
 		
 		impressionsView.getColumns().addAll(idImpression, dateImpression, typeImpression, formatImpression, qualiteImpression);
-		photosView.getColumns().addAll(fichierPhoto, resolutionPhoto, datePhoto);
+		photosView.getColumns().addAll(fichierPhoto, resolutionPhoto, datePhoto, partage);
 		photosViewShare.getColumns().addAll(fichierPhotoPartagee, resolutionPhotoPartagee, datePhotoPartagee, proprio);
 		paniersView.getColumns().addAll(idPanier, datePanier, montantPanier, etatPanier);
 	}
@@ -219,11 +192,13 @@ public class PageRecapController implements Initializable {
 	 
 	 @FXML
 	 void editImpress(MouseEvent event) {
-		 	int idImpress = impressionsView.getSelectionModel().getSelectedItem().getId_impression();
 		 
+		  	System.out.println(impressionsView.getSelectionModel().getSelectedItem().getId_impression());
+		  	int i = impressionsView.getSelectionModel().getSelectedItem().getId_impression();
+		  	System.out.println(i);
+		  	
 		 	FXMLLoader Loader = new FXMLLoader();
-		    Loader.setLocation(this.getClass().getResource(
-			    "/application/views/GestionImpression.fxml"));
+		    Loader.setLocation(getClass().getResource("/interfaces/views/GestionImpression.fxml"));
 		    try {
 				Loader.load();
 			} catch (IOException e) {
@@ -232,15 +207,14 @@ public class PageRecapController implements Initializable {
 			}
 
 		    GestionImpressionController controller = Loader.getController();
-		    controller.setObjects(idImpress);
+		    controller.setObjects(i);
 
 		    Parent home_page_parent = Loader.getRoot();
 		    Scene home_page_scene = new Scene(home_page_parent);
 		    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
 			    .getWindow();
 		    app_stage.setScene(home_page_scene);
-		    app_stage.show();
-
+		    app_stage.show();			
 	 }
 	 
 	 @FXML
@@ -261,6 +235,11 @@ public class PageRecapController implements Initializable {
 	 
 	 @FXML
 	 void shareFiles(MouseEvent event) {
-		 System.out.println(photosView.getSelectionModel().getSelectedItem().toString());
+		 System.out.println(photosView.getSelectionModel().getSelectedItem().toString());		 
+		 photosView.getSelectionModel().getSelectedItem().setEst_partage(!photosView.getSelectionModel().getSelectedItem().getEst_partage());
+		 GestionDB.updateFichierPhoto(photosView.getSelectionModel().getSelectedItem());
+		 
+		 this.initialiserTableau();
+		 
 	 }
 }

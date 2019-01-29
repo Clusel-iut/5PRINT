@@ -88,7 +88,7 @@ public class FichierPhoto{
 	}
 	@Override
 	public String toString() {
-		return  this.est_partage ? "Partagée; " : "Perso; " + "chemin=" + chemin + " resolution=" + resolution + " date_ajout=" + date_ajout;
+		return  (this.est_partage ? "Partagée; " : "Perso; ") + "chemin=" + chemin + " resolution=" + resolution + " date_ajout=" + date_ajout;
 	}
 	
 	
