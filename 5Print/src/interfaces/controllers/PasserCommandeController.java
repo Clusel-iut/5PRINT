@@ -63,7 +63,7 @@ public class PasserCommandeController {
 		bonAchat.getItems().setAll(GestionDB.getBonAchatByEmail(LocalDataClient.client.getEmail()));
 		modeLivraison.getItems().setAll("Point relais", "Colissimo", "UPS", "DHL");
 		
-		//listImpressionView.getColumns().clear();
+		listImpressionView.getColumns().clear();
 		
 		//IMPRESSION
 		idImpression.setCellValueFactory(new PropertyValueFactory<Impression, Integer>("id_impression"));

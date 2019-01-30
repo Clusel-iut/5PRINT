@@ -1136,7 +1136,8 @@ public class GestionDB {
 					boolean etat_impression = resultImp.getBoolean("ETAT_IMPRESSION");
 					Date date_impression = resultImp.getTimestamp("DATE_IMPRESSION");
 					int numero = resultImp.getInt("NUMERO");
-					Client client = null;
+					String email = resultImp.getString("EMAIL");
+					Client client = new Client(email, null, null, null, null);
 					Commande commande = null;
 					Stock stock = getStockById(type, resultImp.getString("QUALITE"), resultImp.getString("FORMAT"));
 										
@@ -1314,8 +1315,7 @@ public class GestionDB {
 
 	// UPDATE
 	public static <T extends Impression> boolean updateImpression(TypeSupport type, T impression) {
-		String sqlImp = "UPDATE IMPRESSION SET TYPE_SUPPORT = ?, FORMAT = ?, QUALITE = ?, NUMERO = ?, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? "
-				+ "WHERE ID_IMPRESSION = ?";
+		String sqlImp = "UPDATE IMPRESSION SET TYPE_SUPPORT = ?, FORMAT = ?, QUALITE = ?, NUMERO = ?, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? WHERE ID_IMPRESSION = ?";
 		String sqlImpExt = "";
 		boolean isUpdated = false;
 
@@ -1324,7 +1324,7 @@ public class GestionDB {
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sqlImp);
-			statement.setString(1, impression.getStock().getType_support().toString());
+			statement.setString(1, impression.getStock().getType_support().toString().toLowerCase());
 			statement.setString(2, impression.getStock().getFormat());
 			statement.setString(3, impression.getStock().getQualite());
 			statement.setInt(4, impression.getCommande().getNumero());
@@ -1332,7 +1332,7 @@ public class GestionDB {
 			statement.setBoolean(6, impression.getEtat_impression());
 			statement.setInt(7, impression.getNb_impression());
 			statement.setInt(8, impression.getId_impression());
-
+			
 			int rowsInsertedImpEx = 0;
 			int rowsInsertedImp = 0;
 
