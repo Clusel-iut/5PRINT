@@ -1338,14 +1338,14 @@ public class GestionDB {
 
 			if (type.equals(TypeSupport.AGENDA)) {
 				Agenda agenda = (Agenda) impression;
-				sqlImpExt = "UPDATE INTO AGENDA SET MODELE = ? WHERE ID_IMPRESSION = ?";
+				sqlImpExt = "UPDATE AGENDA SET MODELE = ? WHERE ID_IMPRESSION = ?";
 				statementImp = conn.prepareStatement(sqlImpExt);
 				statementImp.setString(1, agenda.getModele());
 				statementImp.setInt(2, agenda.getId_impression());
 			}
 			if (type.equals(TypeSupport.ALBUM)) {
 				Album album = (Album) impression;
-				sqlImpExt = "UPDATE INTO ALBUM SET TITRE = ?, MISE_EN_PAGE = ? WHERE ID_IMPRESSION = ?";
+				sqlImpExt = "UPDATE ALBUM SET TITRE = ?, MISE_EN_PAGE = ? WHERE ID_IMPRESSION = ?";
 				statementImp = conn.prepareStatement(sqlImpExt);
 				statementImp.setString(1, album.getTitre());
 				statementImp.setString(2, album.getMise_en_page());
@@ -1353,7 +1353,7 @@ public class GestionDB {
 			}
 			if (type.equals(TypeSupport.CADRE)) {
 				Cadre cadre = (Cadre) impression;
-				sqlImpExt = "UPDATE INTO CADRE SET MISE_EN_PAGE = ?, MODELE = ? WHERE ID_IMPRESSION = ?";
+				sqlImpExt = "UPDATE CADRE SET MISE_EN_PAGE = ?, MODELE = ? WHERE ID_IMPRESSION = ?";
 				statementImp = conn.prepareStatement(sqlImpExt);
 				statementImp.setString(1, cadre.getMise_en_page());
 				statementImp.setString(2, cadre.getModele());
@@ -1361,7 +1361,7 @@ public class GestionDB {
 			}
 			if (type.equals(TypeSupport.CALENDRIER)) {
 				Calendrier calendrier = (Calendrier) impression;
-				sqlImpExt = "UPDATE INTO CALENDRIER SET MODELE = ? WHERE ID_IMPRESSION = ?";
+				sqlImpExt = "UPDATE CALENDRIER SET MODELE = ? WHERE ID_IMPRESSION = ?";
 				statementImp = conn.prepareStatement(sqlImpExt);
 				statementImp.setString(1, calendrier.getModele());
 				statementImp.setInt(2, calendrier.getId_impression());
