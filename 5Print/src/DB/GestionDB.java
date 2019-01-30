@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -506,7 +505,6 @@ public class GestionDB {
 		return isDeleted;
 	}
 
-	// TODO CONNECTION????????
 	public static boolean connectionClient(String email, String motDePasse) {
 		String sql = "SELECT * FROM CLIENT WHERE EMAIL = ? AND MOT_DE_PASSE = ?";
 		boolean isConnected = false;
@@ -577,7 +575,7 @@ public class GestionDB {
 					bon_achat.setCommandeGeneree(cmd);
 				}
 
-				cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client, getAllImpressionByCommandeId(cmd, result.getInt("NUMERO")),
+				cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client,getAllImpressionByCommandeId(cmd, result.getInt("NUMERO")),
 						result.getString("MODE_LIVRAISON"), result.getDate("DATE_COMMANDE"), StatutCommande.valueOf(result.getString("STATUT")),
 						result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
 
@@ -590,11 +588,11 @@ public class GestionDB {
 		return cmd;
 	}
 
-	private static ArrayList<Impression> getAllImpressionByCommandeId(Commande commande, int numero) {
+	static ArrayList<Impression> getAllImpressionByCommandeId(Commande commande, int numero) {
 	ArrayList<Impression> impressions = new ArrayList<Impression>();
 		String sql = "SELECT ID_IMPRESSION FROM IMPRESSION WHERE NUMERO = ?";
 		PreparedStatement statement;
-
+		
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
@@ -602,6 +600,7 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				Impression imp = getImpressionById(result.getInt("ID_IMPRESSION"));
+				System.out.println(result.getInt("ID_IMPRESSION") + " " + imp.toString());
 				imp.setCommande(commande);
 				impressions.add(imp);
 			}
@@ -613,7 +612,7 @@ public class GestionDB {
 
 
 	
-		return null;
+		return impressions;
 	}
 
 	// CREATE
@@ -628,8 +627,7 @@ public class GestionDB {
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, adresse);
 			statement.setString(2, email);
-			statement.setString(3, mode_livraison);
-			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
+			statement.setString(3, mode_livraison); 
 			LocalDate todayLocalDate = LocalDate.now(ZoneId.systemDefault());
 			java.sql.Date sqlDate = java.sql.Date.valueOf(todayLocalDate);
 			statement.setDate(4, sqlDate);
@@ -833,9 +831,6 @@ public class GestionDB {
 			statement.setString(1, chemin);
 			statement.setString(2, email);
 			statement.setString(3, resolution);
-			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
-			// statement.setDate(4, java.sql.Date.valueOf(dateFormat.format(date_ajout)));
-			// statement.setDate(5, java.sql.Date.valueOf(dateFormat.format(date_no_photo)));
 			statement.setDate(4, new java.sql.Date(System.currentTimeMillis()));
 			statement.setDate(5, new java.sql.Date(System.currentTimeMillis()));
 			statement.setString(6, info_vue);
@@ -930,8 +925,6 @@ public class GestionDB {
 
 	public static <T extends Impression> T getImpressionById(int id) {
 		T impression = null;
-		TypeSupport[] types = { TypeSupport.AGENDA, TypeSupport.ALBUM, TypeSupport.CADRE, TypeSupport.CALENDRIER,
-				TypeSupport.TIRAGE };
 		String select = "SELECT TYPE_SUPPORT FROM IMPRESSION";
 		String where = " WHERE ID_IMPRESSION = ?";
 		String sql = "";
@@ -1215,12 +1208,11 @@ public class GestionDB {
 			statementImp.setString(2, stock == null ? null : stock.getType_support().toString().toLowerCase());
 			statementImp.setString(3, stock == null ? null : stock.getFormat());
 			statementImp.setString(4, stock == null ? null : stock.getQualite());
-			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
 			statementImp.setDate(5, sqlDate);
 			statementImp.setFloat(6, montant_total);
 			statementImp.setBoolean(7, etat_impression);
 			statementImp.setInt(8, nb_impression);
-			int row = statementImp.executeUpdate();
+			statementImp.executeUpdate();
 			PreparedStatement statementID = conn.prepareStatement("SELECT MAX(ID_IMPRESSION) AS ID FROM IMPRESSION WHERE EMAIL = ?");
 			statementID.setString(1, client.getEmail());
 			ResultSet resultImp = statementID.executeQuery();
@@ -1230,7 +1222,7 @@ public class GestionDB {
 
 			if (resultImp.next()) {
 				id_impression = resultImp.getInt("ID");			
-				if (type == TypeSupport.AGENDA) {
+				if (type.equals(TypeSupport.AGENDA)) {
 					sqlImpExt = "INSERT INTO AGENDA (ID_IMPRESSION, MODELE) " + "VALUES (?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
