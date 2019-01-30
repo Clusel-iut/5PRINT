@@ -96,7 +96,18 @@ public abstract class Impression {
 	}
 
 	public void setCommande(Commande commande) {
-		this.commande = commande;
+		if(checkPhotos()) {
+			this.commande = commande;
+		}
+	}
+	
+	public boolean checkPhotos() {
+		for(Photo p : this.photos) {
+			if(p.getFichier().getEst_partage() != true) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
