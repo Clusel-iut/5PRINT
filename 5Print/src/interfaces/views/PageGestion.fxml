@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.22073578595317725" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.PageGestionController">
+<SplitPane dividerPositions="0.22073578595317725" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.PageGestionController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: white;">
          <children>
@@ -40,7 +40,7 @@
                                     <Font name="System Bold" size="17.0" />
                                  </font>
                               </Label>
-                              <TableView fx:id="tableClient" layoutX="14.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                              <TableView fx:id="tableClients" layoutX="14.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                 <columns>
                                   <TableColumn fx:id="nom" prefWidth="178.0" text="nom" />
                                   <TableColumn fx:id="prenom" minWidth="0.0" prefWidth="174.0" text="prenom" />
@@ -60,7 +60,7 @@
                                     <Font name="System Bold" size="17.0" />
                                  </font>
                               </Label>
-                              <TableView layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                              <TableView fx:id="tableImpressions" layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                  <columns>
                                     <TableColumn fx:id="idImpression" prefWidth="53.0" text="id" />
                                     <TableColumn fx:id="dateImpression" minWidth="0.0" prefWidth="119.0" text="date" />
@@ -84,7 +84,7 @@
                                     <Font name="System Bold" size="17.0" />
                                  </font>
                               </Label>
-                              <TableView editable="true" layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                              <TableView fx:id="tableStocks" editable="true" layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                  <columns>
                                     <TableColumn fx:id="typeSupportStock" prefWidth="121.0" text="type support" />
                                     <TableColumn fx:id="qualiteStock" minWidth="0.0" prefWidth="104.0" text="qualite" />
@@ -106,11 +106,11 @@
                                     <Font name="System Bold" size="17.0" />
                                  </font>
                               </Label>
-                              <TableView layoutX="14.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                              <TableView fx:id="tableFichiersPhotos" layoutX="14.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                  <columns>
                                     <TableColumn fx:id="cheminPhoto" prefWidth="163.0" text="chemin" />
                                     <TableColumn fx:id="emailPhoto" minWidth="0.0" prefWidth="156.0" text="propriétaire" />
-                                    <TableColumn fx:id="formatStock1" prefWidth="120.0" text="resolution" />
+                                    <TableColumn fx:id="resolutionFichierPhoto" prefWidth="120.0" text="resolution" />
                                     <TableColumn fx:id="priseVuePhoto" minWidth="0.0" prefWidth="160.0" text="prise de vue" />
                                     <TableColumn fx:id="datePhoto" minWidth="0.0" prefWidth="139.0" text="date" />
                                     <TableColumn fx:id="partagePhoto" minWidth="0.0" prefWidth="139.0" text="partagé ?" />
@@ -129,7 +129,7 @@
                                     <Font name="System Bold" size="17.0" />
                                  </font>
                               </Label>
-                              <TableView layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
+                              <TableView fx:id="tableCommandes" layoutX="15.0" layoutY="40.0" prefHeight="333.0" prefWidth="971.0">
                                  <columns>
                                     <TableColumn fx:id="idCommande" prefWidth="41.0" text="id" />
                                     <TableColumn fx:id="dateCommande" minWidth="0.0" prefWidth="87.0" text="date" />

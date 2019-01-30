@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.GestionImpressionController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.GestionImpressionController">
    <children>
       <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
          <image>
@@ -137,7 +137,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox layoutX="22.0" layoutY="388.0" prefHeight="31.0" prefWidth="124.0" />
+                        <ComboBox fx:id="modeleAgenda" layoutX="22.0" layoutY="388.0" prefHeight="31.0" prefWidth="124.0" />
                      </children>
                   </AnchorPane>
                </content>
