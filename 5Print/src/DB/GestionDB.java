@@ -618,7 +618,8 @@ public class GestionDB {
 	// CREATE
 	public static boolean createCommande(int adresse, String email, String mode_livraison,
 			StatutCommande statut, boolean etat_paiement, float montant_total_cmd) {
-		String sql = "INSERT INTO COMMANDE (ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) VALUES (?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO COMMANDE (ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) "
+				+ "VALUES (?,?,?,?,?,?,?)";
 		boolean isAdded = false;
 
 		PreparedStatement statement;
@@ -639,6 +640,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
@@ -668,6 +670,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
@@ -690,6 +693,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
@@ -850,7 +854,7 @@ public class GestionDB {
 
 	// UPDATE
 	public static boolean updateFichierPhoto(FichierPhoto fiPhoto) {
-		String sql = "UPDATE FICHIERPHOTO SET RESOLUTION = ?, INFO_PRISE_VUE = ?, EST_PARTAGE = ? WHERE CHEMIN = ?";
+		String sql = "UPDATE FICHIERPHOTO SET RESOLUTION = ?, INFO_PRISE_VUE = ?, EST_PARTAGE = ?, DATE_NO_PHOTO = ? WHERE CHEMIN = ?";
 		boolean isUpdated = false;
 
 		PreparedStatement statement;
@@ -860,11 +864,13 @@ public class GestionDB {
 			statement.setString(1, fiPhoto.getResolution());
 			statement.setString(2, fiPhoto.getInfo_prise_de_vue());
 			statement.setBoolean(3, fiPhoto.getEst_partage());
-			statement.setString(4, fiPhoto.getChemin());
+			statement.setDate(4, (java.sql.Date) fiPhoto.getDate_no_photo());
+			statement.setString(5, fiPhoto.getChemin());
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
@@ -887,8 +893,8 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
-			conn.commit();
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
 		}
@@ -1050,6 +1056,7 @@ public class GestionDB {
 				PreparedStatement statementUpdate = conn.prepareStatement(sqlUpdate);
 				statementUpdate.executeUpdate(sqlUpdate);
 			}*/
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
@@ -1074,6 +1081,7 @@ public class GestionDB {
 				list_point_relais.add(new PointRelais(result.getString("NOM"),
 						GestionDB.getAdresseById(result.getInt("ID_ADRESSE"))));
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1141,7 +1149,7 @@ public class GestionDB {
 								etat_impression, getAllPhotoByIdImpression(t, idT), commande);
 					}
 				}
-
+				statementType.close();
 				statementImp.close();
 				conn.commit();
 			}
@@ -1166,6 +1174,7 @@ public class GestionDB {
 					impressions.add(impression);
 				}
 			}
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1187,6 +1196,7 @@ public class GestionDB {
 				photo.setImpression(imp);
 				photos.add(photo);
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1272,6 +1282,8 @@ public class GestionDB {
 
 				rowsInsertedTirage = statementImpExt.executeUpdate();
 			}
+			statementImpExt.close();
+			statementImp.close();
 			conn.commit();
 
 			if (rowsInsertedTirage > 0) {
@@ -1291,8 +1303,8 @@ public class GestionDB {
 		String sqlImpExt = "";
 		boolean isUpdated = false;
 
-		PreparedStatement statement;
-		PreparedStatement statementImp;
+		PreparedStatement statement = null;
+		PreparedStatement statementImp = null ;
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sqlImp);
@@ -1355,6 +1367,8 @@ public class GestionDB {
 			if (rowsInsertedImp > 0 && rowsInsertedImpEx > 0) {
 				isUpdated = true;
 			}
+			statement.close();
+			statementImp.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
@@ -1379,6 +1393,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
@@ -1408,6 +1423,8 @@ public class GestionDB {
 			if (rowsDeletedImp > 0 && rowsDeletedImpExt > 0) {
 				isDeleted = true;
 			}
+			statementImp.close();
+			statementImpExt.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
@@ -1493,6 +1510,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
@@ -1520,6 +1538,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
@@ -1542,6 +1561,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
@@ -1618,6 +1638,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
@@ -1645,6 +1666,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
@@ -1669,6 +1691,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
