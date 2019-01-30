@@ -94,8 +94,11 @@ public abstract class Impression {
 	public Commande getCommande() {
 		return commande;
 	}
-
+	
 	public void setCommande(Commande commande) {
+		this.commande = commande;
+	}
+	public void setCommandeWithCheck(Commande commande) {
 		if(checkPhotos()) {
 			this.commande = commande;
 		}
