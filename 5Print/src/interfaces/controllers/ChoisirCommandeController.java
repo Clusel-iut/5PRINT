@@ -54,7 +54,6 @@ public class ChoisirCommandeController implements Initializable {
 
 	public void setObjects(int idImpress) {
 		this.idImpression = idImpress;
-		impression = GestionDB.getImpressionById(idImpression);
 	}
 
 	@Override
