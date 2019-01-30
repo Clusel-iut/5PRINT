@@ -1032,10 +1032,10 @@ public class GestionDB {
 		String chemin;
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			PreparedStatement statementChemin = conn.prepareStatement(sqlChemin);
+			/*PreparedStatement statementChemin = conn.prepareStatement(sqlChemin);
 			statementChemin.setInt(1, id_photo);
 			ResultSet resultChemin = statementChemin.executeQuery();
-			chemin = resultChemin.getString("CHEMIN");
+			chemin = resultChemin.getString("CHEMIN");*/
 
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id_photo);
@@ -1043,15 +1043,13 @@ public class GestionDB {
 			int rowsDeleted = statement.executeUpdate();
 			if (rowsDeleted > 0) {
 				isDeleted = true;
-			}
+			}/*
 			if (getPhotosByFichierId(null, chemin).size() == 0) {
-				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-				Date date = new Date();
 				String sqlUpdate = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = "
-						+ java.sql.Date.valueOf(dateFormat.format(date)) + "WHERE CHEMIN = " + chemin;
+						+ new java.sql.Date(System.currentTimeMillis()) + "WHERE CHEMIN = " + chemin;
 				PreparedStatement statementUpdate = conn.prepareStatement(sqlUpdate);
 				statementUpdate.executeUpdate(sqlUpdate);
-			}
+			}*/
 			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
