@@ -9,8 +9,8 @@ public class Client {
 	private String prenom;
 	private String motDePasse;
 	private ArrayList<Adresse> adresses = new ArrayList<Adresse>();
-	private ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>(); //Les photos dont il est propri�taire
-	private ArrayList<FichierPhoto> photos_partagees = new ArrayList<FichierPhoto>(); //Les photos qui ne sont pas � lui
+	private ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>(); //Les photos dont il est propriétaire
+	private ArrayList<FichierPhoto> photos_partagees = new ArrayList<FichierPhoto>(); //Les photos qui ne sont pas à lui
 	private ArrayList<Impression> impressions = new ArrayList<Impression>();
 	private ArrayList<Commande> commandes = new ArrayList<Commande>();
 
