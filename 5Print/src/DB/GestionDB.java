@@ -1262,7 +1262,7 @@ public class GestionDB {
 					Agenda agenda = new Agenda(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, modele);
 					client.addImpression(agenda);
 
-				} else if (type == TypeSupport.ALBUM) {
+				} else if (type.equals(TypeSupport.ALBUM)) {
 					sqlImpExt = "INSERT INTO ALBUM (ID_IMPRESSION, TITRE, MISE_EN_PAGE) " + "VALUES (?,?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
@@ -1271,7 +1271,7 @@ public class GestionDB {
 					Album album = new Album(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, modele, mise_en_page);
 					client.addImpression(album);
 
-				} else if (type == TypeSupport.CADRE) {
+				} else if (type.equals(TypeSupport.CADRE)) {
 					sqlImpExt = "INSERT INTO CADRE (ID_IMPRESSION, MISE_EN_PAGE, MODELE)" + " VALUES (?,?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
@@ -1280,7 +1280,7 @@ public class GestionDB {
 					Cadre cadre = new Cadre(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, mise_en_page, modele);
 					client.addImpression(cadre);
 
-				} else if (type == TypeSupport.CALENDRIER) {
+				} else if (type.equals(TypeSupport.CALENDRIER)) {
 					sqlImpExt = "INSERT INTO CALENDRIER (ID_IMPRESSION, MODELE) " + "VALUES (?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
@@ -1288,7 +1288,7 @@ public class GestionDB {
 					Calendrier calendrier = new Calendrier(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, modele);
 					client.addImpression(calendrier);
 
-				} else if (type == TypeSupport.TIRAGE) {
+				} else if (type.equals(TypeSupport.TIRAGE)) {
 					sqlImpExt = "INSERT INTO TIRAGE (ID_IMPRESSION)" + " VALUES (?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
@@ -1361,7 +1361,7 @@ public class GestionDB {
 			}
 			if (type.equals(TypeSupport.CALENDRIER)) {
 				Calendrier calendrier = (Calendrier) impression;
-				sqlImpExt = "UPDATE INTO CALENDRIER SET MODELE = ?" + " WHERE ID_IMPRESSION = ?";
+				sqlImpExt = "UPDATE INTO CALENDRIER SET MODELE = ? WHERE ID_IMPRESSION = ?";
 				statementImp = conn.prepareStatement(sqlImpExt);
 				statementImp.setString(1, calendrier.getModele());
 				statementImp.setInt(2, calendrier.getId_impression());
