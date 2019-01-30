@@ -174,7 +174,7 @@ public class PageGestionController implements Initializable {
 		idCommande.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("numero"));
 		dateCommande.setCellValueFactory(new PropertyValueFactory<Commande, Date>("date_commande"));
 		emailCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getClient().getEmail()));
-		adresseCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getAdresse().toString()));
+		//adresseCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getAdresse().toString()));
 		//bonAchatCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat().getCode_bon()));
 		//bonAchatGenereCom.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat_genere().toString()));
 		statutCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStatut().toString()));

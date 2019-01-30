@@ -616,11 +616,10 @@ public class GestionDB {
 	}
 
 	// CREATE
-	public static boolean createCommande(int adresse, String email, String mode_livraison,
+	public static int createCommande(int adresse, String email, String mode_livraison,
 			StatutCommande statut, boolean etat_paiement, float montant_total_cmd) {
-		boolean isAdded = false;
+		int id_impression = -1;
 		try {
-			
 			String sql;
 			PreparedStatement statement;
 			if(adresse == 0){
@@ -653,16 +652,22 @@ public class GestionDB {
 			}
 			
 			int rowsInserted = statement.executeUpdate();
-			if (rowsInserted > 0) {
-				isAdded = true;
+	
+			PreparedStatement statementID = conn.prepareStatement("SELECT MAX(ID_IMPRESSION) AS ID FROM COMMANDE WHERE EMAIL = ?");
+			statementID.setString(1, email);
+			ResultSet resultImp = statementID.executeQuery();
+			
+			if (resultImp.next() && rowsInserted > 0) {
+				id_impression = resultImp.getInt("ID_IMPRESSION");
 			}
+				
 			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
-			isAdded = false;
+			id_impression = -1;
 		}
 
-		return isAdded;
+		return id_impression;
 	}
 
 	// UPDATE
@@ -1136,7 +1141,8 @@ public class GestionDB {
 					boolean etat_impression = resultImp.getBoolean("ETAT_IMPRESSION");
 					Date date_impression = resultImp.getTimestamp("DATE_IMPRESSION");
 					int numero = resultImp.getInt("NUMERO");
-					Client client = null;
+					String email = resultImp.getString("EMAIL");
+					Client client = new Client(email, null, null, null, null);
 					Commande commande = null;
 					Stock stock = getStockById(type, resultImp.getString("QUALITE"), resultImp.getString("FORMAT"));
 										
@@ -1262,7 +1268,7 @@ public class GestionDB {
 					Agenda agenda = new Agenda(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, modele);
 					client.addImpression(agenda);
 
-				} else if (type == TypeSupport.ALBUM) {
+				} else if (type.equals(TypeSupport.ALBUM)) {
 					sqlImpExt = "INSERT INTO ALBUM (ID_IMPRESSION, TITRE, MISE_EN_PAGE) " + "VALUES (?,?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
@@ -1271,7 +1277,7 @@ public class GestionDB {
 					Album album = new Album(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, modele, mise_en_page);
 					client.addImpression(album);
 
-				} else if (type == TypeSupport.CADRE) {
+				} else if (type.equals(TypeSupport.CADRE)) {
 					sqlImpExt = "INSERT INTO CADRE (ID_IMPRESSION, MISE_EN_PAGE, MODELE)" + " VALUES (?,?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
@@ -1280,7 +1286,7 @@ public class GestionDB {
 					Cadre cadre = new Cadre(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, mise_en_page, modele);
 					client.addImpression(cadre);
 
-				} else if (type == TypeSupport.CALENDRIER) {
+				} else if (type.equals(TypeSupport.CALENDRIER)) {
 					sqlImpExt = "INSERT INTO CALENDRIER (ID_IMPRESSION, MODELE) " + "VALUES (?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
@@ -1288,7 +1294,7 @@ public class GestionDB {
 					Calendrier calendrier = new Calendrier(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, modele);
 					client.addImpression(calendrier);
 
-				} else if (type == TypeSupport.TIRAGE) {
+				} else if (type.equals(TypeSupport.TIRAGE)) {
 					sqlImpExt = "INSERT INTO TIRAGE (ID_IMPRESSION)" + " VALUES (?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
@@ -1314,8 +1320,7 @@ public class GestionDB {
 
 	// UPDATE
 	public static <T extends Impression> boolean updateImpression(TypeSupport type, T impression) {
-		String sqlImp = "UPDATE IMPRESSION SET TYPE_SUPPORT = ?, FORMAT = ?, QUALITE = ?, NUMERO = ?, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? "
-				+ "WHERE ID_IMPRESSION = ?";
+		String sqlImp = "UPDATE IMPRESSION SET TYPE_SUPPORT = ?, FORMAT = ?, QUALITE = ?, NUMERO = ?, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? WHERE ID_IMPRESSION = ?";
 		String sqlImpExt = "";
 		boolean isUpdated = false;
 
@@ -1324,7 +1329,7 @@ public class GestionDB {
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sqlImp);
-			statement.setString(1, impression.getStock().getType_support().toString());
+			statement.setString(1, impression.getStock().getType_support().toString().toLowerCase());
 			statement.setString(2, impression.getStock().getFormat());
 			statement.setString(3, impression.getStock().getQualite());
 			statement.setInt(4, impression.getCommande().getNumero());
@@ -1332,53 +1337,44 @@ public class GestionDB {
 			statement.setBoolean(6, impression.getEtat_impression());
 			statement.setInt(7, impression.getNb_impression());
 			statement.setInt(8, impression.getId_impression());
-
+			
 			int rowsInsertedImpEx = 0;
 			int rowsInsertedImp = 0;
 
-			if (type == TypeSupport.AGENDA) {
+			if (type.equals(TypeSupport.AGENDA)) {
 				Agenda agenda = (Agenda) impression;
-				sqlImpExt = "UPDATE INTO AGENDA SET MODELE = ? " + "WHERE ID_IMPRESSION = ?";
+				sqlImpExt = "UPDATE AGENDA SET MODELE = ? WHERE ID_IMPRESSION = ?";
 				statementImp = conn.prepareStatement(sqlImpExt);
 				statementImp.setString(1, agenda.getModele());
 				statementImp.setInt(2, agenda.getId_impression());
-
-				rowsInsertedImpEx = statementImp.executeUpdate();
-
 			}
-			if (type == TypeSupport.ALBUM) {
+			if (type.equals(TypeSupport.ALBUM)) {
 				Album album = (Album) impression;
-				sqlImpExt = "UPDATE INTO ALBUM SET MODELE = ?, MISE_EN_PAGE = ? " + "WHERE ID_IMPRESSION = ?";
+				sqlImpExt = "UPDATE ALBUM SET TITRE = ?, MISE_EN_PAGE = ? WHERE ID_IMPRESSION = ?";
 				statementImp = conn.prepareStatement(sqlImpExt);
 				statementImp.setString(1, album.getTitre());
 				statementImp.setString(2, album.getMise_en_page());
 				statementImp.setInt(3, album.getId_impression());
-
-				rowsInsertedImpEx = statementImp.executeUpdate();
 			}
-			if (type == TypeSupport.CADRE) {
+			if (type.equals(TypeSupport.CADRE)) {
 				Cadre cadre = (Cadre) impression;
-				sqlImpExt = "UPDATE INTO CADRE SET MISE_EN_PAGE = ?, MODELE = ? " + "WHERE ID_IMPRESSION = ?";
+				sqlImpExt = "UPDATE CADRE SET MISE_EN_PAGE = ?, MODELE = ? WHERE ID_IMPRESSION = ?";
 				statementImp = conn.prepareStatement(sqlImpExt);
 				statementImp.setString(1, cadre.getMise_en_page());
 				statementImp.setString(2, cadre.getModele());
 				statementImp.setInt(3, cadre.getId_impression());
-
-				rowsInsertedImpEx = statementImp.executeUpdate();
 			}
-			if (type == TypeSupport.CALENDRIER) {
+			if (type.equals(TypeSupport.CALENDRIER)) {
 				Calendrier calendrier = (Calendrier) impression;
-				sqlImpExt = "UPDATE INTO CALENDRIER SET MODELE = ?" + " WHERE ID_IMPRESSION = ?";
+				sqlImpExt = "UPDATE CALENDRIER SET MODELE = ? WHERE ID_IMPRESSION = ?";
 				statementImp = conn.prepareStatement(sqlImpExt);
 				statementImp.setString(1, calendrier.getModele());
 				statementImp.setInt(2, calendrier.getId_impression());
-
-				rowsInsertedImpEx = statementImp.executeUpdate();
 			}
-			if (type == TypeSupport.TIRAGE) {
+			if (type.equals(TypeSupport.TIRAGE)) {
 				// RIEN A UPDATE
 			}
-
+			rowsInsertedImpEx = statementImp.executeUpdate();
 			rowsInsertedImp = statement.executeUpdate();
 			if (rowsInsertedImp > 0 && rowsInsertedImpEx > 0) {
 				isUpdated = true;

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="284.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.ChoisirCommandeController">
+<AnchorPane prefHeight="284.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.ChoisirCommandeController">
    <children>
       <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
          <image>
@@ -25,7 +25,7 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
-      <ComboBox fx:id="lesCommandes" layoutX="328.0" layoutY="143.0" prefHeight="26.0" prefWidth="339.0" />
+      <ComboBox fx:id="lesCommandesEnCours" layoutX="328.0" layoutY="143.0" prefHeight="26.0" prefWidth="339.0" />
       <Button layoutX="671.0" layoutY="143.0" mnemonicParsing="false" onMouseClicked="#addCommande" text="Créer" />
       <Button layoutX="423.0" layoutY="224.0" mnemonicParsing="false" onMouseClicked="#valider" style="-fx-background-color: orange; -fx-text-fill: white;" text="Valider" />
       <Button layoutX="498.0" layoutY="224.0" mnemonicParsing="false" onMouseClicked="#retour" style="-fx-background-color: orange; -fx-text-fill: white;" text="Annuler" />

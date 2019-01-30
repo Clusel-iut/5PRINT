@@ -24,9 +24,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
@@ -40,6 +42,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -67,14 +71,21 @@ public class ChoisirCommandeController implements Initializable {
 		
 		for(Commande cmd : LocalDataClient.client.getCommandes()) {
 			if(cmd.getStatut().equals(StatutCommande.En_cours)) {
+				System.out.println(cmd.toString());
 				lesCmdEnCours.add(cmd);
 			}
 		}
+		lesCommandesEnCours.getItems().setAll(lesCmdEnCours);
 	}
 	
 	@FXML
 	 void addCommande(MouseEvent event) {
-		 GestionDB.createCommande(0, LocalDataClient.client.getEmail(), null, StatutCommande.En_cours, false, 0);
+		 if((-1)!=GestionDB.createCommande(0, LocalDataClient.client.getEmail(), "", StatutCommande.En_cours, false, (float) 0.00)) {
+			 this.popup("Création de commande", "Une nouvelle commande a été crée", "Fermer");
+		 }
+		 else {
+			 this.popup("Création de commande", "La création de commande a échouée !", "Fermer");
+		 }
 		 refresh();
 	 }
 	
@@ -106,26 +117,50 @@ public class ChoisirCommandeController implements Initializable {
 	 void valider(MouseEvent event) {
 		impression = GestionDB.getImpressionById(idImpression);
 		impression.setCommande(lesCommandesEnCours.getSelectionModel().getSelectedItem());
-		GestionDB.updateImpression(impression.getStock().getType_support(), impression);
-		  	int i = idImpression;
+		int idCommande = lesCommandesEnCours.getSelectionModel().getSelectedItem().getNumero();
+	
+		if(GestionDB.updateImpression(impression.getStock().getType_support(), impression)) {
+			this.popup("Commande", "L'impression a été ajoutée à la commande !", "Fermer");
+		}
+		else {
+			this.popup("Commande", "L'ajout n'a pas fonctionné !", "Fermer");
+		}
+			
+		 
+		int i = idCommande;
 		  	
-		 	FXMLLoader Loader = new FXMLLoader();
-		    Loader.setLocation(getClass().getResource("/interfaces/views/GestionImpression.fxml"));
-		    try {
-				Loader.load();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	 	FXMLLoader Loader = new FXMLLoader();
+	    Loader.setLocation(getClass().getResource("/interfaces/views/PasserCommande.fxml"));
+	    try {
+			Loader.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		    GestionImpressionController controller = Loader.getController();
-		    controller.setObjects(i);
+	    PasserCommandeController controller = Loader.getController();
+	    controller.setObjects(i);
 
-		    Parent home_page_parent = Loader.getRoot();
-		    Scene home_page_scene = new Scene(home_page_parent);
-		    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
-			    .getWindow();
-		    app_stage.setScene(home_page_scene);
-		    app_stage.show();	
+	    Parent home_page_parent = Loader.getRoot();
+	    Scene home_page_scene = new Scene(home_page_parent);
+	    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+		    .getWindow();
+	    app_stage.setScene(home_page_scene);
+	    app_stage.show();	
 	 }
+	
+	void popup(String title, String label, String buttonText) {
+		Stage popupwindow=new Stage();	      
+		popupwindow.initModality(Modality.APPLICATION_MODAL);
+		popupwindow.setTitle(title);
+		Label texte = new Label(label);
+		Button button= new Button(buttonText);
+		button.setOnAction(e -> popupwindow.close());
+		VBox layout= new VBox(10);
+		layout.getChildren().addAll(texte, button);
+		layout.setAlignment(Pos.CENTER);
+		Scene scene= new Scene(layout, 300, 250);
+		popupwindow.setScene(scene);
+		popupwindow.showAndWait();
+	}
 }
