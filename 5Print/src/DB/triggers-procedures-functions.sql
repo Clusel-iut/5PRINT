@@ -206,7 +206,11 @@ END;
 /
 
 -- ---------Calcul des montants ----
-CREATE OR REPLACE PROCEDURE CALCUL_MONTANT_IMPRESSION (id_impression VARCHAR2) AS
+-- Montant impression
+CREATE OR REPLACE FUNCTION CALCUL_MONTANT_IMPRESSION 
+	(id_impression IN VARCHAR2) 
+	RETURN NUMBER(5,2)
+IS
 	v_total_page NUMBER;
 	v_id_impression NUMBER;
 	v_type_support varchar2(30);
@@ -216,6 +220,7 @@ CREATE OR REPLACE PROCEDURE CALCUL_MONTANT_IMPRESSION (id_impression VARCHAR2) A
 	v_total_exp NUMBER;
 	v_nb_impression NUMBER;
 	v_prix NUMBER;
+	v_total NUMBER(5,2) := 0;
 BEGIN
 	SELECT MAX(P.NUMERO_PAGE) into v_total_page, SUM(p.nb_exemplaire) into total_exemplaire, I.TYPE_SUPPORT into v_type_support,
 	 I.QUALITE into v_qualite, S.QUANTITE into v_quantite, I.FORMAT into v_format, S.PRIX into v_prix; 
@@ -234,15 +239,18 @@ BEGIN
 	END IF;
 				
 	UPDATE IMPRESSION set MONTANT_TOTAL = var where ID_IMPRESSION = id_impression;
+	v_total := select MONTANT_TOTAL from IMPRESSION where ID_IMPRESSION = id_impression;
 END;
 /
-
-CREATE OR REPLACE PROCEDURE CALCUL_MONTANT_COMMANDE (numero_cmd VARCHAR2) AS
-	v_total NUMBER := 0;
+-- Montant commande
+CREATE OR REPLACE FUNCTION CALCUL_MONTANT_COMMANDE
+   ( numero_cmd IN VARCHAR2 )
+   RETURN NUMBER(5,2)
+IS
+    v_total NUMBER(5,2) := 0;
 	v_id_imp NUMBER;
 	CURSOR C1 IS SELECT I.ID_IMPRESSION FROM IMPRESSION I
 	WHERE NUMERO = numero_cmd;
-	
 BEGIN
     OPEN C1; 
 		LOOP  
@@ -255,5 +263,11 @@ BEGIN
 	CLOSE C1;
 	
 	UPDATE COMMANDE SET MONTANT_TOTAL_CMD = v_total where NUMERO = numero_cmd;
+	v_total := SELECT MONTANT_TOTAL_CMD FROM COMMANDE WHERE NUMERO = numero_cmd;
+RETURN v_total;
+
+EXCEPTION
+WHEN OTHERS THEN
+   raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
 END;
 /
