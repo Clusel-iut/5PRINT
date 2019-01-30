@@ -103,7 +103,7 @@ public abstract class Impression {
 	
 	public boolean checkPhotos() {
 		for(Photo p : this.photos) {
-			if(p.getFichier().getEst_partage() != true) {
+			if(p.getFichier().getEst_partage() != true && p.getFichier().getClient().getEmail() != this.client.getEmail()) {
 				return false;
 			}
 		}
