@@ -334,7 +334,7 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				FichierPhoto fp = getFichierPhotoById(false, result.getString("CHEMIN"));
 				String sqlC = "SELECT EMAIL FROM FICHIERPHOTO WHERE CHEMIN = ?";
 				PreparedStatement statement2;
 				statement2 = conn.prepareStatement(sqlC);
@@ -387,7 +387,7 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				FichierPhoto fp = getFichierPhotoById(false, result.getString("CHEMIN"));
 				fp.setClient(cli);
 				photos.add(fp);
 			}
@@ -703,7 +703,7 @@ public class GestionDB {
 	// FichierPhoto
 	//
 	// GET
-	public static FichierPhoto getFichierPhotoById(String chemin) {
+	public static FichierPhoto getFichierPhotoById(boolean photo, String chemin) {
 		String sql = "SELECT * FROM FICHIERPHOTO WHERE CHEMIN = ?";
 		FichierPhoto fiPhoto = null;
 
@@ -716,7 +716,7 @@ public class GestionDB {
 				fiPhoto = new FichierPhoto(result.getString("CHEMIN"), null, result.getString("RESOLUTION"),
 						result.getDate("DATE_AJOUT"), result.getDate("DATE_NO_PHOTO"),
 						result.getString("INFO_PRISE_VUE"), result.getBoolean("EST_PARTAGE"), null,
-						getPhotosByFichierId(fiPhoto, chemin));
+						photo?null:getPhotosByFichierId(fiPhoto, chemin));
 			}
 			statement.close();
 			conn.commit();
@@ -736,7 +736,7 @@ public class GestionDB {
 			statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				FichierPhoto fp = getFichierPhotoById(false, result.getString("CHEMIN"));
 				Client client = getSimpleClientByEmail(result.getString("EMAIL"));
 				fp.setClient(client);
 				photos.add(fp);
@@ -761,7 +761,7 @@ public class GestionDB {
 			statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				FichierPhoto fp = getFichierPhotoById(false, result.getString("CHEMIN"));
 				Client client = getSimpleClientByEmail(result.getString("EMAIL"));
 				fp.setClient(client);
 				photos.add(fp);
@@ -786,7 +786,7 @@ public class GestionDB {
 			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				Photo photo = getPhotoById(result.getInt("ID_PHOTO"));
+				Photo photo = getPhotoById(true, result.getInt("ID_PHOTO"));
 				photo.setFichier(fichier);
 				photos.add(photo);
 			}
@@ -901,7 +901,7 @@ public class GestionDB {
 	// PHOTO
 	//
 	// GET
-	public static Photo getPhotoById(int id) {
+	public static Photo getPhotoById(boolean fichier, int id) {
 		String sql = "SELECT * FROM PHOTO WHERE ID_PHOTO = ?";
 		Photo photo = null;
 
@@ -910,8 +910,14 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
+			FichierPhoto fichierp = null; 
+			
 			if (result.next()) {
-				photo = new Photo(result.getInt("ID_PHOTO"), null, null, result.getString("DESCRIPTION"),
+				if(fichier == false){
+					fichierp = getFichierPhotoById(true, result.getString("CHEMIN"));
+				}
+				
+				photo = new Photo(result.getInt("ID_PHOTO"), fichierp , null, result.getString("DESCRIPTION"),
 						result.getString("RETOUCHE"), result.getInt("NUMERO_PAGE"), result.getInt("POSITION_X"),
 						result.getInt("POSITION_Y"), result.getInt("NB_EXEMPLAIRE"));
 			}
@@ -1179,7 +1185,7 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
-				Photo photo = getPhotoById(result.getInt("ID_PHOTO"));
+				Photo photo = getPhotoById(false, result.getInt("ID_PHOTO"));
 				photo.setImpression(imp);
 				photos.add(photo);
 			}
