@@ -14,6 +14,7 @@ import DTO.FichierPhoto;
 import DTO.Impression;
 import DTO.Tirage;
 import DTO.TypeSupport;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -99,9 +100,12 @@ public class PageRecapController implements Initializable {
 		//IMPRESSION
 		idImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("id_impression"));
 		dateImpression.setCellValueFactory((new PropertyValueFactory<Impression, String>("date_impression")));
-		typeImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.type_support"));
-		formatImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.getFormat()"));	
-		qualiteImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.getQualite()"));
+		//typeImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.type_support"));
+		typeImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getType_support().toString()));
+		//formatImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.getFormat()"));	
+		formatImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getFormat()));
+		//qualiteImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.getQualite()"));
+		qualiteImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getQualite()));
 		
 		//PHOTO
 		fichierPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("chemin"));

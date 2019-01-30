@@ -48,10 +48,14 @@ public class PageGestionController implements Initializable {
 
 	private void initialiserTableau() {
 		//CLIENT
+		tableClient.getColumns().clear();
+		
 		nom.setCellValueFactory(new PropertyValueFactory<Client, String>("nom"));
 		prenom.setCellValueFactory((new PropertyValueFactory<Client, String>("prenom")));
 		email.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
+		
 		ObservableList<Client> listClient = FXCollections.observableArrayList(GestionDB.getAllClients());
+		System.out.print(listClient);
 		tableClient.setItems(listClient);
 		tableClient.getColumns().addAll(nom, prenom, email);
 		

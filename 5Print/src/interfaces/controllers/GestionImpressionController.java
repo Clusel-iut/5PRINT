@@ -6,11 +6,19 @@ import java.util.Date;
 import java.util.ResourceBundle;
 
 import DB.GestionDB;
+import DB.LocalDataClient;
+import DTO.Album;
+import DTO.Cadre;
 import DTO.Client;
 import DTO.Commande;
 import DTO.FichierPhoto;
 import DTO.Impression;
 import DTO.Photo;
+import DTO.TypeSupport;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,14 +28,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class GestionImpressionController implements Initializable {
 	
@@ -43,8 +54,6 @@ public class GestionImpressionController implements Initializable {
 	private Label qualite;
 	@FXML
 	private Label format;
-	@FXML
-	private TextField modeleCadre;
 	@FXML
 	private Spinner<Integer> nbImpression;
 	@FXML
@@ -82,6 +91,10 @@ public class GestionImpressionController implements Initializable {
 	private TableColumn<Photo, Integer> yCadre;
 	@FXML
 	private TableColumn<Photo, String> retoucheCadre;
+	@FXML
+	private TextField modeleCadre;
+	@FXML
+	private TextField miseEnPageCadre;
 	//ALBUM
 	@FXML
 	private TableColumn<Photo, String> pageAlbum;
@@ -92,9 +105,13 @@ public class GestionImpressionController implements Initializable {
 	@FXML
 	private TableColumn<Photo, Integer> xAlbum;
 	@FXML
-	private TableColumn<Photo, String> yAlbum;
+	private TableColumn<Photo, Integer> yAlbum;
 	@FXML
 	private TableColumn<Photo, String> retoucheAlbum;
+	@FXML
+	private TextField titreAlbum;
+	@FXML
+	private TextField miseEnPageAlbum;
 	//AGENDA
 	@FXML
 	private TableColumn<Photo, String> pageAgenda;
@@ -105,7 +122,7 @@ public class GestionImpressionController implements Initializable {
 	@FXML
 	private TableColumn<Photo, Integer> xAgenda;
 	@FXML
-	private TableColumn<Photo, String> yAgenda;
+	private TableColumn<Photo, Integer> yAgenda;
 	@FXML
 	private TableColumn<Photo, String> retoucheAgenda;
 	//TIRAGE
@@ -118,7 +135,7 @@ public class GestionImpressionController implements Initializable {
 	@FXML
 	private TableColumn<Photo, Integer> xTirage;
 	@FXML
-	private TableColumn<Photo, String> yTirage;
+	private TableColumn<Photo, Integer> yTirage;
 	@FXML
 	private TableColumn<Photo, String> retoucheTirage;
 	@FXML
@@ -133,7 +150,7 @@ public class GestionImpressionController implements Initializable {
 	@FXML
 	private TableColumn<Photo, Integer> xCalendrier;
 	@FXML
-	private TableColumn<Photo, String> yCalendrier;
+	private TableColumn<Photo, Integer> yCalendrier;
 	@FXML
 	private TableColumn<Photo, String> retoucheCalendrier;
 	
@@ -154,7 +171,8 @@ public class GestionImpressionController implements Initializable {
 		etatImpression.setText(Boolean.toString(impression.getEtat_impression()));
 		qualite.setText(impression.getStock().getQualite());
 		format.setText(impression.getStock().getFormat());
-		//nbImpression.getValueFactory().setValue(impression.getNb_impression());
+		nbImpression.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10));
+		nbImpression.getValueFactory().setValue(impression.getNb_impression());
 		System.out.println(impression.getStock().getType_support().toString().toLowerCase());
 		for(int index=0; index < tabType.getTabs().size(); index++) {
 			if(!tabType.getTabs().get(index).getText().toLowerCase().equals(impression.getStock().getType_support().toString().toLowerCase()))
@@ -164,13 +182,55 @@ public class GestionImpressionController implements Initializable {
 		}
 		
 		switch(this.impression.getStock().getType_support()) {
+		
 			case CADRE : 
-				pageCadre.setCellValueFactory(new PropertyValueFactory<Photo, String>(""));
-				cheminCadre.setCellValueFactory(new PropertyValueFactory<Photo, String>("resolution"));
-				resolutionCadre.setCellValueFactory(new PropertyValueFactory<Photo,String >("date_ajout"));
-				xCadre.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("client"));
-				yCadre.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("date_ajout"));
-				retoucheCadre.setCellValueFactory(new PropertyValueFactory<Photo, String>("client"));
+				cadreView.getColumns().clear();
+				
+				Cadre cadre = GestionDB.getImpressionById(idImpression);
+				
+				pageCadre.setCellValueFactory(new PropertyValueFactory<Photo, String>("numero_page"));
+				
+				//PROBLEME DE CAST
+				//cheminCadre.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getChemin()));
+				//resolutionCadre.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getResolution()));
+				
+				xCadre.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_X"));
+				yCadre.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_Y"));
+				retoucheCadre.setCellValueFactory(new PropertyValueFactory<Photo, String>("retouche"));
+				modeleCadre.setText(cadre.getModele());
+				miseEnPageCadre.setText(cadre.getModele());
+				
+				//IMPRESSION
+				ObservableList<Photo> photoCadre = FXCollections.observableArrayList(cadre.getPhotos());
+				cadreView.setItems(photoCadre);
+				
+				cadreView.getColumns().addAll(pageCadre, cheminCadre, resolutionCadre, xCadre, yCadre, retoucheCadre);	
+				
+			case ALBUM : 
+				
+				albumView.getColumns().clear();
+				
+				Album album = GestionDB.getImpressionById(idImpression);
+				
+				pageAlbum.setCellValueFactory(new PropertyValueFactory<Photo, String>("numero_page"));
+				
+				//PROBLEME DE CAST
+				//cheminAlbum.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getChemin()));
+				//resolutionAlbum.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getResolution()));
+				
+				xAlbum.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_X"));
+				yAlbum.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_Y"));
+				retoucheAlbum.setCellValueFactory(new PropertyValueFactory<Photo, String>("retouche"));
+				titreAlbum.setText(album.getTitre());
+				miseEnPageAlbum.setText(album.getMise_en_page());
+				
+				//IMPRESSION
+				ObservableList<Photo> photoAlbum = FXCollections.observableArrayList(album.getPhotos());
+				albumView.setItems(photoAlbum);
+				
+				albumView.getColumns().addAll(pageAlbum, cheminAlbum, resolutionAlbum, xAlbum, yAlbum, retoucheAlbum);
+		default:
+			break;
 		}
 	}
 
@@ -198,6 +258,22 @@ public class GestionImpressionController implements Initializable {
 		    .getWindow();
 	    app_stage.setScene(home_page_scene);
 	    app_stage.show();
+	}
+	
+	@FXML
+    void back(MouseEvent event) { 
+		Parent home_page_parent;
+		try {
+			home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
+			Scene home_page_scene = new Scene(home_page_parent);
+			Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+				.getWindow();
+			app_stage.setScene(home_page_scene);
+			app_stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 	

@@ -264,5 +264,6 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
+      <Button layoutX="10.0" layoutY="543.0" mnemonicParsing="false" onMouseClicked="#back" style="-fx-background-color: orange; -fx-text-fill: white;" text="Retour" />
    </children>
 </AnchorPane>
