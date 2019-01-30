@@ -117,27 +117,36 @@ public class ChoisirCommandeController implements Initializable {
 	 void valider(MouseEvent event) {
 		impression = GestionDB.getImpressionById(idImpression);
 		impression.setCommande(lesCommandesEnCours.getSelectionModel().getSelectedItem());
-		GestionDB.updateImpression(impression.getStock().getType_support(), impression);
-		  	int i = idImpression;
+		int idCommande = lesCommandesEnCours.getSelectionModel().getSelectedItem().getNumero();
+	
+		if(GestionDB.updateImpression(impression.getStock().getType_support(), impression)) {
+			this.popup("Commande", "L'impression a été ajoutée à la commande !", "Fermer");
+		}
+		else {
+			this.popup("Commande", "L'ajout n'a pas fonctionné !", "Fermer");
+		}
+			
+		 
+		int i = idCommande;
 		  	
-		 	FXMLLoader Loader = new FXMLLoader();
-		    Loader.setLocation(getClass().getResource("/interfaces/views/GestionImpression.fxml"));
-		    try {
-				Loader.load();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	 	FXMLLoader Loader = new FXMLLoader();
+	    Loader.setLocation(getClass().getResource("/interfaces/views/PasserCommande.fxml"));
+	    try {
+			Loader.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		    GestionImpressionController controller = Loader.getController();
-		    controller.setObjects(i);
+	    PasserCommandeController controller = Loader.getController();
+	    controller.setObjects(i);
 
-		    Parent home_page_parent = Loader.getRoot();
-		    Scene home_page_scene = new Scene(home_page_parent);
-		    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
-			    .getWindow();
-		    app_stage.setScene(home_page_scene);
-		    app_stage.show();	
+	    Parent home_page_parent = Loader.getRoot();
+	    Scene home_page_scene = new Scene(home_page_parent);
+	    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+		    .getWindow();
+	    app_stage.setScene(home_page_scene);
+	    app_stage.show();	
 	 }
 	
 	void popup(String title, String label, String buttonText) {
