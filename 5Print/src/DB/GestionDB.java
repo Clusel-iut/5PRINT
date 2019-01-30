@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -1173,7 +1174,7 @@ public class GestionDB {
 	public static int createImpression(TypeSupport type, Client client, Stock stock, int numero, float montant_total,
 			boolean etat_impression, int nb_impression, String modele, String titre, String mise_en_page) {
 		String sqlImp = "INSERT INTO IMPRESSION(EMAIL, TYPE_SUPPORT, FORMAT, QUALITE, DATE_IMPRESSION, MONTANT_TOTAL, ETAT_IMPRESSION, NB_IMPRESSION) "
-				+ "VALUES (?,?,?,?,?,?,?) RETURNING ID_IMPRESSION";
+				+ "VALUES (?,?,?,?,?,?,?,?)";
 		String sqlImpExt = "";
 		int isAdded = -1;
 		LocalDate todayLocalDate = LocalDate.now(ZoneId.systemDefault());
@@ -1182,10 +1183,11 @@ public class GestionDB {
 		PreparedStatement statementImp = null;
 		PreparedStatement statementImpExt = null;
 		try {
-			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			
 			statementImp = conn.prepareStatement(sqlImp);
 			statementImp.setString(1, client.getEmail());
-			statementImp.setString(2, stock == null ? null : stock.getType_support().toString());
+			statementImp.setString(2, stock == null ? null : stock.getType_support().toString().toLowerCase());
 			statementImp.setString(3, stock == null ? null : stock.getFormat());
 			statementImp.setString(4, stock == null ? null : stock.getQualite());
 			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
@@ -1193,49 +1195,65 @@ public class GestionDB {
 			statementImp.setFloat(6, montant_total);
 			statementImp.setBoolean(7, etat_impression);
 			statementImp.setInt(8, nb_impression);
-
-			ResultSet resultImp = statementImp.executeQuery();
-			int id_impression = -1;
+			int row = statementImp.executeUpdate();
+			PreparedStatement statementID = conn.prepareStatement("SELECT MAX(ID_IMPRESSION) AS ID FROM IMPRESSION WHERE EMAIL = ?");
+			statementID.setString(1, client.getEmail());
+			ResultSet resultImp = statementID.executeQuery();
 			int rowsInsertedTirage = -1;
+			int id_impression = -1;
+			
 
 			if (resultImp.next()) {
-				id_impression = resultImp.getInt("ID_IMPRESSION");
-
+				id_impression = resultImp.getInt("ID");			
 				if (type == TypeSupport.AGENDA) {
 					sqlImpExt = "INSERT INTO AGENDA (ID_IMPRESSION, MODELE) " + "VALUES (?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
 					statementImpExt.setString(2, modele);
+					Agenda agenda = new Agenda(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, modele);
+					client.addImpression(agenda);
+
 				} else if (type == TypeSupport.ALBUM) {
 					sqlImpExt = "INSERT INTO ALBUM (ID_IMPRESSION, TITRE, MISE_EN_PAGE) " + "VALUES (?,?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
 					statementImpExt.setString(2, titre);
 					statementImpExt.setString(3, mise_en_page);
+					Album album = new Album(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, modele, mise_en_page);
+					client.addImpression(album);
+
 				} else if (type == TypeSupport.CADRE) {
 					sqlImpExt = "INSERT INTO CADRE (ID_IMPRESSION, MISE_EN_PAGE, MODELE)" + " VALUES (?,?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
 					statementImpExt.setString(2, mise_en_page);
 					statementImpExt.setString(3, modele);
+					Cadre cadre = new Cadre(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, mise_en_page, modele);
+					client.addImpression(cadre);
+
 				} else if (type == TypeSupport.CALENDRIER) {
 					sqlImpExt = "INSERT INTO CALENDRIER (ID_IMPRESSION, MODELE) " + "VALUES (?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
 					statementImpExt.setString(2, modele);
+					Calendrier calendrier = new Calendrier(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null, modele);
+					client.addImpression(calendrier);
+
 				} else if (type == TypeSupport.TIRAGE) {
 					sqlImpExt = "INSERT INTO TIRAGE (ID_IMPRESSION)" + " VALUES (?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);
+					Tirage tirage = new Tirage(id_impression, sqlDate, nb_impression, client, stock, numero, montant_total, etat_impression, null, null);
+					client.addImpression(tirage);
 				}
 
 				rowsInsertedTirage = statementImpExt.executeUpdate();
 			}
+			conn.commit();
 
 			if (rowsInsertedTirage > 0) {
 				isAdded = id_impression;
 			}
-			conn.commit();
 		} catch (SQLException e) {
 			isAdded = -1;
 		}
