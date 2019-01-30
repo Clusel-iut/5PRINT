@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -335,7 +334,7 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				FichierPhoto fp = getFichierPhotoById(false, result.getString("CHEMIN"));
 				String sqlC = "SELECT EMAIL FROM FICHIERPHOTO WHERE CHEMIN = ?";
 				PreparedStatement statement2;
 				statement2 = conn.prepareStatement(sqlC);
@@ -388,7 +387,7 @@ public class GestionDB {
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				FichierPhoto fp = getFichierPhotoById(false, result.getString("CHEMIN"));
 				fp.setClient(cli);
 				photos.add(fp);
 			}
@@ -506,7 +505,6 @@ public class GestionDB {
 		return isDeleted;
 	}
 
-	// TODO CONNECTION????????
 	public static boolean connectionClient(String email, String motDePasse) {
 		String sql = "SELECT * FROM CLIENT WHERE EMAIL = ? AND MOT_DE_PASSE = ?";
 		boolean isConnected = false;
@@ -577,7 +575,7 @@ public class GestionDB {
 					bon_achat.setCommandeGeneree(cmd);
 				}
 
-				cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client, getAllImpressionByCommandeId(cmd, result.getInt("NUMERO")),
+				cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client,getAllImpressionByCommandeId(cmd, result.getInt("NUMERO")),
 						result.getString("MODE_LIVRAISON"), result.getDate("DATE_COMMANDE"), StatutCommande.valueOf(result.getString("STATUT")),
 						result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
 
@@ -590,11 +588,11 @@ public class GestionDB {
 		return cmd;
 	}
 
-	private static ArrayList<Impression> getAllImpressionByCommandeId(Commande commande, int numero) {
+	static ArrayList<Impression> getAllImpressionByCommandeId(Commande commande, int numero) {
 	ArrayList<Impression> impressions = new ArrayList<Impression>();
 		String sql = "SELECT ID_IMPRESSION FROM IMPRESSION WHERE NUMERO = ?";
 		PreparedStatement statement;
-
+		
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
@@ -602,6 +600,7 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				Impression imp = getImpressionById(result.getInt("ID_IMPRESSION"));
+				System.out.println(result.getInt("ID_IMPRESSION") + " " + imp.toString());
 				imp.setCommande(commande);
 				impressions.add(imp);
 			}
@@ -613,7 +612,7 @@ public class GestionDB {
 
 
 	
-		return null;
+		return impressions;
 	}
 
 	// CREATE
@@ -628,8 +627,7 @@ public class GestionDB {
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, adresse);
 			statement.setString(2, email);
-			statement.setString(3, mode_livraison);
-			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
+			statement.setString(3, mode_livraison); 
 			LocalDate todayLocalDate = LocalDate.now(ZoneId.systemDefault());
 			java.sql.Date sqlDate = java.sql.Date.valueOf(todayLocalDate);
 			statement.setDate(4, sqlDate);
@@ -705,7 +703,7 @@ public class GestionDB {
 	// FichierPhoto
 	//
 	// GET
-	public static FichierPhoto getFichierPhotoById(String chemin) {
+	public static FichierPhoto getFichierPhotoById(boolean photo, String chemin) {
 		String sql = "SELECT * FROM FICHIERPHOTO WHERE CHEMIN = ?";
 		FichierPhoto fiPhoto = null;
 
@@ -718,7 +716,7 @@ public class GestionDB {
 				fiPhoto = new FichierPhoto(result.getString("CHEMIN"), null, result.getString("RESOLUTION"),
 						result.getDate("DATE_AJOUT"), result.getDate("DATE_NO_PHOTO"),
 						result.getString("INFO_PRISE_VUE"), result.getBoolean("EST_PARTAGE"), null,
-						getPhotosByFichierId(fiPhoto, chemin));
+						photo?null:getPhotosByFichierId(fiPhoto, chemin));
 			}
 			statement.close();
 			conn.commit();
@@ -738,7 +736,7 @@ public class GestionDB {
 			statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				FichierPhoto fp = getFichierPhotoById(false, result.getString("CHEMIN"));
 				Client client = getSimpleClientByEmail(result.getString("EMAIL"));
 				fp.setClient(client);
 				photos.add(fp);
@@ -755,7 +753,7 @@ public class GestionDB {
 
 	public static ArrayList<FichierPhoto> getAllFichierPhotos() {
 		ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>();
-		String sql = "SELECT CHEMIN FROM FICHIERPHOTO";
+		String sql = "SELECT CHEMIN, EMAIL FROM FICHIERPHOTO";
 		PreparedStatement statement;
 
 		try {
@@ -763,7 +761,7 @@ public class GestionDB {
 			statement = conn.prepareStatement(sql);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				FichierPhoto fp = getFichierPhotoById(result.getString("CHEMIN"));
+				FichierPhoto fp = getFichierPhotoById(false, result.getString("CHEMIN"));
 				Client client = getSimpleClientByEmail(result.getString("EMAIL"));
 				fp.setClient(client);
 				photos.add(fp);
@@ -788,7 +786,7 @@ public class GestionDB {
 			statement.setString(1, chemin);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				Photo photo = getPhotoById(result.getInt("ID_PHOTO"));
+				Photo photo = getPhotoById(true, result.getInt("ID_PHOTO"));
 				photo.setFichier(fichier);
 				photos.add(photo);
 			}
@@ -833,9 +831,6 @@ public class GestionDB {
 			statement.setString(1, chemin);
 			statement.setString(2, email);
 			statement.setString(3, resolution);
-			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
-			// statement.setDate(4, java.sql.Date.valueOf(dateFormat.format(date_ajout)));
-			// statement.setDate(5, java.sql.Date.valueOf(dateFormat.format(date_no_photo)));
 			statement.setDate(4, new java.sql.Date(System.currentTimeMillis()));
 			statement.setDate(5, new java.sql.Date(System.currentTimeMillis()));
 			statement.setString(6, info_vue);
@@ -906,7 +901,7 @@ public class GestionDB {
 	// PHOTO
 	//
 	// GET
-	public static Photo getPhotoById(int id) {
+	public static Photo getPhotoById(boolean fichier, int id) {
 		String sql = "SELECT * FROM PHOTO WHERE ID_PHOTO = ?";
 		Photo photo = null;
 
@@ -915,8 +910,14 @@ public class GestionDB {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
+			FichierPhoto fichierp = null; 
+			
 			if (result.next()) {
-				photo = new Photo(result.getInt("ID_PHOTO"), null, null, result.getString("DESCRIPTION"),
+				if(fichier == false){
+					fichierp = getFichierPhotoById(true, result.getString("CHEMIN"));
+				}
+				
+				photo = new Photo(result.getInt("ID_PHOTO"), fichierp , null, result.getString("DESCRIPTION"),
 						result.getString("RETOUCHE"), result.getInt("NUMERO_PAGE"), result.getInt("POSITION_X"),
 						result.getInt("POSITION_Y"), result.getInt("NB_EXEMPLAIRE"));
 			}
@@ -930,8 +931,6 @@ public class GestionDB {
 
 	public static <T extends Impression> T getImpressionById(int id) {
 		T impression = null;
-		TypeSupport[] types = { TypeSupport.AGENDA, TypeSupport.ALBUM, TypeSupport.CADRE, TypeSupport.CALENDRIER,
-				TypeSupport.TIRAGE };
 		String select = "SELECT TYPE_SUPPORT FROM IMPRESSION";
 		String where = " WHERE ID_IMPRESSION = ?";
 		String sql = "";
@@ -1033,10 +1032,10 @@ public class GestionDB {
 		String chemin;
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			PreparedStatement statementChemin = conn.prepareStatement(sqlChemin);
+			/*PreparedStatement statementChemin = conn.prepareStatement(sqlChemin);
 			statementChemin.setInt(1, id_photo);
 			ResultSet resultChemin = statementChemin.executeQuery();
-			chemin = resultChemin.getString("CHEMIN");
+			chemin = resultChemin.getString("CHEMIN");*/
 
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id_photo);
@@ -1044,15 +1043,13 @@ public class GestionDB {
 			int rowsDeleted = statement.executeUpdate();
 			if (rowsDeleted > 0) {
 				isDeleted = true;
-			}
+			}/*
 			if (getPhotosByFichierId(null, chemin).size() == 0) {
-				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-				Date date = new Date();
 				String sqlUpdate = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = "
-						+ java.sql.Date.valueOf(dateFormat.format(date)) + "WHERE CHEMIN = " + chemin;
+						+ new java.sql.Date(System.currentTimeMillis()) + "WHERE CHEMIN = " + chemin;
 				PreparedStatement statementUpdate = conn.prepareStatement(sqlUpdate);
 				statementUpdate.executeUpdate(sqlUpdate);
-			}
+			}*/
 			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
@@ -1163,7 +1160,9 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
 				T impression = getImpressionById(result.getInt("ID_IMPRESSION"));
+				Client client = getSimpleClientByEmail(result.getString("EMAIL"));
 				if(impression != null) {
+					impression.setClient(client);
 					impressions.add(impression);
 				}
 			}
@@ -1184,7 +1183,7 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 
 			while (result.next()) {
-				Photo photo = getPhotoById(result.getInt("ID_PHOTO"));
+				Photo photo = getPhotoById(false, result.getInt("ID_PHOTO"));
 				photo.setImpression(imp);
 				photos.add(photo);
 			}
@@ -1215,12 +1214,11 @@ public class GestionDB {
 			statementImp.setString(2, stock == null ? null : stock.getType_support().toString().toLowerCase());
 			statementImp.setString(3, stock == null ? null : stock.getFormat());
 			statementImp.setString(4, stock == null ? null : stock.getQualite());
-			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
 			statementImp.setDate(5, sqlDate);
 			statementImp.setFloat(6, montant_total);
 			statementImp.setBoolean(7, etat_impression);
 			statementImp.setInt(8, nb_impression);
-			int row = statementImp.executeUpdate();
+			statementImp.executeUpdate();
 			PreparedStatement statementID = conn.prepareStatement("SELECT MAX(ID_IMPRESSION) AS ID FROM IMPRESSION WHERE EMAIL = ?");
 			statementID.setString(1, client.getEmail());
 			ResultSet resultImp = statementID.executeQuery();
@@ -1230,7 +1228,7 @@ public class GestionDB {
 
 			if (resultImp.next()) {
 				id_impression = resultImp.getInt("ID");			
-				if (type == TypeSupport.AGENDA) {
+				if (type.equals(TypeSupport.AGENDA)) {
 					sqlImpExt = "INSERT INTO AGENDA (ID_IMPRESSION, MODELE) " + "VALUES (?,?)";
 					statementImpExt = conn.prepareStatement(sqlImpExt);
 					statementImpExt.setInt(1, id_impression);

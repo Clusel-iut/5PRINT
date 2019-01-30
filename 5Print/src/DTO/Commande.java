@@ -24,7 +24,12 @@ public class Commande{
 		this.bon_achat_genere = bon_achat_g;
 		this.adresse = adresse;
 		this.client = client;
-		this.setImpressions(impressions);
+		if(impressions != null){
+			this.impressions = impressions;
+		}else{
+			this.impressions = new ArrayList<Impression>();
+		}
+		
 		this.mode_livraison = mode_livraison;
 		this.date_commande = date_commande;
 		this.statut = statut;

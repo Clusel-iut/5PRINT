@@ -1,7 +1,7 @@
 package DTO;
 
 public enum StatutCommande {
-	En_cours("En cours"), Terminee("Terminée"), Pret_a_l_envoi("Prêt à l'envoi"), Envoyee("Envoyée");
+	En_cours("En cours"), Payee("Payée"), Pret_a_l_envoi("Prêt à l'envoi"), Envoyee("Envoyée");
 	
 	private String abreviation ;  
     

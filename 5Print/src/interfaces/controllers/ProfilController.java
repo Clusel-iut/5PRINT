@@ -59,7 +59,12 @@ public class ProfilController implements Initializable {
 	@FXML
     void deleteAddress(MouseEvent event) {
 		if(this.listAddress.getSelectionModel() != null) {
-			GestionDB.deleteAdresseById(listAddress.getSelectionModel().getSelectedItem().getId_adresse());
+			if(GestionDB.deleteAdresseById(listAddress.getSelectionModel().getSelectedItem().getId_adresse())) {
+				this.popup("Adresse", "Adresse supprimée !", "Fermer");
+			}
+			else {
+				this.popup("Adresse", "Suppression échoué", "Fermer");
+			}
 		}
 	}
 	

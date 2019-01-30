@@ -38,7 +38,7 @@ public class CreationImpressionController implements Initializable{
 		Stock stock = listeStock.getSelectionModel().getSelectedItem();
 		int idImpress = GestionDB.createImpression(stock.getType_support(), LocalDataClient.client, stock, 0, 0, false, 0, null, null, null);
 		
-		/*
+		
 		System.out.println(idImpress);
 		FXMLLoader Loader = new FXMLLoader();
 	    Loader.setLocation(this.getClass().getResource(
@@ -58,13 +58,12 @@ public class CreationImpressionController implements Initializable{
 	    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
 		    .getWindow();
 	    app_stage.setScene(home_page_scene);
-	    app_stage.show(); */
+	    app_stage.show(); 
 	}
 	
 	@FXML
     void back(MouseEvent event) { 
 		Parent home_page_parent;
-		
 		try {
 			home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
 			Scene home_page_scene = new Scene(home_page_parent);
