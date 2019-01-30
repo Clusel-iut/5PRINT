@@ -252,8 +252,8 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button id="commander" layoutX="717.0" layoutY="530.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Commander" />
-      <Button id="sauvegarder" layoutX="832.0" layoutY="530.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Sauvegarder" />
+      <Button id="commander" layoutX="773.0" layoutY="530.0" mnemonicParsing="false" onMouseClicked="#commander" style="-fx-background-color: orange; -fx-text-fill: white;" text="Commander" />
+      <Button id="sauvegarder" layoutX="884.0" layoutY="530.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Sauvegarder" />
       <Label fx:id="qualite" layoutX="668.0" layoutY="184.0" text="\@qualite">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -264,6 +264,6 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="10.0" layoutY="543.0" mnemonicParsing="false" onMouseClicked="#back" style="-fx-background-color: orange; -fx-text-fill: white;" text="Retour" />
+      <Button layoutX="695.0" layoutY="530.0" mnemonicParsing="false" onMouseClicked="#back" style="-fx-background-color: orange; -fx-text-fill: white;" text="Retour" />
    </children>
 </AnchorPane>
