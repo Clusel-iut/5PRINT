@@ -753,7 +753,7 @@ public class GestionDB {
 
 	public static ArrayList<FichierPhoto> getAllFichierPhotos() {
 		ArrayList<FichierPhoto> photos = new ArrayList<FichierPhoto>();
-		String sql = "SELECT CHEMIN FROM FICHIERPHOTO";
+		String sql = "SELECT CHEMIN, EMAIL FROM FICHIERPHOTO";
 		PreparedStatement statement;
 
 		try {
