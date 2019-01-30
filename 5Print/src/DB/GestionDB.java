@@ -577,7 +577,7 @@ public class GestionDB {
 					bon_achat.setCommandeGeneree(cmd);
 				}
 
-				cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client,
+				cmd = new Commande(result.getInt("NUMERO"), bon_achat, bon_achat_genere, adresse, client, getAllImpressionByCommandeId(cmd, result.getInt("NUMERO")),
 						result.getString("MODE_LIVRAISON"), result.getDate("DATE_COMMANDE"), StatutCommande.valueOf(result.getString("STATUT")),
 						result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
 
@@ -588,6 +588,32 @@ public class GestionDB {
 			e.printStackTrace();
 		}
 		return cmd;
+	}
+
+	private static ArrayList<Impression> getAllImpressionByCommandeId(Commande commande, int numero) {
+	ArrayList<Impression> impressions = new ArrayList<Impression>();
+		String sql = "SELECT ID_IMPRESSION FROM IMPRESSION WHERE NUMERO = ?";
+		PreparedStatement statement;
+
+		try {
+			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement = conn.prepareStatement(sql);
+			statement.setInt(1, numero);
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				Impression imp = getImpressionById(result.getInt("ID_IMPRESSION"));
+				imp.setCommande(commande);
+				impressions.add(imp);
+			}
+			statement.close();
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+
+	
+		return null;
 	}
 
 	// CREATE
