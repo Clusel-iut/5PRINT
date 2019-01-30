@@ -591,7 +591,7 @@ public class GestionDB {
 	}
 
 	// CREATE
-	public static boolean createCommande(int adresse, String email, String mode_livraison, Date date_commande,
+	public static boolean createCommande(int adresse, String email, String mode_livraison,
 			StatutCommande statut, boolean etat_paiement, float montant_total_cmd) {
 		String sql = "INSERT INTO COMMANDE (ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) VALUES (?,?,?,?,?,?,?)";
 		boolean isAdded = false;
@@ -604,7 +604,9 @@ public class GestionDB {
 			statement.setString(2, email);
 			statement.setString(3, mode_livraison);
 			// TODO https://stackoverflow.com/questions/18614836/using-setdate-in-preparedstatement 
-			statement.setDate(4, java.sql.Date.valueOf(date_commande.toString()));
+			LocalDate todayLocalDate = LocalDate.now(ZoneId.systemDefault());
+			java.sql.Date sqlDate = java.sql.Date.valueOf(todayLocalDate);
+			statement.setDate(4, sqlDate);
 			statement.setString(5, statut.toString());
 			statement.setBoolean(6, etat_paiement);
 			statement.setFloat(7, montant_total_cmd);
@@ -1430,30 +1432,24 @@ public class GestionDB {
 		return bon_achat;
 	}
 
-	public static BonAchat getBonAchatByEmail(String email) {
+	public static ArrayList<BonAchat> getBonAchatByEmail(String email) {
 		String sql = "SELECT * FROM BON_ACHAT WHERE EMAIL = ? AND NUMERO = null";
-		BonAchat bon_achat = null;
-		Commande commande = null;
-		Commande commandeG = null;
-		Client client = null;
+		ArrayList<BonAchat> lesBonsAchats = new ArrayList<BonAchat>();
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet result = statement.executeQuery();
-			if (result.next()) {
-				if (result.getInt("NUMERO_GENERE") >= 0) {
-					commandeG = getCommandeById(result.getInt("NUMERO_GENERE"));
-				}
-				bon_achat = new BonAchat(result.getString("CODE_BON"), commande, commandeG, client,
-						result.getInt("POURCENTAGEREDUC"), result.getString("TYPE_BONACHAT"));
+			while (result.next()) {
+				lesBonsAchats.add(new BonAchat(result.getString("CODE_BON"), null, null, null,
+						result.getInt("POURCENTAGEREDUC"), result.getString("TYPE_BONACHAT")));
 			}
 			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return bon_achat;
+		return lesBonsAchats;
 	}
 
 	// CREATE
