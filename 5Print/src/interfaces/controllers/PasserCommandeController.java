@@ -45,9 +45,9 @@ public class PasserCommandeController {
 	@FXML
 	private TableView<Impression> listImpressionView;
 	@FXML
-	private TableColumn<Impression, String> idImpression;
+	private TableColumn<Impression, Integer> idImpression;
 	@FXML
-	private TableColumn<Impression, String> dateImpression;
+	private TableColumn<Impression, Date> dateImpression;
 	@FXML
 	private TableColumn<Impression, String> typeImpression;
 	@FXML
@@ -56,6 +56,7 @@ public class PasserCommandeController {
 	private TableColumn<Impression, String> qualiteImpression;
 
 	public void setObjects(int num) {
+		System.out.println(num);
 		commande = GestionDB.getCommandeById(num);
 		idCommande.setText(Integer.toString(commande.getNumero()));
 		listAddress.getItems().setAll(LocalDataClient.client.getAdresse());
@@ -65,8 +66,8 @@ public class PasserCommandeController {
 		//listImpressionView.getColumns().clear();
 		
 		//IMPRESSION
-		idImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("id_impression"));
-		dateImpression.setCellValueFactory((new PropertyValueFactory<Impression, String>("date_impression")));
+		idImpression.setCellValueFactory(new PropertyValueFactory<Impression, Integer>("id_impression"));
+		dateImpression.setCellValueFactory((new PropertyValueFactory<Impression, Date>("date_impression")));
 		typeImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getType_support().toString()));
 		formatImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getFormat()));
 		qualiteImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getQualite()));
@@ -74,7 +75,9 @@ public class PasserCommandeController {
 		//IMPRESSION
 		ObservableList<Impression> listImpression = FXCollections.observableArrayList(commande.getImpressions());
 		System.out.println(listImpression.toString());
-		listImpressionView.setItems(listImpression);
+		if (listImpression.size()>0) {
+			listImpressionView.setItems(listImpression);
+		}
 					
 		listImpressionView.getColumns().addAll(idImpression, dateImpression, typeImpression, formatImpression, qualiteImpression);
 	}
