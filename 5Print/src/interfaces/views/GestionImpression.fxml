@@ -237,7 +237,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="montantTotal" layoutX="801.0" layoutY="473.0" text="\@montantTotal">
+      <Label fx:id="montantTotal" layoutX="822.0" layoutY="473.0" text="\@montantTotal">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -247,7 +247,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label id="etatImpression" fx:id="etatImpression" layoutX="801.0" layoutY="446.0" text="\@etatImpression">
+      <Label id="etatImpression" fx:id="etatImpression" layoutX="822.0" layoutY="446.0" text="\@etatImpression">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
