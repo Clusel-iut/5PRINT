@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.GestionImpressionController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.GestionImpressionController">
    <children>
       <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
          <image>
@@ -56,12 +56,12 @@
                         <TextField fx:id="miseEnPageCadre" layoutX="17.0" layoutY="408.0" prefHeight="31.0" prefWidth="529.0" />
                         <TableView fx:id="cadreView" layoutX="8.0" layoutY="28.0" prefHeight="241.0" prefWidth="546.0">
                            <columns>
-                              <TableColumn fx:id="pageCadre" prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
-                              <TableColumn fx:id="cheminCadre" minWidth="0.0" prefWidth="114.0" style="-fx-background-color: orange;" text="Chemin" />
-                              <TableColumn fx:id="resolutionCadre" prefWidth="105.0" style="-fx-background-color: orange;" text="Resolution" />
-                              <TableColumn prefWidth="28.0" style="-fx-background-color: orange;" text="x" fx:id="xCadre" />
-                              <TableColumn fx:id="yCadre" prefWidth="31.0" style="-fx-background-color: orange;" text="y" />
-                              <TableColumn fx:id="retoucheCadre" prefWidth="219.0" style="-fx-background-color: orange;" text="Retouche" />
+                              <TableColumn fx:id="pageCadre" prefWidth="48.0" text="Page" />
+                              <TableColumn fx:id="cheminCadre" minWidth="0.0" prefWidth="114.0" text="Chemin" />
+                              <TableColumn fx:id="resolutionCadre" prefWidth="105.0" text="Resolution" />
+                              <TableColumn prefWidth="28.0" text="x" fx:id="xCadre" />
+                              <TableColumn fx:id="yCadre" prefWidth="31.0" text="y" />
+                              <TableColumn fx:id="retoucheCadre" prefWidth="219.0" text="Retouche" />
                            </columns>
                         </TableView>
                         <Label layoutX="8.0" layoutY="2.0" text="Gestion des photos">
@@ -80,12 +80,12 @@
                      <children>
                         <TableView fx:id="albumView" layoutX="11.0" layoutY="35.0" prefHeight="241.0" prefWidth="546.0">
                           <columns>
-                            <TableColumn fx:id="pageAlbum" prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
-                            <TableColumn fx:id="cheminAlbum" minWidth="0.0" prefWidth="114.0" style="-fx-background-color: orange;" text="Chemin" />
-                              <TableColumn fx:id="resolutionAlbum" prefWidth="105.0" style="-fx-background-color: orange;" text="Resolution" />
-                              <TableColumn prefWidth="28.0" style="-fx-background-color: orange;" text="x" fx:id="xAlbum" />
-                              <TableColumn fx:id="yAlbum" prefWidth="31.0" style="-fx-background-color: orange;" text="y" />
-                              <TableColumn fx:id="retoucheAlbum" prefWidth="219.0" style="-fx-background-color: orange;" text="Retouche" />
+                            <TableColumn fx:id="pageAlbum" prefWidth="48.0" text="Page" />
+                            <TableColumn fx:id="cheminAlbum" minWidth="0.0" prefWidth="114.0" text="Chemin" />
+                              <TableColumn fx:id="resolutionAlbum" prefWidth="105.0" text="Resolution" />
+                              <TableColumn prefWidth="28.0" text="x" fx:id="xAlbum" />
+                              <TableColumn fx:id="yAlbum" prefWidth="31.0" text="y" />
+                              <TableColumn fx:id="retoucheAlbum" prefWidth="219.0" text="Retouche" />
                           </columns>
                         </TableView>
                         <Label layoutX="11.0" layoutY="9.0" text="Gestion des photos">
@@ -117,12 +117,12 @@
                      <children>
                         <TableView fx:id="agendaView" layoutX="11.0" layoutY="35.0" prefHeight="275.0" prefWidth="545.0">
                            <columns>
-                              <TableColumn fx:id="pageAgenda" prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
-                              <TableColumn fx:id="cheminAgenda" minWidth="0.0" prefWidth="157.0" style="-fx-background-color: orange;" text="Chemin" />
-                              <TableColumn fx:id="resolutionAgenda" prefWidth="111.0" style="-fx-background-color: orange;" text="Resolution" />
-                              <TableColumn prefWidth="38.0" style="-fx-background-color: orange;" text="x" fx:id="xAgenda" />
-                              <TableColumn fx:id="yAgenda" prefWidth="39.0" style="-fx-background-color: orange;" text="y" />
-                              <TableColumn fx:id="retoucheAgenda" prefWidth="151.0" style="-fx-background-color: orange;" text="Retouche" />
+                              <TableColumn fx:id="pageAgenda" prefWidth="48.0" text="Page" />
+                              <TableColumn fx:id="cheminAgenda" minWidth="0.0" prefWidth="157.0" text="Chemin" />
+                              <TableColumn fx:id="resolutionAgenda" prefWidth="111.0" text="Resolution" />
+                              <TableColumn prefWidth="38.0" text="x" fx:id="xAgenda" />
+                              <TableColumn fx:id="yAgenda" prefWidth="39.0" text="y" />
+                              <TableColumn fx:id="retoucheAgenda" prefWidth="151.0" text="Retouche" />
                            </columns>
                         </TableView>
                         <Label layoutX="11.0" layoutY="9.0" text="Gestion des photos">
@@ -148,13 +148,13 @@
                      <children>
                         <TableView fx:id="tirageView" layoutX="11.0" layoutY="35.0" prefHeight="369.0" prefWidth="542.0">
                            <columns>
-                              <TableColumn fx:id="pageTirage" prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
-                              <TableColumn fx:id="cheminTirage" minWidth="0.0" prefWidth="93.0" style="-fx-background-color: orange;" text="Chemin" />
-                              <TableColumn fx:id="resolutionTirage" prefWidth="103.0" style="-fx-background-color: orange;" text="Resolution" />
-                              <TableColumn prefWidth="39.0" style="-fx-background-color: orange;" text="x" fx:id="xTirage" />
-                              <TableColumn fx:id="yTirage" prefWidth="48.0" style="-fx-background-color: orange;" text="y" />
-                              <TableColumn fx:id="retoucheTirage" prefWidth="97.0" style="-fx-background-color: orange;" text="Retouche" />
-                              <TableColumn fx:id="nbExTirage" prefWidth="113.0" style="-fx-background-color: orange;" text="Nb exemplaire" />
+                              <TableColumn fx:id="pageTirage" prefWidth="48.0" text="Page" />
+                              <TableColumn fx:id="cheminTirage" minWidth="0.0" prefWidth="93.0" text="Chemin" />
+                              <TableColumn fx:id="resolutionTirage" prefWidth="103.0" text="Resolution" />
+                              <TableColumn prefWidth="39.0" text="x" fx:id="xTirage" />
+                              <TableColumn fx:id="yTirage" prefWidth="48.0" text="y" />
+                              <TableColumn fx:id="retoucheTirage" prefWidth="97.0" text="Retouche" />
+                              <TableColumn fx:id="nbExTirage" prefWidth="113.0" text="Nb exemplaire" />
                            </columns>
                         </TableView>
                         <Label layoutX="11.0" layoutY="9.0" text="Gestion des photos">
@@ -174,12 +174,12 @@
                      <children>
                         <TableView fx:id="calendrierView" layoutX="11.0" layoutY="35.0" prefHeight="279.0" prefWidth="543.0">
                            <columns>
-                              <TableColumn fx:id="pageCalendrier" prefWidth="48.0" style="-fx-background-color: orange;" text="Page" />
-                              <TableColumn fx:id="cheminCalendrier" minWidth="0.0" prefWidth="114.0" style="-fx-background-color: orange;" text="Chemin" />
-                              <TableColumn fx:id="resolutionCalendrier" prefWidth="105.0" style="-fx-background-color: orange;" text="Resolution" />
-                              <TableColumn prefWidth="28.0" style="-fx-background-color: orange;" text="x" fx:id="xCalendrier" />
-                              <TableColumn fx:id="yCalendrier" prefWidth="31.0" style="-fx-background-color: orange;" text="y" />
-                              <TableColumn fx:id="retoucheCalendrier" prefWidth="216.0" style="-fx-background-color: orange;" text="Retouche" />
+                              <TableColumn fx:id="pageCalendrier" prefWidth="48.0" text="Page" />
+                              <TableColumn fx:id="cheminCalendrier" minWidth="0.0" prefWidth="114.0" text="Chemin" />
+                              <TableColumn fx:id="resolutionCalendrier" prefWidth="105.0" text="Resolution" />
+                              <TableColumn prefWidth="28.0" text="x" fx:id="xCalendrier" />
+                              <TableColumn fx:id="yCalendrier" prefWidth="31.0" text="y" />
+                              <TableColumn fx:id="retoucheCalendrier" prefWidth="216.0" text="Retouche" />
                            </columns>
                         </TableView>
                         <Label layoutX="11.0" layoutY="9.0" text="Gestion des photos">
