@@ -1156,7 +1156,9 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
 				T impression = getImpressionById(result.getInt("ID_IMPRESSION"));
+				Client client = getSimpleClientByEmail(result.getString("EMAIL"));
 				if(impression != null) {
+					impression.setClient(client);
 					impressions.add(impression);
 				}
 			}
