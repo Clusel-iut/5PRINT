@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfaces.controllers.PasserCommandeController">
    <children>
       <ImageView fitHeight="93.0" fitWidth="200.0" layoutX="14.0">
          <image>
@@ -24,7 +23,7 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
-      <Label id="idCommande" layoutX="235.0" layoutY="131.0" text="\@idCommande">
+      <Label id="idCommande" fx:id="idCommande" layoutX="235.0" layoutY="131.0" text="\@idCommande">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
@@ -34,13 +33,13 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
-      <ComboBox id="bonsAchats" layoutX="235.0" layoutY="165.0" prefHeight="31.0" prefWidth="293.0" />
+      <ComboBox id="bonsAchats" fx:id="bonAchat" layoutX="235.0" layoutY="165.0" prefHeight="31.0" prefWidth="293.0" />
       <Label layoutX="133.0" layoutY="245.0" text="ADRESSE :">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
-      <ComboBox id="adresses" layoutX="235.0" layoutY="243.0" prefHeight="31.0" prefWidth="293.0" />
+      <ComboBox id="adresses" fx:id="listAddress" layoutX="235.0" layoutY="243.0" prefHeight="31.0" prefWidth="293.0" />
       <Label layoutX="275.0" layoutY="38.0" text="COMMANDE">
          <font>
             <Font name="System Bold" size="32.0" />
@@ -51,28 +50,28 @@
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
-      <ComboBox id="modeLivraison" layoutX="235.0" layoutY="203.0" prefHeight="31.0" prefWidth="293.0" />
+      <ComboBox id="modeLivraison" fx:id="modeLivraison" layoutX="235.0" layoutY="203.0" prefHeight="31.0" prefWidth="293.0" />
       <Label layoutX="149.0" layoutY="281.0" text="PAYER :">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
-      <CheckBox id="payer" layoutX="235.0" layoutY="284.0" mnemonicParsing="false" />
-      <TableView layoutX="61.0" layoutY="344.0" prefHeight="199.0" prefWidth="566.0">
+      <CheckBox id="payer" fx:id="payer" layoutX="235.0" layoutY="284.0" mnemonicParsing="false" />
+      <TableView fx:id="listImpression" layoutX="61.0" layoutY="344.0" prefHeight="199.0" prefWidth="566.0">
         <columns>
-          <TableColumn prefWidth="128.0" style="-fx-background-color: orange;" text="ID IMPRESSION" />
-          <TableColumn minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="DATE" />
-            <TableColumn minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="TYPE" />
-            <TableColumn minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="FORMAT" />
-            <TableColumn minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="QUALITE" />
+          <TableColumn fx:id="idImpression" prefWidth="128.0" style="-fx-background-color: orange;" text="ID IMPRESSION" />
+          <TableColumn fx:id="dateImpression" minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="DATE" />
+            <TableColumn fx:id="typeImpression" minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="TYPE" />
+            <TableColumn fx:id="formatImpression" minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="FORMAT" />
+            <TableColumn fx:id="qualiteImpression" minWidth="0.0" prefWidth="110.0" style="-fx-background-color: orange;" text="QUALITE" />
         </columns>
       </TableView>
-      <Button layoutX="766.0" layoutY="312.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="VALIDER">
+      <Button layoutX="766.0" layoutY="312.0" mnemonicParsing="false" onMouseClicked="#save" style="-fx-background-color: orange; -fx-text-fill: white;" text="VALIDER">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Button>
-      <Button layoutX="748.0" layoutY="226.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="ANNULER">
+      <Button layoutX="748.0" layoutY="226.0" mnemonicParsing="false" onMouseClicked="#back" style="-fx-background-color: orange; -fx-text-fill: white;" text="ANNULER">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>

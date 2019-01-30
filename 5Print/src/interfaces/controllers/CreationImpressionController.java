@@ -37,7 +37,9 @@ public class CreationImpressionController implements Initializable{
     void create(MouseEvent event) { 
 		Stock stock = listeStock.getSelectionModel().getSelectedItem();
 		int idImpress = GestionDB.createImpression(stock.getType_support(), LocalDataClient.client, stock, 0, 0, false, 0, null, null, null);
-				
+		
+		/*
+		System.out.println(idImpress);
 		FXMLLoader Loader = new FXMLLoader();
 	    Loader.setLocation(this.getClass().getResource(
 		    "/interfaces/views/GestionImpression.fxml"));
@@ -56,7 +58,7 @@ public class CreationImpressionController implements Initializable{
 	    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
 		    .getWindow();
 	    app_stage.setScene(home_page_scene);
-	    app_stage.show();
+	    app_stage.show(); */
 	}
 	
 	@FXML

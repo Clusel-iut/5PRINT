@@ -78,6 +78,7 @@
                                           </TableView>
                                           <Button layoutX="14.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#addFiles" style="-fx-background-color: orange; -fx-text-fill: white;" text="Ajouter" />
                                           <Button layoutX="186.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#shareFiles" style="-fx-background-color: orange; -fx-text-fill: white;" text="Partager / Départager" />
+                                          <Button layoutX="78.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#deleteFiles" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
                                        </children>
                                     </AnchorPane>
                               </content>
@@ -118,7 +119,7 @@
                                                 <TableColumn fx:id="etatPanier" minWidth="0.0" prefWidth="69.0" text="STATUT" />
                                              </columns>
                                           </TableView>
-                                          <Button layoutX="236.0" layoutY="380.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Visualiser" />
+                                          <Button layoutX="236.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#visualiser" style="-fx-background-color: orange; -fx-text-fill: white;" text="Visualiser" />
                                        </children>
                                     </AnchorPane>
                                  </content>

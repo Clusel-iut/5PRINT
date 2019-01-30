@@ -174,6 +174,7 @@ public class GestionImpressionController implements Initializable {
 		nbImpression.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10));
 		nbImpression.getValueFactory().setValue(impression.getNb_impression());
 		System.out.println(impression.getStock().getType_support().toString().toLowerCase());
+		
 		for(int index=0; index < tabType.getTabs().size(); index++) {
 			if(!tabType.getTabs().get(index).getText().toLowerCase().equals(impression.getStock().getType_support().toString().toLowerCase()))
 			{
@@ -184,6 +185,7 @@ public class GestionImpressionController implements Initializable {
 		switch(this.impression.getStock().getType_support()) {
 		
 			case CADRE : 
+				
 				cadreView.getColumns().clear();
 				
 				Cadre cadre = GestionDB.getImpressionById(idImpression);
@@ -276,7 +278,21 @@ public class GestionImpressionController implements Initializable {
 		}	
 	}
 	
-	
+	@FXML
+    void save(MouseEvent event) { 
+		Parent home_page_parent;
+		try {
+			home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
+			Scene home_page_scene = new Scene(home_page_parent);
+			Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+				.getWindow();
+			app_stage.setScene(home_page_scene);
+			app_stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
 	
 	
 
