@@ -80,7 +80,7 @@ public class ChoisirCommandeController implements Initializable {
 	
 	@FXML
 	 void addCommande(MouseEvent event) {
-		 if(GestionDB.createCommande(0, LocalDataClient.client.getEmail(), "", StatutCommande.En_cours, false, (float) 0.00)) {
+		 if((-1)!=GestionDB.createCommande(0, LocalDataClient.client.getEmail(), "", StatutCommande.En_cours, false, (float) 0.00)) {
 			 this.popup("Création de commande", "Une nouvelle commande a été crée", "Fermer");
 		 }
 		 else {

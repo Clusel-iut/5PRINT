@@ -616,11 +616,10 @@ public class GestionDB {
 	}
 
 	// CREATE
-	public static boolean createCommande(int adresse, String email, String mode_livraison,
+	public static int createCommande(int adresse, String email, String mode_livraison,
 			StatutCommande statut, boolean etat_paiement, float montant_total_cmd) {
-		boolean isAdded = false;
+		int id_impression = -1;
 		try {
-			
 			String sql;
 			PreparedStatement statement;
 			if(adresse == 0){
@@ -653,16 +652,22 @@ public class GestionDB {
 			}
 			
 			int rowsInserted = statement.executeUpdate();
-			if (rowsInserted > 0) {
-				isAdded = true;
+	
+			PreparedStatement statementID = conn.prepareStatement("SELECT MAX(ID_IMPRESSION) AS ID FROM COMMANDE WHERE EMAIL = ?");
+			statementID.setString(1, email);
+			ResultSet resultImp = statementID.executeQuery();
+			
+			if (resultImp.next() && rowsInserted > 0) {
+				id_impression = resultImp.getInt("ID_IMPRESSION");
 			}
+				
 			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
-			isAdded = false;
+			id_impression = -1;
 		}
 
-		return isAdded;
+		return id_impression;
 	}
 
 	// UPDATE
