@@ -20,14 +20,18 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class PageRecapController implements Initializable {
@@ -100,11 +104,8 @@ public class PageRecapController implements Initializable {
 		//IMPRESSION
 		idImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("id_impression"));
 		dateImpression.setCellValueFactory((new PropertyValueFactory<Impression, String>("date_impression")));
-		//typeImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.type_support"));
 		typeImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getType_support().toString()));
-		//formatImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.getFormat()"));	
 		formatImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getFormat()));
-		//qualiteImpression.setCellValueFactory(new PropertyValueFactory<Impression, String>("stock.getQualite()"));
 		qualiteImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getQualite()));
 		
 		//PHOTO
@@ -246,4 +247,60 @@ public class PageRecapController implements Initializable {
 		 this.initialiserTableau();
 		 
 	 }
+	 
+	 @FXML
+	 void deleteFiles(MouseEvent event) {
+		 System.out.println(photosView.getSelectionModel().getSelectedItem().getChemin());		 
+		 if(GestionDB.deleteFichierPhoto(photosView.getSelectionModel().getSelectedItem().getChemin())) {
+			 this.initialiserTableau();
+			 this.popup("Suppression de fichiers photo", "Suppression réussie !", "Fermer");
+		 }
+		 else
+		 {
+			 this.popup("Suppression de fichiers photo", "Suppression échouée !", "Fermer");
+		 }
+		 
+	 }
+	 
+	 @FXML
+	 void visualiser(MouseEvent event) {
+		 
+		 System.out.println(paniersView.getSelectionModel().getSelectedItem().getNumero());	
+		 int num = paniersView.getSelectionModel().getSelectedItem().getNumero();
+		 
+		 FXMLLoader Loader = new FXMLLoader();
+		    Loader.setLocation(getClass().getResource("/interfaces/views/PasserCommande.fxml"));
+		    try {
+				Loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		    PasserCommandeController controller = Loader.getController();
+		    controller.setObjects(num);
+
+		    Parent home_page_parent = Loader.getRoot();
+		    Scene home_page_scene = new Scene(home_page_parent);
+		    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+			    .getWindow();
+		    app_stage.setScene(home_page_scene);
+		    app_stage.show();
+		 
+	 }
+	 
+	 void popup(String title, String label, String buttonText) {
+			Stage popupwindow=new Stage();	      
+			popupwindow.initModality(Modality.APPLICATION_MODAL);
+			popupwindow.setTitle(title);
+			Label texte = new Label(label);
+			Button button= new Button(buttonText);
+			button.setOnAction(e -> popupwindow.close());
+			VBox layout= new VBox(10);
+			layout.getChildren().addAll(texte, button);
+			layout.setAlignment(Pos.CENTER);
+			Scene scene= new Scene(layout, 300, 250);
+			popupwindow.setScene(scene);
+			popupwindow.showAndWait();
+		}
 }

@@ -45,7 +45,7 @@ public class AjoutFichierPhotoController {
 	void save(MouseEvent event) {
 		
 		System.out.println(partage.isSelected());
-		//GestionDB.createFichierPhoto(chemin.getText(), LocalDataClient.client.getEmail(), resolution.getText(), infovue.getText(), partage.isSelected());
+		GestionDB.createFichierPhoto(chemin.getText(), LocalDataClient.client.getEmail(), resolution.getText(), infovue.getText(), partage.isSelected());
 		LocalDataClient.refresh();
 		
 		Parent home_page_parent;
