@@ -618,24 +618,40 @@ public class GestionDB {
 	// CREATE
 	public static boolean createCommande(int adresse, String email, String mode_livraison,
 			StatutCommande statut, boolean etat_paiement, float montant_total_cmd) {
-		String sql = "INSERT INTO COMMANDE (ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) "
-				+ "VALUES (?,?,?,?,?,?,?)";
 		boolean isAdded = false;
-
-		PreparedStatement statement;
 		try {
-			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			statement = conn.prepareStatement(sql);
-			statement.setInt(1, adresse);
-			statement.setString(2, email);
-			statement.setString(3, mode_livraison); 
-			LocalDate todayLocalDate = LocalDate.now(ZoneId.systemDefault());
-			java.sql.Date sqlDate = java.sql.Date.valueOf(todayLocalDate);
-			statement.setDate(4, sqlDate);
-			statement.setString(5, statut.toString());
-			statement.setBoolean(6, etat_paiement);
-			statement.setFloat(7, montant_total_cmd);
-
+			
+			String sql;
+			PreparedStatement statement;
+			if(adresse == 0){
+				sql = "INSERT INTO COMMANDE (ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) "
+						+ "VALUES (NULL,?,?,?,?,?,?)";
+				conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				statement = conn.prepareStatement(sql);
+				statement.setString(1, email);
+				statement.setString(2, mode_livraison); 
+				LocalDate todayLocalDate = LocalDate.now(ZoneId.systemDefault());
+				java.sql.Date sqlDate = java.sql.Date.valueOf(todayLocalDate);
+				statement.setDate(3, sqlDate);
+				statement.setString(4, statut.toString());
+				statement.setBoolean(5, etat_paiement);
+				statement.setFloat(6, montant_total_cmd);
+			}else{
+				sql = "INSERT INTO COMMANDE (ID_ADRESSE, EMAIL, MODE_LIVRAISON, DATE_COMMANDE, STATUT, ETAT_PAIEMENT, MONTANT_TOTAL_CMD) "
+						+ "VALUES (?,?,?,?,?,?,?)";
+				conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				statement = conn.prepareStatement(sql);
+				statement.setInt(1, adresse);
+				statement.setString(2, email);
+				statement.setString(3, mode_livraison); 
+				LocalDate todayLocalDate = LocalDate.now(ZoneId.systemDefault());
+				java.sql.Date sqlDate = java.sql.Date.valueOf(todayLocalDate);
+				statement.setDate(4, sqlDate);
+				statement.setString(5, statut.toString());
+				statement.setBoolean(6, etat_paiement);
+				statement.setFloat(7, montant_total_cmd);
+			}
+			
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {
 				isAdded = true;
