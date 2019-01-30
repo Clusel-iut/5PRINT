@@ -2,6 +2,7 @@ package interfaces.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -15,6 +16,7 @@ import DTO.FichierPhoto;
 import DTO.Impression;
 import DTO.Photo;
 import DTO.TypeSupport;
+import DTO.StatutCommande;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -57,7 +59,74 @@ public class ChoisirCommandeController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+		refresh();
 	}
+	
+	public void refresh() {
+		LocalDataClient.refresh();
+		ArrayList<Commande> lesCmdEnCours = new ArrayList<Commande>();
+		
+		for(Commande cmd : LocalDataClient.client.getCommandes()) {
+			if(cmd.getStatut().equals(StatutCommande.En_cours)) {
+				lesCmdEnCours.add(cmd);
+			}
+		}
+	}
+	
+	@FXML
+	 void addCommande(MouseEvent event) {
+		 GestionDB.createCommande(0, LocalDataClient.client.getEmail(), null, StatutCommande.En_cours, false, 0);
+		 refresh();
+	 }
+	
+	@FXML
+	 void retour(MouseEvent event) {
+		  	int i = idImpression;
+		  	
+		 	FXMLLoader Loader = new FXMLLoader();
+		    Loader.setLocation(getClass().getResource("/interfaces/views/GestionImpression.fxml"));
+		    try {
+				Loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
+		    GestionImpressionController controller = Loader.getController();
+		    controller.setObjects(i);
+
+		    Parent home_page_parent = Loader.getRoot();
+		    Scene home_page_scene = new Scene(home_page_parent);
+		    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+			    .getWindow();
+		    app_stage.setScene(home_page_scene);
+		    app_stage.show();	
+	 }
+	
+	@FXML
+	 void valider(MouseEvent event) {
+		impression = GestionDB.getImpressionById(idImpression);
+		impression.setCommande(lesCommandesEnCours.getSelectionModel().getSelectedItem());
+		GestionDB.updateImpression(impression.getStock().getType_support(), impression);
+		  	int i = idImpression;
+		  	
+		 	FXMLLoader Loader = new FXMLLoader();
+		    Loader.setLocation(getClass().getResource("/interfaces/views/GestionImpression.fxml"));
+		    try {
+				Loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		    GestionImpressionController controller = Loader.getController();
+		    controller.setObjects(i);
+
+		    Parent home_page_parent = Loader.getRoot();
+		    Scene home_page_scene = new Scene(home_page_parent);
+		    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+			    .getWindow();
+		    app_stage.setScene(home_page_scene);
+		    app_stage.show();	
+	 }
 }
