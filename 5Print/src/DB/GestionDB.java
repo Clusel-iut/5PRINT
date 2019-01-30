@@ -800,9 +800,6 @@ public class GestionDB {
 			boolean est_partage) {
 		String sql = "INSERT INTO FICHIERPHOTO (CHEMIN, EMAIL, RESOLUTION, DATE_AJOUT, DATE_NO_PHOTO, INFO_PRISE_VUE, EST_PARTAGE) VALUES (?,?,?,?,?,?,?)";
 		boolean isAdded = false;
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		Date date_no_photo = new Date();
-		Date date_ajout = new Date();
 		PreparedStatement statement;
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
