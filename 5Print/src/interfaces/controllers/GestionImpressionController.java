@@ -7,13 +7,16 @@ import java.util.ResourceBundle;
 
 import DB.GestionDB;
 import DB.LocalDataClient;
+import DTO.Agenda;
 import DTO.Album;
 import DTO.Cadre;
+import DTO.Calendrier;
 import DTO.Client;
 import DTO.Commande;
 import DTO.FichierPhoto;
 import DTO.Impression;
 import DTO.Photo;
+import DTO.Tirage;
 import DTO.TypeSupport;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
@@ -25,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Spinner;
@@ -125,6 +129,8 @@ public class GestionImpressionController implements Initializable {
 	private TableColumn<Photo, Integer> yAgenda;
 	@FXML
 	private TableColumn<Photo, String> retoucheAgenda;
+	@FXML
+	private ComboBox<String> modeleAgenda;
 	//TIRAGE
 	@FXML
 	private TableColumn<Photo, String> pageTirage;
@@ -153,6 +159,8 @@ public class GestionImpressionController implements Initializable {
 	private TableColumn<Photo, Integer> yCalendrier;
 	@FXML
 	private TableColumn<Photo, String> retoucheCalendrier;
+	@FXML
+	private TextField modeleCalendrier;
 	
 	
 	private int idImpression;
@@ -193,8 +201,8 @@ public class GestionImpressionController implements Initializable {
 				pageCadre.setCellValueFactory(new PropertyValueFactory<Photo, String>("numero_page"));
 				
 				//PROBLEME DE CAST
-				//cheminCadre.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getChemin()));
-				//resolutionCadre.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getResolution()));
+				cheminCadre.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getChemin()));
+				resolutionCadre.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getResolution()));
 				
 				xCadre.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_X"));
 				yCadre.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_Y"));
@@ -207,6 +215,7 @@ public class GestionImpressionController implements Initializable {
 				cadreView.setItems(photoCadre);
 				
 				cadreView.getColumns().addAll(pageCadre, cheminCadre, resolutionCadre, xCadre, yCadre, retoucheCadre);	
+				break;
 				
 			case ALBUM : 
 				
@@ -217,8 +226,8 @@ public class GestionImpressionController implements Initializable {
 				pageAlbum.setCellValueFactory(new PropertyValueFactory<Photo, String>("numero_page"));
 				
 				//PROBLEME DE CAST
-				//cheminAlbum.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getChemin()));
-				//resolutionAlbum.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getResolution()));
+				cheminAlbum.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getChemin()));
+				resolutionAlbum.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getResolution()));
 				
 				xAlbum.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_X"));
 				yAlbum.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_Y"));
@@ -231,8 +240,80 @@ public class GestionImpressionController implements Initializable {
 				albumView.setItems(photoAlbum);
 				
 				albumView.getColumns().addAll(pageAlbum, cheminAlbum, resolutionAlbum, xAlbum, yAlbum, retoucheAlbum);
-		default:
-			break;
+				break;
+				
+			case AGENDA:
+				
+				agendaView.getColumns().clear();
+				
+				Agenda agenda = GestionDB.getImpressionById(idImpression);
+				
+				pageAgenda.setCellValueFactory(new PropertyValueFactory<Photo, String>("numero_page"));
+				
+				//PROBLEME DE CAST
+				cheminAgenda.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getChemin()));
+				resolutionAgenda.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getResolution()));
+				
+				xAgenda.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_X"));
+				yAgenda.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_Y"));
+				retoucheAgenda.setCellValueFactory(new PropertyValueFactory<Photo, String>("retouche"));
+				modeleAgenda.getItems().setAll(agenda.getModele());
+				
+				//IMPRESSION
+				ObservableList<Photo> photoAgenda = FXCollections.observableArrayList(agenda.getPhotos());
+				agendaView.setItems(photoAgenda);
+				
+				agendaView.getColumns().addAll(pageAgenda, cheminAgenda, resolutionAgenda, xAgenda, yAgenda, retoucheAgenda);
+				break;
+				
+			case TIRAGE: 
+				
+				tirageView.getColumns().clear();
+				
+				Tirage tirage = GestionDB.getImpressionById(idImpression);
+				
+				pageTirage.setCellValueFactory(new PropertyValueFactory<Photo, String>("numero_page"));
+				
+				//PROBLEME DE CAST
+				cheminTirage.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getChemin()));
+				resolutionTirage.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getResolution()));
+				
+				xTirage.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_X"));
+				yTirage.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_Y"));
+				retoucheTirage.setCellValueFactory(new PropertyValueFactory<Photo, String>("retouche"));
+				nbExTirage.setCellValueFactory(new PropertyValueFactory<Photo, String>("nb_exemplaire"));
+				
+				//IMPRESSION
+				ObservableList<Photo> photoTirage = FXCollections.observableArrayList(tirage.getPhotos());
+				tirageView.setItems(photoTirage);
+				
+				tirageView.getColumns().addAll(pageTirage, cheminTirage, resolutionTirage, xTirage, yTirage, retoucheTirage, nbExTirage);
+				break;
+				
+			case CALENDRIER :
+				
+				calendrierView.getColumns().clear();
+				
+				Calendrier calendrier = GestionDB.getImpressionById(idImpression);
+				
+				pageCalendrier.setCellValueFactory(new PropertyValueFactory<Photo, String>("numero_page"));
+				
+				//PROBLEME DE CAST
+				cheminCalendrier.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getChemin()));
+				resolutionCalendrier.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFichier().getResolution()));
+				
+				xCalendrier.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_X"));
+				yCalendrier.setCellValueFactory(new PropertyValueFactory<Photo, Integer>("position_Y"));
+				retoucheCalendrier.setCellValueFactory(new PropertyValueFactory<Photo, String>("retouche"));
+				modeleCalendrier.setText(calendrier.getModele());
+				
+				//IMPRESSION
+				ObservableList<Photo> photoCalendrier = FXCollections.observableArrayList(calendrier.getPhotos());
+				calendrierView.setItems(photoCalendrier);
+				
+				calendrierView.getColumns().addAll(pageCalendrier, cheminCalendrier, resolutionCalendrier, xCalendrier, yCalendrier, retoucheCalendrier);
+				break;
+	
 		}
 	}
 

@@ -54,11 +54,11 @@ public class ChoisirCommandeController implements Initializable {
 
 	public void setObjects(int idImpress) {
 		this.idImpression = idImpress;
+		refresh();
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		refresh();
 	}
 	
 	public void refresh() {
