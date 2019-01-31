@@ -120,6 +120,7 @@
                                              </columns>
                                           </TableView>
                                           <Button layoutX="236.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#visualiser" style="-fx-background-color: orange; -fx-text-fill: white;" text="Visualiser" />
+                                          <Button layoutX="14.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#payer" style="-fx-background-color: orange; -fx-text-fill: white;" text="Payer" />
                                        </children>
                                     </AnchorPane>
                                  </content>

@@ -12,6 +12,7 @@ import DTO.Client;
 import DTO.Commande;
 import DTO.FichierPhoto;
 import DTO.Impression;
+import DTO.StatutCommande;
 import DTO.Tirage;
 import DTO.TypeSupport;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -286,6 +287,23 @@ public class PageRecapController implements Initializable {
 			    .getWindow();
 		    app_stage.setScene(home_page_scene);
 		    app_stage.show();
+		 
+	 }
+	 
+	 @FXML
+	 void payer(MouseEvent event) {
+		 
+		 Commande commande = paniersView.getSelectionModel().getSelectedItem();
+		 commande.setStatut(StatutCommande.Payee);
+		 if (GestionDB.updateCommande(commande)) {
+			 LocalDataClient.refresh();
+			 ObservableList<Commande> listCommande = FXCollections.observableArrayList(LocalDataClient.client.getCommandes());
+			 paniersView.setItems(listCommande);
+			 this.popup("Paiement", "La commande a été payée", "Fermer");
+		 }
+		 else {
+			 this.popup("Paiement", "Paiement refusé", "Fermer");
+		 }
 		 
 	 }
 	 

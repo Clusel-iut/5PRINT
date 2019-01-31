@@ -50,7 +50,6 @@
       <ComboBox fx:id="lesTypesSupports" layoutX="367.0" layoutY="147.0" prefHeight="26.0" prefWidth="273.0" />
       <TextField fx:id="format" layoutX="367.0" layoutY="186.0" prefHeight="26.0" prefWidth="273.0" />
       <TextField fx:id="qualite" layoutX="367.0" layoutY="226.0" prefHeight="26.0" prefWidth="273.0" />
-      <Spinner />
       <Spinner fx:id="quantite" layoutX="367.0" layoutY="266.0" prefHeight="26.0" prefWidth="273.0" />
       <Spinner fx:id="prix" layoutX="367.0" layoutY="307.0" prefHeight="26.0" prefWidth="273.0" />
       <Button layoutX="344.0" layoutY="456.0" mnemonicParsing="false" onMouseClicked="#back" style="-fx-background-color: orange; -fx-text-fill: white;" text="Annuler">

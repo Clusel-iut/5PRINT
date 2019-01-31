@@ -30,6 +30,13 @@ import DTO.StatutCommande;
 import DTO.Stock;
 import DTO.Tirage;
 import DTO.TypeSupport;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class GestionDB {
 
@@ -1786,6 +1793,21 @@ public class GestionDB {
 			isDeleted = false;
 		}
 		return isDeleted;
+	}
+	
+	public void popupException(Exception ex, String title, String buttonText) {
+		Stage popupwindow=new Stage();	      
+		popupwindow.initModality(Modality.APPLICATION_MODAL);
+		popupwindow.setTitle(title);
+		Label texte = new Label(ex.getMessage());
+		Button button= new Button(buttonText);
+		button.setOnAction(e -> popupwindow.close());
+		VBox layout= new VBox(10);
+		layout.getChildren().addAll(texte, button);
+		layout.setAlignment(Pos.CENTER);
+		Scene scene= new Scene(layout, 300, 250);
+		popupwindow.setScene(scene);
+		popupwindow.showAndWait();
 	}
 
 }
