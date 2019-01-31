@@ -142,7 +142,7 @@ BEGIN
    FOR rec IN (SELECT CHEMIN,DATE_NO_PHOTO from FICHIERPHOTO)
 		LOOP
 			select (trunc(sysdate) - rec.DATE_NO_PHOTO) into date_deff from dual;
-			IF date_deff > 30 then 
+			IF date_deff > 10 then 
 				delete from FICHIERPHOTO where CHEMIN=rec.CHEMIN;
 			END IF;	
 		END LOOP;
