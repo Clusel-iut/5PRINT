@@ -628,7 +628,7 @@ public class GestionDB {
 	// CREATE
 	public static int createCommande(int adresse, String email, String mode_livraison,
 			StatutCommande statut, boolean etat_paiement, float montant_total_cmd) {
-		int id_impression = -1;
+		int id_commande = -1;
 		try {
 			String sql;
 			PreparedStatement statement;
@@ -668,16 +668,16 @@ public class GestionDB {
 			ResultSet resultImp = statementID.executeQuery();
 			
 			if (resultImp.next() && rowsInserted > 0) {
-				id_impression = resultImp.getInt("ID");
+				id_commande = resultImp.getInt("ID");
 			}
 			statementID.close();
 			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
-			id_impression = -1;
+			id_commande = -1;
 		}
 
-		return id_impression;
+		return id_commande;
 	}
 
 	// UPDATE
