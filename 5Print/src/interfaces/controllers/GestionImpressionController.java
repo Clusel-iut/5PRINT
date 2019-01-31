@@ -394,7 +394,7 @@ public class GestionImpressionController implements Initializable {
 	
 	@FXML
     void deleteCadre(MouseEvent event) { 
-		if(GestionDB.deletePhoto(cadreView.getSelectionModel().getSelectedItem().getId_photo())) {
+		if(GestionDB.deletePhoto(cadreView.getSelectionModel().getSelectedItem())) {
 			this.popup("Gerer photos", "Suppression de photo" , "Fermer");
 		}
 		else {
@@ -404,7 +404,7 @@ public class GestionImpressionController implements Initializable {
 	
 	@FXML
     void deleteAlbum(MouseEvent event) { 
-		if(GestionDB.deletePhoto(albumView.getSelectionModel().getSelectedItem().getId_photo())) {
+		if(GestionDB.deletePhoto(albumView.getSelectionModel().getSelectedItem())) {
 			this.popup("Gerer photos", "Suppression de photo" , "Fermer");
 		}
 		else {
@@ -414,7 +414,7 @@ public class GestionImpressionController implements Initializable {
 	
 	@FXML
     void deleteAgenda(MouseEvent event) { 
-		if(GestionDB.deletePhoto(agendaView.getSelectionModel().getSelectedItem().getId_photo())) {
+		if(GestionDB.deletePhoto(agendaView.getSelectionModel().getSelectedItem())) {
 			this.popup("Gerer photos", "Suppression de photo" , "Fermer");
 		}
 		else {
@@ -424,7 +424,7 @@ public class GestionImpressionController implements Initializable {
 	
 	@FXML
     void deleteTirage(MouseEvent event) { 
-		if(GestionDB.deletePhoto(tirageView.getSelectionModel().getSelectedItem().getId_photo())) {
+		if(GestionDB.deletePhoto(tirageView.getSelectionModel().getSelectedItem())) {
 			this.popup("Gerer photos", "Suppression de photo" , "Fermer");
 		}
 		else {
@@ -434,7 +434,7 @@ public class GestionImpressionController implements Initializable {
 	
 	@FXML
     void deleteCalendrier(MouseEvent event) { 
-		if(GestionDB.deletePhoto(calendrierView.getSelectionModel().getSelectedItem().getId_photo())) {
+		if(GestionDB.deletePhoto(calendrierView.getSelectionModel().getSelectedItem())) {
 			this.popup("Gerer photos", "Suppression de photo" , "Fermer");
 		}
 		else {
