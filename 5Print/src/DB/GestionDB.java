@@ -160,6 +160,7 @@ public class GestionDB {
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
@@ -229,6 +230,7 @@ public class GestionDB {
 				clients.add(new Client(result.getString("EMAIL"), result.getString("NOM"), result.getString("PRENOM"),
 						result.getString("MOT_DE_PASSE")));
 			}
+			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -249,7 +251,7 @@ public class GestionDB {
 				BonAchat bon_achat = getBonAchatById(result.getString("CODE_BON")); // result.getString("CODE_BON")
 				BonAchat bon_gen = getBonAchatById(result.getString("CODE_BON_GENERE")); // result.getString("CODE_BON_GENERE")
 				Adresse ad = getAdresseById(result.getInt("ID_ADRESSE"));
-				Client clt = getClientByEmail(result.getString("EMAIL"));
+				Client clt = getClientSansPhotosByEmail(result.getString("EMAIL"));
 				Date dtLivr = result.getDate("DATE_COMMANDE");
 
 				Commande c = new Commande(result.getInt("NUMERO"), bon_achat, bon_gen, ad, clt, imps,
@@ -295,8 +297,8 @@ public class GestionDB {
 					commandes.add(commande);
 				}
 			}
-			conn.commit();
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -321,6 +323,7 @@ public class GestionDB {
 					impressions.add(impression);
 				}
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -351,7 +354,9 @@ public class GestionDB {
 					fp.setClient(client);
 					photos.add(fp);
 				}
+				statement2.close();
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -448,6 +453,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isAdded = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isAdded = false;
@@ -482,6 +488,7 @@ public class GestionDB {
 			if (rowsInserted > 0) {
 				isUpdated = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isUpdated = false;
@@ -537,6 +544,7 @@ public class GestionDB {
 				isConnected = true;
 
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isConnected = false;
@@ -552,7 +560,7 @@ public class GestionDB {
 				statementU.setDate(1, new java.sql.Date(System.currentTimeMillis()));
 				statementU.setString(2, email);
 				statementU.executeUpdate();
-
+				statementU.close();
 				conn.commit();
 			} catch (SQLException e) {
 			}
@@ -581,9 +589,9 @@ public class GestionDB {
 			
 			while(rs.next()) {
 				  int output = rs.getInt(1);
-				  System.out.println("--------------------------------------------");
-				  System.out.println(output);
 			}
+			
+			stmt.close();
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
@@ -609,8 +617,8 @@ public class GestionDB {
 						result.getBoolean("ETAT_PAIEMENT"), result.getFloat("MONTANT_TOTAL_CMD"));
 
 			}
-			conn.commit();
 			statement.close();
+			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1144,17 +1152,6 @@ public class GestionDB {
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			
-			//update montant
-			PreparedStatement stmt = conn.prepareStatement("SELECT CALCUL_MONTANT_IMPRESSION(?) FROM DUAL");
-			stmt.setInt(1,id);       
-			ResultSet rs = stmt.executeQuery();
-			
-			while(rs.next()) {
-				  int output = rs.getInt(1);
-				  System.out.println("--------------------------------------------");
-				  System.out.println(output);
-			}
-			
 			// REQUETE TYPE POUR VERIFIER SI EXISTE
 			PreparedStatement statementType = conn.prepareStatement(sqlT);
 			statementType.setInt(1, id);
@@ -1167,11 +1164,23 @@ public class GestionDB {
 				statementImp.setInt(1, idT);
 				ResultSet resultImp = statementImp.executeQuery();
 				if (resultImp.next()) {
+					int numero = resultImp.getInt("NUMERO");
+					//update montant
+					if(numero == 0) {
+						PreparedStatement stmt = conn.prepareStatement("SELECT CALCUL_MONTANT_IMPRESSION(?) FROM DUAL");
+						stmt.setInt(1,id);       
+						ResultSet rs = stmt.executeQuery();
+						
+						while(rs.next()) {
+							  int output = rs.getInt(1);
+						}
+						stmt.close();
+					}
+					
 					int nb_impression = resultImp.getInt("NB_IMPRESSION");
 					int montant_total = resultImp.getInt("MONTANT_TOTAL");
 					boolean etat_impression = resultImp.getBoolean("ETAT_IMPRESSION");
 					Date date_impression = resultImp.getTimestamp("DATE_IMPRESSION");
-					int numero = resultImp.getInt("NUMERO");
 					String email = resultImp.getString("EMAIL");
 					Client client = new Client(email, null, null, null, null);
 					Commande commande = new Commande(numero);
@@ -1220,9 +1229,9 @@ public class GestionDB {
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				T impression = getImpressionById(result.getInt("ID_IMPRESSION"));
-				Client client = getSimpleClientByEmail(result.getString("EMAIL"));
+				//Client client = getSimpleClientByEmail(result.getString("EMAIL"));
 				if (impression != null) {
-					impression.setClient(client);
+					//impression.setClient(client);
 					impressions.add(impression);
 				}
 			}
@@ -1362,7 +1371,7 @@ public class GestionDB {
 		PreparedStatement statement = null;
 		PreparedStatement statementImp = null;
 		try {
-			if(impression.getCommande() == null) {
+			if(impression.getCommande() == null || impression.getCommande().getNumero() == 0) {
 				sqlImp = "UPDATE IMPRESSION SET TYPE_SUPPORT = ?, FORMAT = ?, QUALITE = ?, NUMERO = NULL, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? WHERE ID_IMPRESSION = ?";
 				conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 				statement = conn.prepareStatement(sqlImp);
