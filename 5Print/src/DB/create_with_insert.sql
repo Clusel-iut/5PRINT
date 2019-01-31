@@ -946,7 +946,7 @@ ALTER TRIGGER "OUZZINEO"."TR_SUPP_PHOTO" ENABLE;
 --  DDL for Trigger STOCK_TRIGGER
 --------------------------------------------------------
 
-  CREATE OR REPLACE TRIGGER "OUZZINEO"."STOCK_TRIGGER" 
+  create or replace TRIGGER stock_trigger
 AFTER UPDATE OR INSERT
 ON Commande
 FOR EACH ROW
@@ -973,7 +973,7 @@ DECLARE
     vdata C1%rowtype;
 
 BEGIN
-IF (:new.STATUT = 'Payee' and :old.STATUT = 'En_cours') OR (:new.STATUT = 'Pret_a_l_envoi' and :old.STATUT = 'Payee') then
+IF :new.STATUT = 'Payee' and :old.STATUT = 'En_cours' then
     OPEN C1;
 		LOOP
 			FETCH C1 INTO vdata;
@@ -1013,7 +1013,6 @@ IF (:new.STATUT = 'Payee' and :old.STATUT = 'En_cours') OR (:new.STATUT = 'Pret_
 
 		END LOOP;
 	CLOSE C1;
-IF :new.STATUT = 'Pret_a_l_envoi' and :old.STATUT = 'Payee' then
 	OPEN C1;
 		LOOP
 			FETCH C1 INTO vdata;
@@ -1033,10 +1032,9 @@ IF :new.STATUT = 'Pret_a_l_envoi' and :old.STATUT = 'Payee' then
 				imp := vdata.QUANTITE - var;
 				dbms_output.put_line(var || ' supp: ' || vdata.TYPE_SUPPORT || ' qualite: ' || vdata.QUALITE|| ' F: ' || vdata.FORMAT || '  imp :'||imp );
 			    UPDATE STOCK set QUANTITE = imp where TYPE_SUPPORT = v_type_support and  QUALITE = v_qualite and FORMAT = v_format;
-
+            
 		END LOOP;
 	CLOSE C1;
-END IF;
 
 	IF :new.CODE_BON <> '' then
           select count(*) into usedpromo from BON_ACHAT B where B.CODE_BON = :new.CODE_BON AND B.NUMERO <> :new.NUMERO;
@@ -1044,17 +1042,15 @@ END IF;
              raise_application_error(-20001, 'Bon d achat deja utilise');
           END IF;
 	END IF;
-
-    IF :new.STATUT = 'Pret_a_l_envoi' and :old.STATUT = 'Payee' then
-		IF :new.MONTANT_TOTAL_CMD > 100 then
+	
+	IF :new.MONTANT_TOTAL_CMD > 100 then
 			select count(*) into nbr from BON_ACHAT where NUMERO = :NEW.NUMERO;
 			IF nbr = 0 then
 				ajoutpromo(:new.EMAIl, 0.05 , :new.NUMERO);
 			END IF;
-		END IF;
-		IF :new.CODE_BON <> '' then
-          DELETE FROM BON_ACHAT BA where BA.CODE_BON = :new.CODE_BON;
-		END IF;
+	END IF;
+	IF :new.CODE_BON <> '' then
+         DELETE FROM BON_ACHAT BA where BA.CODE_BON = :new.CODE_BON;
 	END IF;
 END IF;
 END ;
