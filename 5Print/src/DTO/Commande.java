@@ -53,6 +53,11 @@ public class Commande{
 		this.montant_total_cmd = montant_total_cmd;
 	}
 	
+	public Commande(int numero) {
+		super();
+		this.numero = numero;
+	}
+	
 	public int getNumero() {
 		return numero;
 	}
