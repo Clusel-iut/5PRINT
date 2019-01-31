@@ -1329,23 +1329,38 @@ public class GestionDB {
 
 	// UPDATE
 	public static <T extends Impression> boolean updateImpression(TypeSupport type, T impression) {
-		String sqlImp = "UPDATE IMPRESSION SET TYPE_SUPPORT = ?, FORMAT = ?, QUALITE = ?, NUMERO = ?, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? WHERE ID_IMPRESSION = ?";
+		String sqlImp;
 		String sqlImpExt = "";
 		boolean isUpdated = false;
 
 		PreparedStatement statement = null;
 		PreparedStatement statementImp = null;
 		try {
-			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			statement = conn.prepareStatement(sqlImp);
-			statement.setString(1, impression.getStock().getType_support().toString().toLowerCase());
-			statement.setString(2, impression.getStock().getFormat());
-			statement.setString(3, impression.getStock().getQualite());
-			statement.setInt(4, impression.getCommande().getNumero());
-			statement.setFloat(5, impression.getMontant_total());
-			statement.setBoolean(6, impression.getEtat_impression());
-			statement.setInt(7, impression.getNb_impression());
-			statement.setInt(8, impression.getId_impression());
+			if(impression.getCommande() == null) {
+				sqlImp = "UPDATE IMPRESSION SET TYPE_SUPPORT = ?, FORMAT = ?, QUALITE = ?, NUMERO = NULL, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? WHERE ID_IMPRESSION = ?";
+				conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				statement = conn.prepareStatement(sqlImp);
+				statement.setString(1, impression.getStock().getType_support().toString().toLowerCase());
+				statement.setString(2, impression.getStock().getFormat());
+				statement.setString(3, impression.getStock().getQualite());
+				statement.setFloat(4, impression.getMontant_total());
+				statement.setBoolean(5, impression.getEtat_impression());
+				statement.setInt(6, impression.getNb_impression());
+				statement.setInt(7, impression.getId_impression());
+			}else {
+				sqlImp = "UPDATE IMPRESSION SET TYPE_SUPPORT = ?, FORMAT = ?, QUALITE = ?, NUMERO = ?, MONTANT_TOTAL = ?, ETAT_IMPRESSION = ?, NB_IMPRESSION = ? WHERE ID_IMPRESSION = ?";
+				conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				statement = conn.prepareStatement(sqlImp);
+				statement.setString(1, impression.getStock().getType_support().toString().toLowerCase());
+				statement.setString(2, impression.getStock().getFormat());
+				statement.setString(3, impression.getStock().getQualite());
+				statement.setInt(4, impression.getCommande().getNumero());
+				statement.setFloat(5, impression.getMontant_total());
+				statement.setBoolean(6, impression.getEtat_impression());
+				statement.setInt(7, impression.getNb_impression());
+				statement.setInt(8, impression.getId_impression());
+			}
+			
 
 			int rowsInsertedImpEx = 0;
 			int rowsInsertedImp = -1;
