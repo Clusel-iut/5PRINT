@@ -253,7 +253,7 @@
          </font>
       </Label>
       <Button id="commander" layoutX="773.0" layoutY="530.0" mnemonicParsing="false" onMouseClicked="#commander" style="-fx-background-color: orange; -fx-text-fill: white;" text="Commander" />
-      <Button id="sauvegarder" layoutX="884.0" layoutY="530.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Sauvegarder" />
+      <Button id="sauvegarder" layoutX="884.0" layoutY="530.0" mnemonicParsing="false" onMouseClicked="#save" style="-fx-background-color: orange; -fx-text-fill: white;" text="Sauvegarder" />
       <Label fx:id="qualite" layoutX="668.0" layoutY="184.0" text="\@qualite">
          <font>
             <Font name="System Bold" size="18.0" />
