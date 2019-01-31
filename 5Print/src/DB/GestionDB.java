@@ -485,19 +485,29 @@ public class GestionDB {
 	}
 
 	// DELETE
-	public static boolean deleteClientByEmail(String email) {
-		String sql = "DELETE FROM CLIENT WHERE EMAIL = ?";
+	public static boolean deleteClient(Client client) {
+		String sql = "DELETE CLIENT WHERE EMAIL = ?";
 		boolean isDeleted = false;
 
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			for(Commande c : client.getCommandes()) {
+				deleteCommande(c);
+			}
+			for(FichierPhoto fp : client.getPhotos()) {
+				deleteFichierPhoto(fp.getChemin());
+			}
+			for(Adresse ad : client.getAdresse()) {
+				deleteAdresseById(ad.getId_adresse());
+			}
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setString(1, email);
+			statement.setString(1, client.getEmail());
 
 			int rowsDeleted = statement.executeUpdate();
 			if (rowsDeleted > 0) {
 				isDeleted = true;
 			}
+			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
 			isDeleted = false;
@@ -653,14 +663,14 @@ public class GestionDB {
 			
 			int rowsInserted = statement.executeUpdate();
 	
-			PreparedStatement statementID = conn.prepareStatement("SELECT MAX(ID_IMPRESSION) AS ID FROM COMMANDE WHERE EMAIL = ?");
+			PreparedStatement statementID = conn.prepareStatement("SELECT MAX(NUMERO) AS ID FROM COMMANDE WHERE EMAIL = ?");
 			statementID.setString(1, email);
 			ResultSet resultImp = statementID.executeQuery();
 			
 			if (resultImp.next() && rowsInserted > 0) {
-				id_impression = resultImp.getInt("ID_IMPRESSION");
+				id_impression = resultImp.getInt("ID");
 			}
-				
+			statementID.close();
 			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
@@ -701,14 +711,17 @@ public class GestionDB {
 	}
 
 	// DELETE
-	public static boolean deleteCommande(int numero) {
+	public static boolean deleteCommande(Commande c) {
 		String sql = "DELETE FROM COMMANDE WHERE NUMERO = ?";
 		boolean isDeleted = false;
 
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			for(Impression imp : c.getImpressions()) {
+				deleteImpression(imp);
+			}
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setInt(1, numero);
+			statement.setInt(1, c.getNumero());
 
 			int rowsDeleted = statement.executeUpdate();
 			if (rowsDeleted > 0) {
@@ -1052,31 +1065,19 @@ public class GestionDB {
 	}
 
 	// DELETE
-	public static boolean deletePhoto(int id_photo) {
+	public static boolean deletePhoto(Photo p) {
 		String sql = "DELETE PHOTO WHERE ID_PHOTO = ?";
-		String sqlChemin = "SELECT CHEMIN FROM PHOTO WHERE ID_PHOTO = ?";
 		boolean isDeleted = false;
-		String chemin;
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			/*PreparedStatement statementChemin = conn.prepareStatement(sqlChemin);
-			statementChemin.setInt(1, id_photo);
-			ResultSet resultChemin = statementChemin.executeQuery();
-			chemin = resultChemin.getString("CHEMIN");*/
 
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setInt(1, id_photo);
+			statement.setInt(1, p.getId_photo());
 
 			int rowsDeleted = statement.executeUpdate();
 			if (rowsDeleted > 0) {
 				isDeleted = true;
-			}/*
-			if (getPhotosByFichierId(null, chemin).size() == 0) {
-				String sqlUpdate = "UPDATE FICHIERPHOTO SET DATE_NO_PHOTO = "
-						+ new java.sql.Date(System.currentTimeMillis()) + "WHERE CHEMIN = " + chemin;
-				PreparedStatement statementUpdate = conn.prepareStatement(sqlUpdate);
-				statementUpdate.executeUpdate(sqlUpdate);
-			}*/
+			}
 			statement.close();
 			conn.commit();
 		} catch (SQLException e) {
@@ -1415,20 +1416,23 @@ public class GestionDB {
 	}
 	
 	// DELETE
-	public static boolean deleteImpression(int id, String type) {
+	public static boolean deleteImpression(Impression impression) {
 		String sqlImp = "DELETE IMPRESSION WHERE ID_IMPRESSION = ?";
 		String sqlImpExt = "DELETE ? WHERE ID_IMPRESSION = ?";
 		boolean isDeleted = false;
 
 		try {
+			for(Photo p : impression.getPhotos()) {
+				deletePhoto(p);
+			}
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			PreparedStatement statementImp = conn.prepareStatement(sqlImp);
 			PreparedStatement statementImpExt = conn.prepareStatement(sqlImpExt);
 
-			statementImp.setString(1, type);
-			statementImp.setInt(2, id);
+			statementImp.setString(1, impression.getClass().getSimpleName().toUpperCase());
+			statementImp.setInt(2, impression.getId_impression());
 
-			statementImpExt.setInt(1, id);
+			statementImpExt.setInt(1, impression.getId_impression());
 
 			int rowsDeletedImp = statementImp.executeUpdate();
 			int rowsDeletedImpExt = statementImpExt.executeUpdate();
