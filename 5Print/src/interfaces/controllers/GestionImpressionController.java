@@ -459,165 +459,95 @@ public class GestionImpressionController implements Initializable {
 		}	
 	}
 	
-	
-	// TODO PROBLEME DE MISE A JOUR
-	@FXML
-    void save(MouseEvent event) { 
-		System.out.print(this.impression.getStock().getType_support());
-		
+	public boolean saveImp() {
+		boolean ok = false;
+
 		switch(this.impression.getStock().getType_support()) {
-		
 			case CADRE :
-				System.out.print("CADREEEEEEEEEEEEE");
 				Cadre cadre = GestionDB.getImpressionById(idImpression);
 				cadre.setModele(modeleCadre.getText());
 				cadre.setModele(miseEnPageCadre.getText());
 				cadre.setNb_impression(nbImpression.getValue());
-				
-				    if (GestionDB.updateImpression(TypeSupport.CADRE, cadre)) {
-				    	this.popup("Sauvegarde", "Mise à jour réussie !" , "Fermer");
-						Parent home_page_parent;
-						try {
-							home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
-							Scene home_page_scene = new Scene(home_page_parent);
-							Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
-								.getWindow();
-							app_stage.setScene(home_page_scene);
-							app_stage.show();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}	
-				    }
-				    else {
-				    	this.popup("Sauvegarde", "Mise à jour échouée !" , "Fermer");
-				    }
-				    break;
+				ok = GestionDB.updateImpression(TypeSupport.CADRE, cadre);
+				break;
 			case ALBUM:
-				System.out.print("ALBUUUUUUUUUUM");
 				Album album = GestionDB.getImpressionById(idImpression);
 				album.setTitre(titreAlbum.getText());
 				album.setMise_en_page(miseEnPageAlbum.getText());
 				album.setNb_impression(nbImpression.getValue());
-				
-				    if (GestionDB.updateImpression(TypeSupport.ALBUM, album)) {
-				    	this.popup("Sauvegarde", "Mise à jour réussie !" , "Fermer");
-						Parent home_page_parent;
-						try {
-							home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
-							Scene home_page_scene = new Scene(home_page_parent);
-							Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
-								.getWindow();
-							app_stage.setScene(home_page_scene);
-							app_stage.show();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}	
-				    }
-				    else {
-				    	this.popup("Sauvegarde", "Mise à jour échouée !" , "Fermer");
-				    }
+				ok = GestionDB.updateImpression(TypeSupport.ALBUM, album);
 				break;
 			case AGENDA:
-				System.out.print("AGGEEEEEEEENDDAAAA");
 				Agenda agenda = GestionDB.getImpressionById(idImpression);
 				agenda.setModele(modeleAgenda.getValue());
 				agenda.setNb_impression(nbImpression.getValue());
-				
-				    if (GestionDB.updateImpression(TypeSupport.AGENDA, agenda)) {
-				    	this.popup("Sauvegarde", "Mise à jour réussie !" , "Fermer");
-						Parent home_page_parent;
-						try {
-							home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
-							Scene home_page_scene = new Scene(home_page_parent);
-							Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
-								.getWindow();
-							app_stage.setScene(home_page_scene);
-							app_stage.show();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}	
-				    }
-				    else {
-				    	this.popup("Sauvegarde", "Mise à jour échouée !" , "Fermer");
-				    }
+				ok = GestionDB.updateImpression(TypeSupport.AGENDA, agenda);
 				break;
 			case TIRAGE:
-				System.out.print("TIRAAAAAAAAAAAGE");
 				Tirage tirage = GestionDB.getImpressionById(idImpression);
 				tirage.setNb_impression(nbImpression.getValue());
-				
-				    if (GestionDB.updateImpression(TypeSupport.TIRAGE, tirage)) {
-				    	this.popup("Sauvegarde", "Mise à jour réussie !" , "Fermer");
-						Parent home_page_parent;
-						try {
-							home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
-							Scene home_page_scene = new Scene(home_page_parent);
-							Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
-								.getWindow();
-							app_stage.setScene(home_page_scene);
-							app_stage.show();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}	
-				    }
-				    else {
-				    	this.popup("Sauvegarde", "Mise à jour échouée !" , "Fermer");
-				    }
+				ok = GestionDB.updateImpression(TypeSupport.TIRAGE, tirage);
 				break;
 			case CALENDRIER:
-				System.out.print("CALENNNNNNDRIER");
 				Calendrier calendrier = GestionDB.getImpressionById(idImpression);
 				calendrier.setModele(modeleCalendrier.getText());
 				calendrier.setNb_impression(nbImpression.getValue());
-				
-				    if (GestionDB.updateImpression(TypeSupport.CALENDRIER, calendrier)) {
-				    	this.popup("Sauvegarde", "Mise à jour réussie !" , "Fermer");
-						Parent home_page_parent;
-						try {
-							home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
-							Scene home_page_scene = new Scene(home_page_parent);
-							Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
-								.getWindow();
-							app_stage.setScene(home_page_scene);
-							app_stage.show();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}	
-				    }
-				    else {
-				    	this.popup("Sauvegarde", "Mise à jour échouée !" , "Fermer");
-				    }
+				ok = GestionDB.updateImpression(TypeSupport.CALENDRIER, calendrier);
 				break;
 		}
+		
+		return ok;
+	}
+
+	@FXML
+    void save(MouseEvent event) { 
+		if (this.saveImp()) {
+	    	this.popup("Sauvegarde", "Mise à jour réussie !" , "Fermer");
+			Parent home_page_parent;
+			try {
+				home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageRecap.fxml")).load();
+				Scene home_page_scene = new Scene(home_page_parent);
+				Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+					.getWindow();
+				app_stage.setScene(home_page_scene);
+				app_stage.show();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+	    }
+	    else {
+	    	this.popup("Sauvegarde", "Mise à jour échouée !" , "Fermer");
+	    }
 	}
 	
 	@FXML
-    void commander(MouseEvent event) { 
-	  	int i = idImpression;
-	  	
-	 	FXMLLoader Loader = new FXMLLoader();
-	    Loader.setLocation(getClass().getResource("/interfaces/views/ChoisirCommande.fxml"));
-	    try {
-			Loader.load();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	    ChoisirCommandeController controller = Loader.getController();
-	    controller.setObjects(i);
-
-	    Parent home_page_parent = Loader.getRoot();
-	    Scene home_page_scene = new Scene(home_page_parent);
-	    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
-		    .getWindow();
-	    app_stage.setScene(home_page_scene);
-	    app_stage.show();	
+    void commander(MouseEvent event) {
+		
+		if(this.saveImp()) {
+			this.popup("Sauvegarde", "Mise à jour réussie !" , "Fermer");
+		  	int i = idImpression;
+		 	FXMLLoader Loader = new FXMLLoader();
+		    Loader.setLocation(getClass().getResource("/interfaces/views/ChoisirCommande.fxml"));
+		    try {
+				Loader.load();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+		    ChoisirCommandeController controller = Loader.getController();
+		    controller.setObjects(i);
+	
+		    Parent home_page_parent = Loader.getRoot();
+		    Scene home_page_scene = new Scene(home_page_parent);
+		    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+			    .getWindow();
+		    app_stage.setScene(home_page_scene);
+		    app_stage.show();
+		} else {
+	    	this.popup("Sauvegarde", "Mise à jour échouée !" , "Fermer");
+	    }
 	}
 	
 	 void popup(String title, String label, String buttonText) {
