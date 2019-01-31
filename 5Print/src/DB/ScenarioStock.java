@@ -54,7 +54,7 @@ public class ScenarioStock implements Runnable {
 			System.out.println("Commande créée nom=" + this.email);
 
 			imp.setCommande(cmd);
-			GestionDB.updateImpression(TypeSupport.TIRAGE, imp);
+			GestionDB.updateImpression(ts, imp);
 			System.out.println("Update impression nom=" + this.email);
 
 			ArrayList<Impression> limp = new ArrayList<Impression>();
