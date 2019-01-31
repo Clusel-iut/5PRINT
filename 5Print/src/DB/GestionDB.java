@@ -1724,7 +1724,7 @@ public class GestionDB {
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
-			statement.setString(1, type.name());
+			statement.setString(1, type.toString().toLowerCase());
 			statement.setString(2, qualite);
 			statement.setString(3, format);
 			statement.setInt(4, quantite);
@@ -1745,7 +1745,7 @@ public class GestionDB {
 
 	// UPDATE
 	public static boolean updateStock(Stock stock) {
-		String sql = "UPDATE STOCK SET QUANTITE = ?, PRIX = ? WHERE TYPE_SUPPORT = ?, QUALITE = ?, FORMAT = ?";
+		String sql = "UPDATE STOCK SET QUANTITE = ?, PRIX = ? WHERE TYPE_SUPPORT = ? AND QUALITE = ? AND FORMAT = ?";
 		boolean isUpdated = false;
 
 		PreparedStatement statement;
@@ -1754,7 +1754,7 @@ public class GestionDB {
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, stock.getQuantite());
 			statement.setInt(2, stock.getPrix());
-			statement.setString(3, stock.getType_support().name());
+			statement.setString(3, stock.getType_support().toString().toLowerCase());
 			statement.setString(4, stock.getQualite());
 			statement.setString(5, stock.getFormat());
 
@@ -1779,7 +1779,7 @@ public class GestionDB {
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setString(1, type.name());
+			statement.setString(1, type.toString().toLowerCase());
 			statement.setString(2, qualite);
 			statement.setString(3, format);
 

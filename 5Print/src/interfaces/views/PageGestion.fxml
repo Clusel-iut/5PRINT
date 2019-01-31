@@ -94,7 +94,8 @@
                                  </columns>
                               </TableView>
                               <Button layoutX="897.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#deleteStock" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
-                              <Button layoutX="830.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#addStock" style="-fx-background-color: orange; -fx-text-fill: white;" text="Ajouter" />
+                              <Button layoutX="759.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#addStock" style="-fx-background-color: orange; -fx-text-fill: white;" text="Ajouter" />
+                              <Button layoutX="825.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#modifierStock" style="-fx-background-color: orange; -fx-text-fill: white;" text="Modifier" />
                            </children></AnchorPane>
                   </content>
                 </Tab>

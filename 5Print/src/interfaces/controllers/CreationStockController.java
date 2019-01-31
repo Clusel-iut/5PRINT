@@ -5,7 +5,17 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import DB.GestionDB;
+import DTO.Agenda;
+import DTO.Album;
+import DTO.Cadre;
+import DTO.Calendrier;
+import DTO.Photo;
+import DTO.Stock;
+import DTO.Tirage;
 import DTO.TypeSupport;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -37,12 +48,33 @@ public class CreationStockController implements Initializable{
 	@FXML
 	private Spinner<Integer> prix;
 	
+	boolean isUpdate = false;
+	Stock stock = null;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		isUpdate = false;
 		quantite.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 50));
 		prix.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 50));
 		lesTypesSupports.getItems().setAll(TypeSupport.values());
+	}
+	
+	public void setObjects(Stock stock) {
+		isUpdate = true;
+		this.stock = stock;
+		quantite.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 50));
+		prix.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 50));
+		
+		quantite.getValueFactory().setValue(stock.getQuantite());
+		prix.getValueFactory().setValue(stock.getPrix());
+		
+		lesTypesSupports.setValue(stock.getType_support());;
+		format.setText(stock.getFormat());
+		qualite.setText(stock.getQualite());
+		
+		lesTypesSupports.setDisable(true);
+		format.setDisable(true);
+		qualite.setDisable(true);
 	}
 	
 	@FXML
@@ -62,23 +94,46 @@ public class CreationStockController implements Initializable{
 	
 	@FXML
 	 void save(MouseEvent event) {
-		if(GestionDB.createStock(lesTypesSupports.getSelectionModel().getSelectedItem(), qualite.getText(), format.getText(), quantite.getValue(), prix.getValue())) {
-			this.popup("Ajout de stock", "Le stock a été ajouté !", "Fermer");
-			Parent home_page_parent;
-			try {
-				home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageGestion.fxml")).load();
-				Scene home_page_scene = new Scene(home_page_parent);
-				Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
-					.getWindow();
-				app_stage.setScene(home_page_scene);
-				app_stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
+		if(isUpdate == false) {
+			if(GestionDB.createStock(lesTypesSupports.getSelectionModel().getSelectedItem(), qualite.getText(), format.getText(), quantite.getValue(), prix.getValue())) {
+				this.popup("Ajout de stock", "Le stock a été ajouté !", "Fermer");
+				Parent home_page_parent;
+				try {
+					home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageGestion.fxml")).load();
+					Scene home_page_scene = new Scene(home_page_parent);
+					Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+						.getWindow();
+					app_stage.setScene(home_page_scene);
+					app_stage.show();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			else {
+				this.popup("Ajout de stock", "Le stock n'a pas pu être ajouté !", "Fermer");
+			}
+		} else {
+			stock.setQuantite(quantite.getValue());
+			stock.setPrix(prix.getValue());
+			if(GestionDB.updateStock(stock)) {
+				this.popup("Modification de stock", "Le stock a été mis à jour !", "Fermer");
+				Parent home_page_parent;
+				try {
+					home_page_parent = new FXMLLoader(getClass().getResource("/interfaces/views/PageGestion.fxml")).load();
+					Scene home_page_scene = new Scene(home_page_parent);
+					Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+						.getWindow();
+					app_stage.setScene(home_page_scene);
+					app_stage.show();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			else {
+				this.popup("Modification de stock", "Le stock n'a pas pu être mis à jour !", "Fermer");
 			}
 		}
-		else {
-			this.popup("Ajout de stock", "Le stock n'a pas pu être ajouté !", "Fermer");
-		}
+		
 	}
 	
 	void popup(String title, String label, String buttonText) {

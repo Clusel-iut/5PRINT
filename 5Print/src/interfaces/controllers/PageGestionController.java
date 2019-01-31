@@ -153,14 +153,10 @@ public class PageGestionController implements Initializable {
 		System.out.println("Chargement des stocks ....");
 		tableStocks.getColumns().clear();
 		
-		quantiteStock.setEditable(true);
-		tableStocks.getSelectionModel().setCellSelectionEnabled(true);
-		
 		typeSupportStock.setCellValueFactory(new PropertyValueFactory<Stock, String>("type_support"));
 		qualiteStock.setCellValueFactory(new PropertyValueFactory<Stock, String>("qualite"));
 		formatStock.setCellValueFactory(new PropertyValueFactory<Stock, String>("format"));
 		quantiteStock.setCellValueFactory(new PropertyValueFactory<Stock, Integer>("quantite"));
-		//quantiteStock.setCellFactory(TextFieldTableCell.<Integer>forTableColumn());
 		prixStock.setCellValueFactory(new PropertyValueFactory<Stock, Integer>("prix"));
 		
 		ObservableList<Stock> listStocks = FXCollections.observableArrayList(GestionDB.getAllStock());
@@ -168,11 +164,6 @@ public class PageGestionController implements Initializable {
 		tableStocks.setItems(listStocks);
 		tableStocks.getColumns().addAll(typeSupportStock, qualiteStock, formatStock, quantiteStock, prixStock);
 		
-		quantiteStock.setOnEditCommit(event -> {
-		    Stock stock = event.getRowValue();
-		    stock.setQuantite(event.getNewValue());
-		    GestionDB.updateStock(stock);
-		});
 		//FichierPhoto
 		System.out.println("Chargement des fichiers photo ....");
 		tableFichiersPhotos.getColumns().clear();
@@ -339,6 +330,31 @@ public class PageGestionController implements Initializable {
 		else {
 			this.popup("Mise à jour de commande", "Mise à jour echouée !", "Fermer");
 		}
+	}
+	
+	@FXML
+	void modifierStock(MouseEvent event) {
+		
+		Stock stock  = tableStocks.getSelectionModel().getSelectedItem();
+		
+		FXMLLoader Loader = new FXMLLoader();
+	    Loader.setLocation(getClass().getResource("/interfaces/views/CreationStock.fxml"));
+	    try {
+			Loader.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	    CreationStockController controller = Loader.getController();
+	    controller.setObjects(stock);
+
+	    Parent home_page_parent = Loader.getRoot();
+	    Scene home_page_scene = new Scene(home_page_parent);
+	    Stage app_stage = (Stage) ((Node) event.getSource()).getScene()
+		    .getWindow();
+	    app_stage.setScene(home_page_scene);
+	    app_stage.show();	
 	}
 	
 	void popup(String title, String label, String buttonText) {
