@@ -1,7 +1,8 @@
-package DB;
+package Scenario;
 
 import java.util.ArrayList;
 
+import DB.GestionDB;
 import DTO.Adresse;
 import DTO.Client;
 import DTO.Commande;

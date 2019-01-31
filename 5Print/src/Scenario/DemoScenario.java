@@ -1,5 +1,6 @@
-package DB;
+package Scenario;
 
+import DB.GestionDB;
 import DTO.Adresse;
 import DTO.Stock;
 import DTO.TypeSupport;
