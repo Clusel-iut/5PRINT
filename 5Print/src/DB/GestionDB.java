@@ -1799,7 +1799,7 @@ public class GestionDB {
 		Stage popupwindow=new Stage();	      
 		popupwindow.initModality(Modality.APPLICATION_MODAL);
 		popupwindow.setTitle("Trigger exception");
-		Label texte = new Label(ex.getMessage());
+		Label texte = new Label(ex.getMessage().split("\n", 2)[0]);
 		Button button= new Button("Ok");
 		button.setOnAction(e -> popupwindow.close());
 		VBox layout= new VBox(10);
