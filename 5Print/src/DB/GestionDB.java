@@ -48,7 +48,7 @@ public class GestionDB {
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 			conn = DriverManager.getConnection(CONN_URL, user, passwd);
 			conn.setAutoCommit(false);
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 	}
@@ -58,7 +58,7 @@ public class GestionDB {
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 			conn = DriverManager.getConnection(CONN_URL, "ouzzineo", "Oussama123");
 			conn.setAutoCommit(false);
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -86,7 +86,7 @@ public class GestionDB {
 				statement.close();
 			}
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return adr;
@@ -115,7 +115,7 @@ public class GestionDB {
 				isAdded = true;
 			}
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isAdded = false;
 		}
 
@@ -145,7 +145,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isUpdated = false;
 		}
 
@@ -169,7 +169,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -199,7 +199,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return cli;
@@ -221,7 +221,7 @@ public class GestionDB {
 				statement.close();
 				conn.commit();
 			}
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return cli;
@@ -238,7 +238,7 @@ public class GestionDB {
 						result.getString("MOT_DE_PASSE")));
 			}
 			statement.close();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -277,7 +277,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -306,7 +306,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -332,7 +332,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -365,7 +365,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -388,7 +388,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return cli;
@@ -411,7 +411,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -435,7 +435,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -462,7 +462,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isAdded = false;
 		}
 
@@ -497,7 +497,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isUpdated = false;
 		}
 
@@ -529,7 +529,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -553,7 +553,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isConnected = false;
 
 		}
@@ -569,7 +569,7 @@ public class GestionDB {
 				statementU.executeUpdate();
 				statementU.close();
 				conn.commit();
-			} catch (SQLException e) {
+			} catch (SQLException e) { popupException(e);
 			}
 		}
 
@@ -626,7 +626,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return cmd;
@@ -650,7 +650,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -706,7 +706,7 @@ public class GestionDB {
 			statementID.close();
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			id_commande = -1;
 		}
 
@@ -736,7 +736,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isUpdated = false;
 		}
 
@@ -762,7 +762,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -791,7 +791,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return fiPhoto;
@@ -814,7 +814,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -838,7 +838,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -862,7 +862,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 
@@ -883,7 +883,7 @@ public class GestionDB {
 				clients.add(getClientByEmail(result.getString("EMAIL")));
 			}
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return clients;
@@ -911,7 +911,7 @@ public class GestionDB {
 				isAdded = true;
 			}
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isAdded = false;
 		}
 
@@ -938,7 +938,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isUpdated = false;
 		}
 
@@ -961,7 +961,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -995,7 +995,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return photo;
@@ -1027,7 +1027,7 @@ public class GestionDB {
 
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return impression;
@@ -1063,7 +1063,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isAdded = false;
 		}
 
@@ -1090,7 +1090,7 @@ public class GestionDB {
 				isUpdated = true;
 			}
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isUpdated = false;
 		}
 
@@ -1113,7 +1113,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -1138,7 +1138,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return list_point_relais;
@@ -1222,7 +1222,7 @@ public class GestionDB {
 				statementImp.close();
 				conn.commit();
 			}
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return t;
@@ -1243,7 +1243,7 @@ public class GestionDB {
 				}
 			}
 			statement.close();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return impressions;
@@ -1266,7 +1266,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return photos;
@@ -1362,7 +1362,7 @@ public class GestionDB {
 			if (rowsInsertedTirage > 0) {
 				isAdded = id_impression;
 			}
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isAdded = -1;
 		}
 
@@ -1462,7 +1462,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isUpdated = false;
 		}
 
@@ -1486,7 +1486,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isUpdated = false;
 		}
 
@@ -1520,7 +1520,7 @@ public class GestionDB {
 			statementImp.close();
 			statementImpExt.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -1557,7 +1557,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return bon_achat;
@@ -1577,7 +1577,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return lesBonsAchats;
@@ -1605,7 +1605,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isAdded = false;
 		}
 
@@ -1633,7 +1633,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isUpdated = false;
 		}
 
@@ -1656,7 +1656,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isDeleted = false;
 		}
 		return isDeleted;
@@ -1684,7 +1684,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return stocks;
@@ -1709,7 +1709,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			e.printStackTrace();
 		}
 		return stock;
@@ -1736,7 +1736,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isAdded = false;
 		}
 
@@ -1764,7 +1764,7 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isUpdated = false;
 		}
 
@@ -1789,23 +1789,23 @@ public class GestionDB {
 			}
 			statement.close();
 			conn.commit();
-		} catch (SQLException e) {
+		} catch (SQLException e) { popupException(e);
 			isDeleted = false;
 		}
 		return isDeleted;
 	}
 	
-	public void popupException(Exception ex, String title, String buttonText) {
+	public static void popupException(Exception ex) {
 		Stage popupwindow=new Stage();	      
 		popupwindow.initModality(Modality.APPLICATION_MODAL);
-		popupwindow.setTitle(title);
+		popupwindow.setTitle("Trigger exception");
 		Label texte = new Label(ex.getMessage());
-		Button button= new Button(buttonText);
+		Button button= new Button("Ok");
 		button.setOnAction(e -> popupwindow.close());
 		VBox layout= new VBox(10);
 		layout.getChildren().addAll(texte, button);
 		layout.setAlignment(Pos.CENTER);
-		Scene scene= new Scene(layout, 300, 250);
+		Scene scene= new Scene(layout, 600, 250);
 		popupwindow.setScene(scene);
 		popupwindow.showAndWait();
 	}
