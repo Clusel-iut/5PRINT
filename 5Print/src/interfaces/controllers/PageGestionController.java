@@ -122,6 +122,7 @@ public class PageGestionController implements Initializable {
 
 	private void initialiserTableau() {
 		//CLIENT
+		System.out.println("Chargement des clients ....");
 		tableClients.getColumns().clear();
 		
 		nom.setCellValueFactory(new PropertyValueFactory<Client, String>("nom"));
@@ -133,6 +134,7 @@ public class PageGestionController implements Initializable {
 		tableClients.setItems(listClient);
 		tableClients.getColumns().addAll(nom, prenom, email);
 		//IMPRESSION
+		System.out.println("Chargement des impressions ....");
 		tableImpressions.getColumns().clear();
 		
 		idImpression.setCellValueFactory(new PropertyValueFactory<Impression, Integer>("id_impression"));
@@ -148,6 +150,7 @@ public class PageGestionController implements Initializable {
 		tableImpressions.setItems(listImpressions);
 		tableImpressions.getColumns().addAll(idImpression, dateImpression, emailImpression, typeImpression, formatImpression, qualiteImpression, nbImpression);
 		//STOCK
+		System.out.println("Chargement des stocks ....");
 		tableStocks.getColumns().clear();
 		
 		quantiteStock.setEditable(true);
@@ -171,6 +174,7 @@ public class PageGestionController implements Initializable {
 		    GestionDB.updateStock(stock);
 		});
 		//FichierPhoto
+		System.out.println("Chargement des fichiers photo ....");
 		tableFichiersPhotos.getColumns().clear();
 		
 		cheminPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("chemin"));
@@ -185,6 +189,7 @@ public class PageGestionController implements Initializable {
 		tableFichiersPhotos.setItems(listFichierPhoto);
 		tableFichiersPhotos.getColumns().addAll(cheminPhoto, emailPhoto, resolutionFichierPhoto, priseVuePhoto, datePhoto, partagePhoto);
 		//COMMANDE
+		System.out.println("Chargement des commandes ....");
 		tableCommandes.getColumns().clear();
 		
 		idCommande.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("numero"));
@@ -205,19 +210,11 @@ public class PageGestionController implements Initializable {
 	
 	@FXML
 	 void deleteClient(MouseEvent event) {
-		if(GestionDB.deleteClientByEmail(tableClients.getSelectionModel().getSelectedItem().getEmail())) {
+		if(GestionDB.deleteClient(tableClients.getSelectionModel().getSelectedItem())) {
 			this.popup("Suppression de client", "Suppression validée !", "Fermer");
 			
-			tableClients.getColumns().clear();
-			
-			nom.setCellValueFactory(new PropertyValueFactory<Client, String>("nom"));
-			prenom.setCellValueFactory((new PropertyValueFactory<Client, String>("prenom")));
-			email.setCellValueFactory(new PropertyValueFactory<Client, String>("email"));
-			
 			ObservableList<Client> listClient = FXCollections.observableArrayList(GestionDB.getAllClients());
-			
 			tableClients.setItems(listClient);
-			tableClients.getColumns().addAll(nom, prenom, email);
 		}
 		else {
 			this.popup("Suppression de client", "Suppression echouée !", "Fermer");
@@ -226,23 +223,11 @@ public class PageGestionController implements Initializable {
 	
 	@FXML
 	 void deleteImpression(MouseEvent event) {
-		if(GestionDB.deleteImpression(tableImpressions.getSelectionModel().getSelectedItem().getId_impression(),tableImpressions.getSelectionModel().getSelectedItem().getStock().getType_support().toString().toUpperCase())) {
+		if(GestionDB.deleteImpression(tableImpressions.getSelectionModel().getSelectedItem())) {
 			this.popup("Suppression d'impression", "Suppression validée !", "Fermer");
 			
-			tableImpressions.getColumns().clear();
-			
-			idImpression.setCellValueFactory(new PropertyValueFactory<Impression, Integer>("id_impression"));
-			dateImpression.setCellValueFactory(new PropertyValueFactory<Impression, Date>("date_impression"));
-			emailImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getClient().getEmail()));
-			typeImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getType_support().toString()));
-			formatImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getFormat()));
-			qualiteImpression.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStock().getQualite()));
-			nbImpression.setCellValueFactory(new PropertyValueFactory<Impression, Integer>("nb_impression"));
-			
 			ObservableList<Impression> listImpressions = FXCollections.observableArrayList(GestionDB.getAllImpression());
-			
 			tableImpressions.setItems(listImpressions);
-			tableImpressions.getColumns().addAll(idImpression, dateImpression, emailImpression, typeImpression, formatImpression, qualiteImpression, nbImpression);
 		}
 		else {
 			this.popup("Suppression d'impression", "Suppression echouée !", "Fermer");
@@ -271,18 +256,8 @@ public class PageGestionController implements Initializable {
 				tableStocks.getSelectionModel().getSelectedItem().getFormat())) {
 			this.popup("Suppression de stock", "Suppression validée !", "Fermer");
 			
-			tableStocks.getColumns().clear();
-			
-			typeSupportStock.setCellValueFactory(new PropertyValueFactory<Stock, String>("type_support"));
-			qualiteStock.setCellValueFactory(new PropertyValueFactory<Stock, String>("qualite"));
-			formatStock.setCellValueFactory(new PropertyValueFactory<Stock, String>("format"));
-			quantiteStock.setCellValueFactory(new PropertyValueFactory<Stock, Integer>("quantite"));
-			prixStock.setCellValueFactory(new PropertyValueFactory<Stock, Integer>("prix"));
-			
 			ObservableList<Stock> listStocks = FXCollections.observableArrayList(GestionDB.getAllStock());
-			
 			tableStocks.setItems(listStocks);
-			tableStocks.getColumns().addAll(typeSupportStock, qualiteStock, formatStock, quantiteStock, prixStock);
 		}
 		else {
 			this.popup("Suppression de stock", "Suppression echouée !", "Fermer");
@@ -294,19 +269,8 @@ public class PageGestionController implements Initializable {
 		if(GestionDB.deleteFichierPhoto(tableFichiersPhotos.getSelectionModel().getSelectedItem().getChemin())) {
 			this.popup("Suppression de fichier photo", "Suppression validée !", "Fermer");
 			
-			tableFichiersPhotos.getColumns().clear();
-			
-			cheminPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("chemin"));
-			emailPhoto.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getClient().getEmail()));
-			resolutionFichierPhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("resolution"));
-			priseVuePhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, String>("info_prise_de_vue"));
-			datePhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, Date>("date_ajout"));
-			partagePhoto.setCellValueFactory(new PropertyValueFactory<FichierPhoto, Boolean>("est_partage"));
-			
 			ObservableList<FichierPhoto> listFichierPhoto = FXCollections.observableArrayList(GestionDB.getAllFichierPhotos());
-			System.out.println(listFichierPhoto);
 			tableFichiersPhotos.setItems(listFichierPhoto);
-			tableFichiersPhotos.getColumns().addAll(cheminPhoto, emailPhoto, resolutionFichierPhoto, priseVuePhoto, datePhoto, partagePhoto);
 		}
 		else {
 			this.popup("Suppression de fichier photo", "Suppression echouée !", "Fermer");
@@ -315,25 +279,11 @@ public class PageGestionController implements Initializable {
 	
 	@FXML
 	 void deleteCommande(MouseEvent event) {
-		if(GestionDB.deleteCommande(tableCommandes.getSelectionModel().getSelectedItem().getNumero())) {
+		if(GestionDB.deleteCommande(tableCommandes.getSelectionModel().getSelectedItem())) {
 			this.popup("Suppression de commande", "Suppression validée !", "Fermer");
 			
-			tableCommandes.getColumns().clear();
-			
-			idCommande.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("numero"));
-			dateCommande.setCellValueFactory(new PropertyValueFactory<Commande, Date>("date_commande"));
-			emailCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getClient().getEmail()));
-			adresseCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getAdresse().toString()));
-			//bonAchatCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat().getCode_bon()));
-			//bonAchatGenereCom.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat_genere().toString()));
-			statutCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStatut().toString()));
-			montantTotalCom.setCellValueFactory(data -> new ReadOnlyStringWrapper(Float.toString(data.getValue().getMontant_total_cmd())));
-			etatPayerCom.setCellValueFactory(new PropertyValueFactory<Commande, Boolean>("est_partage"));
-			
 			ObservableList<Commande> listCommandes = FXCollections.observableArrayList(GestionDB.getAllCommandes());
-			
 			tableCommandes.setItems(listCommandes);
-			tableCommandes.getColumns().addAll(idCommande, dateCommande, emailCommande, adresseCommande, bonAchatCommande, bonAchatGenereCom, statutCommande, montantTotalCom, etatPayerCom);
 		}
 		else {
 			this.popup("Suppression de commande", "Suppression echouée !", "Fermer");
@@ -348,22 +298,8 @@ public class PageGestionController implements Initializable {
 		if(GestionDB.updateCommande(commande)) {
 			this.popup("Mise à jour de commande", "Mise à jour validée !", "Fermer");
 			
-			tableCommandes.getColumns().clear();
-			
-			idCommande.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("numero"));
-			dateCommande.setCellValueFactory(new PropertyValueFactory<Commande, Date>("date_commande"));
-			emailCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getClient().getEmail()));
-			adresseCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getAdresse().toString()));
-			//bonAchatCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat().getCode_bon()));
-			//bonAchatGenereCom.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat_genere().toString()));
-			statutCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStatut().toString()));
-			montantTotalCom.setCellValueFactory(data -> new ReadOnlyStringWrapper(Float.toString(data.getValue().getMontant_total_cmd())));
-			etatPayerCom.setCellValueFactory(new PropertyValueFactory<Commande, Boolean>("est_partage"));
-			
 			ObservableList<Commande> listCommandes = FXCollections.observableArrayList(GestionDB.getAllCommandes());
-			
 			tableCommandes.setItems(listCommandes);
-			tableCommandes.getColumns().addAll(idCommande, dateCommande, emailCommande, adresseCommande, bonAchatCommande, bonAchatGenereCom, statutCommande, montantTotalCom, etatPayerCom);
 		}
 		else {
 			this.popup("Mise à jour de commande", "Mise à jour echouée !", "Fermer");
@@ -378,22 +314,8 @@ public class PageGestionController implements Initializable {
 		if(GestionDB.updateCommande(commande)) {
 			this.popup("Mise à jour de commande", "Mise à jour validée !", "Fermer");
 			
-			tableCommandes.getColumns().clear();
-			
-			idCommande.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("numero"));
-			dateCommande.setCellValueFactory(new PropertyValueFactory<Commande, Date>("date_commande"));
-			emailCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getClient().getEmail()));
-			adresseCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getAdresse().toString()));
-			//bonAchatCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat().getCode_bon()));
-			//bonAchatGenereCom.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat_genere().toString()));
-			statutCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStatut().toString()));
-			montantTotalCom.setCellValueFactory(data -> new ReadOnlyStringWrapper(Float.toString(data.getValue().getMontant_total_cmd())));
-			etatPayerCom.setCellValueFactory(new PropertyValueFactory<Commande, Boolean>("est_partage"));
-			
 			ObservableList<Commande> listCommandes = FXCollections.observableArrayList(GestionDB.getAllCommandes());
-			
 			tableCommandes.setItems(listCommandes);
-			tableCommandes.getColumns().addAll(idCommande, dateCommande, emailCommande, adresseCommande, bonAchatCommande, bonAchatGenereCom, statutCommande, montantTotalCom, etatPayerCom);
 		}
 		else {
 			this.popup("Mise à jour de commande", "Mise à jour echouée !", "Fermer");
@@ -408,22 +330,9 @@ public class PageGestionController implements Initializable {
 		if(GestionDB.updateCommande(commande)) {
 			this.popup("Mise à jour de commande", "Mise à jour validée !", "Fermer");
 			
-			tableCommandes.getColumns().clear();
-			
-			idCommande.setCellValueFactory(new PropertyValueFactory<Commande, Integer>("numero"));
-			dateCommande.setCellValueFactory(new PropertyValueFactory<Commande, Date>("date_commande"));
-			emailCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getClient().getEmail()));
-			adresseCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getAdresse().toString()));
-			//bonAchatCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat().getCode_bon()));
-			//bonAchatGenereCom.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBon_achat_genere().toString()));
-			statutCommande.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStatut().toString()));
-			montantTotalCom.setCellValueFactory(data -> new ReadOnlyStringWrapper(Float.toString(data.getValue().getMontant_total_cmd())));
-			etatPayerCom.setCellValueFactory(new PropertyValueFactory<Commande, Boolean>("est_partage"));
-			
 			ObservableList<Commande> listCommandes = FXCollections.observableArrayList(GestionDB.getAllCommandes());
 			
 			tableCommandes.setItems(listCommandes);
-			tableCommandes.getColumns().addAll(idCommande, dateCommande, emailCommande, adresseCommande, bonAchatCommande, bonAchatGenereCom, statutCommande, montantTotalCom, etatPayerCom);
 		}
 		else {
 			this.popup("Mise à jour de commande", "Mise à jour echouée !", "Fermer");
