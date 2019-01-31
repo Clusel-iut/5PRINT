@@ -142,7 +142,7 @@ BEGIN
    FOR rec IN (SELECT CHEMIN,DATE_NO_PHOTO from FICHIERPHOTO)
 		LOOP
 			select (trunc(sysdate) - rec.DATE_NO_PHOTO) into date_deff from dual;
-			IF date_deff > 30 then 
+			IF date_deff > 10 then 
 				delete from FICHIERPHOTO where CHEMIN=rec.CHEMIN;
 			END IF;	
 		END LOOP;
@@ -294,3 +294,69 @@ BEGIN
 
 END;
 /
+
+-------------------------------------------------------------------------------------------------------------
+----------------------------- AUTO INCREMENT ----------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
+CREATE SEQUENCE impression_sequence START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE commande_sequence START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE adresse_sequence START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE photo_sequence START WITH 1 INCREMENT BY 1;
+--------------------------------------------------------
+--  DDL for Trigger PHOTO_INSERT
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "OUZZINEO"."PHOTO_INSERT" 
+  BEFORE INSERT ON PHOTO
+  FOR EACH ROW
+BEGIN
+  SELECT photo_sequence.nextval
+  INTO :new.ID_PHOTO
+  FROM dual;
+END;
+/
+ALTER TRIGGER "OUZZINEO"."PHOTO_INSERT" ENABLE;
+
+--------------------------------------------------------
+--  DDL for Trigger COMMANDE_INSERT
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "OUZZINEO"."COMMANDE_INSERT" 
+  BEFORE INSERT ON COMMANDE
+  FOR EACH ROW
+BEGIN
+  SELECT commande_sequence.nextval
+  INTO :new.numero
+  FROM dual;
+END;
+/
+ALTER TRIGGER "OUZZINEO"."COMMANDE_INSERT" ENABLE;
+--------------------------------------------------------
+--  DDL for Trigger IMPRESSION_INSERT
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "OUZZINEO"."IMPRESSION_INSERT" 
+  BEFORE INSERT ON IMPRESSION
+  FOR EACH ROW
+BEGIN
+  SELECT impression_sequence.nextval
+  INTO :new.id_impression
+  FROM dual;
+END;
+/
+ALTER TRIGGER "OUZZINEO"."IMPRESSION_INSERT" ENABLE;
+
+--------------------------------------------------------
+--  DDL for Trigger ADRESSE_INSERT
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "OUZZINEO"."ADRESSE_INSERT" 
+  BEFORE INSERT ON ADRESSE
+  FOR EACH ROW
+BEGIN
+  SELECT adresse_sequence.nextval
+  INTO :new.ID_ADRESSE
+  FROM dual;
+END;
+/
+ALTER TRIGGER "OUZZINEO"."ADRESSE_INSERT" ENABLE;
