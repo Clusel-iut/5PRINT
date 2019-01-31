@@ -680,12 +680,12 @@ public class GestionDB {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement = conn.prepareStatement(sql);
 			statement.setInt(1, commande.getAdresse().getId_adresse());
-			statement.setString(2, commande.getBon_achat().getCode_bon());
+			statement.setString(2, commande.getBon_achat()==null?null:commande.getBon_achat().getCode_bon());
 			statement.setString(3, commande.getMode_livraison());
 			statement.setString(4, commande.getStatut().toString());
 			statement.setBoolean(5, commande.getEtat_paiement());
 			statement.setFloat(6, commande.getMontant_total_cmd());
-			statement.setInt(6, commande.getNumero());
+			statement.setInt(7, commande.getNumero());
 
 			int rowsInserted = statement.executeUpdate();
 			if (rowsInserted > 0) {

@@ -21,7 +21,7 @@
                   <Image url="@../../Ressources/logo.png" />
                </image>
             </ImageView>
-            <Label fx:id="prenomNomClient" layoutX="263.0" layoutY="42.0" text="Gestion de l'application">
+            <Label layoutX="263.0" layoutY="42.0" text="Gestion de l'application">
                <font>
                   <Font size="30.0" />
                </font>
@@ -47,7 +47,7 @@
                                     <TableColumn fx:id="email" prefWidth="618.0" text="email" />
                                 </columns>
                               </TableView>
-                              <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                              <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#deleteClient" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
                            </children></AnchorPane>
                   </content>
                 </Tab>
@@ -71,7 +71,7 @@
                                     <TableColumn fx:id="nbImpression" minWidth="0.0" prefWidth="132.0" text="nb impression" />
                                  </columns>
                               </TableView>
-                              <Button layoutX="897.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                              <Button layoutX="897.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#deleteImpression" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
                            </children></AnchorPane>
                      </content>
                   </Tab>
@@ -93,7 +93,8 @@
                                     <TableColumn fx:id="prixStock" minWidth="0.0" prefWidth="132.0" text="prix" />
                                  </columns>
                               </TableView>
-                              <Button layoutX="897.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                              <Button layoutX="897.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#deleteStock" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                              <Button layoutX="830.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#addStock" style="-fx-background-color: orange; -fx-text-fill: white;" text="Ajouter" />
                            </children></AnchorPane>
                   </content>
                 </Tab>
@@ -116,7 +117,7 @@
                                     <TableColumn fx:id="partagePhoto" minWidth="0.0" prefWidth="139.0" text="partagé ?" />
                                  </columns>
                               </TableView>
-                              <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                              <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#deleteFichierPhoto" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
                            </children></AnchorPane>
                      </content>
                   </Tab>
@@ -142,10 +143,10 @@
                                     <TableColumn fx:id="etatPayerCom" minWidth="0.0" prefWidth="87.0" text="payer?" />
                                  </columns>
                               </TableView>
-                              <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
-                              <Button layoutX="818.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Valider" />
-                              <Button layoutX="735.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Annuler" />
-                              <Button layoutX="665.0" layoutY="378.0" mnemonicParsing="false" style="-fx-background-color: orange; -fx-text-fill: white;" text="Livrer" />
+                              <Button layoutX="896.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#deleteCommande" style="-fx-background-color: orange; -fx-text-fill: white;" text="Supprimer" />
+                              <Button layoutX="818.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#validerCommande" style="-fx-background-color: orange; -fx-text-fill: white;" text="Valider" />
+                              <Button layoutX="735.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#cancelCommande" style="-fx-background-color: orange; -fx-text-fill: white;" text="Annuler" />
+                              <Button layoutX="665.0" layoutY="378.0" mnemonicParsing="false" onMouseClicked="#livrerCommande" style="-fx-background-color: orange; -fx-text-fill: white;" text="Livrer" />
                            </children></AnchorPane>
                      </content>
                   </Tab>
