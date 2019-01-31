@@ -45,7 +45,3 @@ HIERACHIE DU PROJET :
 - Package Ressources
 
    - Contient les images pour l'application (comme le logo fait par Jonathan)
-   
-- Lancer via un terminal
-   - java -jar monappli.jar monPackage.MaClasse 
-   - java -classpath classes/ monPackage.MaClasse 
