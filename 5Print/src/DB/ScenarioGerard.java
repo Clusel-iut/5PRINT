@@ -31,16 +31,14 @@ public class ScenarioGerard implements Runnable {
 
 	private String email;
 	private String mdp;
-	private Stock s;
-	private Adresse ad;
-	private TypeSupport ts;
+	private Stock stock;
+	private Adresse adresse;
 
-	public ScenarioGerard(String email, String mdp, Stock s, Adresse ad, TypeSupport ts) {
+	public ScenarioGerard(String email, String mdp, Stock s, Adresse ad) {
 		this.email = email;
 		this.mdp = mdp;
-		this.s = s;
-		this.ad = ad;
-		this.ts = ts;
+		this.stock = s;
+		this.adresse = ad;
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class ScenarioGerard implements Runnable {
 			System.out.println("Connexion réussi nom=" + this.email);
 			Client c = GestionDB.getClientByEmail(email);
 
-			int idImp = GestionDB.createImpression(ts, c, s, 0, 8, false, 1, null, null, null);
+			int idImp = GestionDB.createImpression(stock.getType_support(), c, stock, 0, 8, false, 1, null, null, null);
 			Impression imp = GestionDB.getImpressionById(idImp);
 			System.out.println("Impression créée nom=" + this.email);
 
@@ -68,13 +66,13 @@ public class ScenarioGerard implements Runnable {
 			System.out.println("Commande créée nom=" + this.email);
 
 			imp.setCommande(cmd);
-			GestionDB.updateImpression(ts, imp);
+			GestionDB.updateImpression(stock.getType_support(), imp);
 			System.out.println("Update impression nom=" + this.email);
 
 			ArrayList<Impression> limp = new ArrayList<Impression>();
 			limp.add(imp);
 			cmd.setImpressions(limp);
-			cmd.setAdresse(ad);
+			cmd.setAdresse(adresse);
 			GestionDB.updateCommande(cmd);
 			System.out.println("Update commande nom=" + this.email);
 

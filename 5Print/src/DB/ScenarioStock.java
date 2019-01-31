@@ -27,16 +27,14 @@ public class ScenarioStock implements Runnable {
 
 	private String email;
 	private String mdp;
-	private Stock s;
-	private Adresse ad;
-	private TypeSupport ts;
+	private Stock stock;
+	private Adresse adresse;
 
-	public ScenarioStock(String email, String mdp, Stock s, Adresse ad, TypeSupport ts) {
+	public ScenarioStock(String email, String mdp, Stock s, Adresse ad) {
 		this.email = email;
 		this.mdp = mdp;
-		this.s = s;
-		this.ad = ad;
-		this.ts = ts;
+		this.stock = s;
+		this.adresse = ad;
 	}
 
 	@Override
@@ -45,22 +43,26 @@ public class ScenarioStock implements Runnable {
 			System.out.println("Connexion réussi nom=" + this.email);
 			Client c = GestionDB.getClientByEmail(email);
 
-			int idImp = GestionDB.createImpression(ts, c, s, 0, 30, false, 20, null, null, null);
+			// TypeSupport type, Client client, Stock stock, int numero, float montant_total,
+			// boolean etat_impression, int nb_impression, String modele, String titre, String mise_en_page)
+			int idImp = GestionDB.createImpression(stock.getType_support(), c, stock, 0, 30, false, 20, null, null, null);
 			Impression imp = GestionDB.getImpressionById(idImp);
 			System.out.println("Impression créée nom=" + this.email);
 
-			int idCmd = GestionDB.createCommande(0, email, null, StatutCommande.En_cours, false, 30);
+			// int adresse, String email, String mode_livraison, StatutCommande statut,
+			//		boolean etat_paiement, float montant_total_cmd)
+			int idCmd = GestionDB.createCommande(0, email, "standard", StatutCommande.En_cours, false, 30);
 			Commande cmd = GestionDB.getCommandeById(idCmd);
 			System.out.println("Commande créée nom=" + this.email);
 
 			imp.setCommande(cmd);
-			GestionDB.updateImpression(ts, imp);
+			GestionDB.updateImpression(stock.getType_support(), imp);
 			System.out.println("Update impression nom=" + this.email);
 
 			ArrayList<Impression> limp = new ArrayList<Impression>();
 			limp.add(imp);
 			cmd.setImpressions(limp);
-			cmd.setAdresse(ad);
+			cmd.setAdresse(adresse);
 			GestionDB.updateCommande(cmd);
 			System.out.println("Update commande nom=" + this.email);
 

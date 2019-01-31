@@ -15,36 +15,32 @@ public class DemoScenario {
 
 		Stock tirageSDA4 = GestionDB.getStockById(TypeSupport.TIRAGE, "SD", "A4");
 		Adresse ad = GestionDB.getAdresseById(2);
+		if (tirageSDA4 != null && ad != null) {
+			Thread tFrançois = new Thread(new ScenarioStock("francFran¿¿ois@jooj.hu", "mdpff", tirageSDA4, ad));
 
-		Thread tFrançois = new Thread(
-				new ScenarioStock("francFrançois@jooj.hu", "mdpff", tirageSDA4, ad, TypeSupport.TIRAGE));
+			Thread tFrançoise = new Thread(new ScenarioStock("francFran¿¿oise@jooj.hu", "mdpff", tirageSDA4, ad));
 
-		Thread tFrançoise = new Thread(
-				new ScenarioStock("francFrançoise@jooj.hu", "mdpff", tirageSDA4, ad, TypeSupport.TIRAGE));
+			Thread tFranck = new Thread(new ScenarioStock("francFranck@jooj.hu", "mdpff", tirageSDA4, ad));
 
-		Thread tFranck = new Thread(
-				new ScenarioStock("francFranck@jooj.hu", "mdpff", tirageSDA4, ad, TypeSupport.TIRAGE));
-
-		tFrançois.start();
-		tFrançoise.start();
-		tFranck.start();
+			tFrançois.start();
+			tFrançoise.start();
+			tFranck.start();
+		}
 
 		System.out.println("------------------------- Scénario 2 ------------------------------");
 
 		// Stock s = GestionDB.createStock(type, qualite, format, quantite, prix);
 
-		Stock cadre = GestionDB.getStockById(TypeSupport.CADRE, "SD", "A4");
+		Stock cadre = GestionDB.getStockById(TypeSupport.CADRE, "SD", "A3");
 		Adresse ad2 = GestionDB.getAdresseById(1);
+		if (cadre != null && ad2 != null) {
+			Thread tBernard = new Thread(new ScenarioBernard("biancabernard@disney.paris", "mdpbb"));
 
-		Thread tBernard = new Thread(
-				new ScenarioStock("biancabernard@disney.paris", "mdpbb", cadre, ad2, TypeSupport.CADRE));
+			Thread tGerard = new Thread(new ScenarioGerard("lasourisgerard@petit.trou", "mdplg", cadre, ad2));
 
-		Thread tGerard = new Thread(
-				new ScenarioStock("lasourisgerard@petit.trou", "mdplg", cadre, ad2, TypeSupport.CADRE));
-
-		tBernard.start(); // TODO Bernard t'abord obligatoir non ?
-		tGerard.start();
-
+			tBernard.start(); // TODO Bernard t'abord obligatoir non ?
+			tGerard.start();
+		}
 	}
 
 }
