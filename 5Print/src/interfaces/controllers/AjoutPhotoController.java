@@ -99,7 +99,7 @@ public class AjoutPhotoController implements Initializable {
 	public void setObjects(int idImpression) {
 		this.idImpress = idImpression;
 		ArrayList<FichierPhoto> listPhotos = LocalDataClient.client.getPhotos();
-		listPhotos.addAll(LocalDataClient.client.getPhotos_partagees());
+		listPhotos.addAll(GestionDB.getAllFichierPhotosPartagees());
 		allFichierPhoto.getItems().setAll(listPhotos);	
 		impression = GestionDB.getImpressionById(idImpression);
 		numPage.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10));

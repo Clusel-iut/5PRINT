@@ -1144,7 +1144,7 @@ public class GestionDB {
 					int numero = resultImp.getInt("NUMERO");
 					String email = resultImp.getString("EMAIL");
 					Client client = new Client(email, null, null, null, null);
-					Commande commande = null;
+					Commande commande = new Commande(numero);
 					Stock stock = getStockById(type, resultImp.getString("QUALITE"), resultImp.getString("FORMAT"));
 										
 					if (type == TypeSupport.AGENDA) {
