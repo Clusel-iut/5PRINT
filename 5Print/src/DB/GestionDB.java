@@ -1,10 +1,12 @@
 package DB;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -557,6 +559,18 @@ public class GestionDB {
 
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			//update montant
+			PreparedStatement stmt = conn.prepareStatement("SELECT CALCUL_MONTANT_COMMANDE(?) FROM DUAL");
+			stmt.setInt(1,id);       
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				  int output = rs.getInt(1);
+				  System.out.println("--------------------------------------------");
+				  System.out.println(output);
+			}
+			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
@@ -1124,6 +1138,18 @@ public class GestionDB {
 		T t = null;
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			
+			//update montant
+			PreparedStatement stmt = conn.prepareStatement("SELECT CALCUL_MONTANT_IMPRESSION(?) FROM DUAL");
+			stmt.setInt(1,id);       
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				  int output = rs.getInt(1);
+				  System.out.println("--------------------------------------------");
+				  System.out.println(output);
+			}
+			
 			// REQUETE TYPE POUR VERIFIER SI EXISTE
 			PreparedStatement statementType = conn.prepareStatement(sqlT);
 			statementType.setInt(1, id);
