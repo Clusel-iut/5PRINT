@@ -9,6 +9,16 @@ GROUPE 5 :
 - Oussama OUZZINE
 - Jonathan MONBEIG
 
+COMMENT EXECUTER LE PROJET ? :
+
+- Prérequis : 
+   - mettre le jre 8u201 dans le build path du projet
+   - installer javafx (e(fx)clipse dans le marketplace)
+ - Executer dans le package Application : 
+   - le main Client.java pour l'application Client 
+   - le main Gestion.java pour l'application Gestion du magasin
+
+
 HIERACHIE DU PROJET :
 
 - Package application : 
