@@ -1564,7 +1564,7 @@ public class GestionDB {
 	}
 
 	public static ArrayList<BonAchat> getBonAchatByEmail(String email) {
-		String sql = "SELECT * FROM BON_ACHAT WHERE EMAIL = ? AND NUMERO = null";
+		String sql = "SELECT * FROM BON_ACHAT WHERE EMAIL = ? AND NUMERO IS NULL";
 		ArrayList<BonAchat> lesBonsAchats = new ArrayList<BonAchat>();
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
